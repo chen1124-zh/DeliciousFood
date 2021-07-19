@@ -1,5 +1,9 @@
 <script>
 	export default {
+		created() {
+			const demo = uni.getMenuButtonBoundingClientRect()
+			this.$store.commit('setNavigation',demo)
+		},
 		onLaunch: function() {
 			console.log('App Launch')
 		},
@@ -14,4 +18,10 @@
 
 <style>
 	/*每个页面公共css */
+	
+	.topNavigation{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 </style>

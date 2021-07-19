@@ -3,10 +3,75 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "天下美食"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/business/business",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商家",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+				
+            }
+            
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal/personal",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"subPackages": [{
+		"root": "pagesA",
+		"pages": [
+			{
+				"path" : "list/list",
+				"style" : {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}
+		  
+            ]
+	}],
+	"tabBar":{
+		"color":"#464646",
+		"selectedColor":"#2697F4",
+		"list":[
+			{
+		        "pagePath": "pages/index/index",
+				"text":"首页"
+		    },
+			{
+			    "pagePath": "pages/business/business",
+				"text":"商家"
+			},
+			{
+			    "pagePath": "pages/order/order",
+				"text":"订单"
+			},
+			{
+			    "pagePath": "pages/personal/personal",
+				"text":"我的"
+			}
+			
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
