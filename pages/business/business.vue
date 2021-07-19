@@ -19,7 +19,6 @@
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
-			console.log(this.navigation)
 		},
 		methods: {
 			
