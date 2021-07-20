@@ -36,6 +36,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#0D92FF",
                 "enablePullDownRefresh": false
             }
             
@@ -52,6 +53,21 @@
 				}
 			}
 		  
+                ,{
+                    "path" : "search/search",
+                    "style" : {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+                }
+                ,{
+                    "path" : "searchResult/searchResult",
+                    "style" : {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
+					}
+                }
             ]
 	}],
 	"tabBar":{

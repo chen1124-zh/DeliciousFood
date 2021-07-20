@@ -4,10 +4,7 @@
 						'paddingTop': navigation.top + 'px',
 						'paddingBottom':'10rpx',
 						'backgroundColor':'#0D92FF',
-						'color':'#fff',
-						'position':'sticky',
-						'top':'0',
-						'z-index':'101'}" >
+						'color':'#fff'}" >
 			<view :style="{'height':navigation.height+'px'}" class="topNavigation">
 				<view class="address">
 					街道
@@ -20,7 +17,7 @@
 		<view class="search">
 			<view class="search_box">
 				<view class=".search_icon">
-					<image src="../../static/search_icon.png" mode=""></image>
+					
 				</view>
 				<view class="">
 					水煮牛肉
@@ -80,22 +77,16 @@
 		
 		<view class="screen_box">
 			<view class="screen_left">
-				<view class="select_item" style="font-weight: 800;color: #000;">
+				<view class="select_item">
 					午餐
 				</view>
-				<view class="select_item" 
-					@click="selectItem(0)" 
-					:style="{'color': userSelect.time == 0?'#9CCCFE':'#999'}">
+				<view class="select_item">
 					综艺排序
 				</view>
-				<view class="select_item" 
-					@click="selectItem(1)" 
-					:style="{'color': userSelect.time == 1?'#9CCCFE':'#999'}">
+				<view class="select_item">
 					距离
 				</view>
-				<view class="select_item" 
-					@click="selectItem(2)" 
-					:style="{'color': userSelect.time == 2?'#9CCCFE':'#999'}">
+				<view class="select_item">
 					销量
 				</view>
 			</view>
@@ -104,16 +95,13 @@
 			</view>
 		</view>
 		<view class="setMeal_box">
-			<view class="setMeal_item"
-				:style="{'color': userSelect.setMeal == 0?'#9CCCFE':'#999'}">
+			<view class="setMeal_item">
 				行政套餐
 			</view>
-			<view class="setMeal_item"
-				:style="{'color': userSelect.setMeal == 1?'#9CCCFE':'#999'}">
+			<view class="setMeal_item">
 				自选套餐
 			</view>
-			<view class="setMeal_item"
-				:style="{'color': userSelect.setMeal == 2?'#9CCCFE':'#999'}">
+			<view class="setMeal_item">
 				会务套餐
 			</view>
 		</view>
@@ -457,6 +445,9 @@
 				<view class="setMeal_item">
 					新品推荐
 				</view>
+				<view class="setMeal_item">
+					会务套餐
+				</view>
 			</view>
 			<view class="screen_box">
 				<view class="screen_left">
@@ -729,10 +720,6 @@
 		data() {
 			return {
 				navigation:'',
-				userSelect:{
-					time:0,
-					setMeal:0
-				},
 			}
 		},
 		onLoad() {
@@ -742,9 +729,7 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
-			selectItem(index){
-				this.userSelect.time = index
-			}
+
 		}
 	}
 </script>
@@ -790,13 +775,8 @@
 		width: 40rpx;
 		height: 40rpx;
 		padding: 20rpx;
+		background: #ccc;
 	}
-	
-	.search_icon image{
-		width: 40rpx;
-		height: 40rpx;
-	}
-	
 	.Carousel{
 		padding: 10rpx 25rpx;
 		padding-bottom: 20rpx;
@@ -834,7 +814,6 @@
 	}
 	
 	.select_item{
-		color: #999;
 		margin: 0 10rpx;
 		font-size: 24rpx;
 	}
@@ -859,7 +838,6 @@
 		margin: 0 20rpx;
 		background: #F8F8F8;
 		font-size: 24rpx;
-		color: #333;
 	}
 	
 	.good_all_box{
