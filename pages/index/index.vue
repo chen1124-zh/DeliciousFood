@@ -48,8 +48,8 @@
 		
 		<view class="Merit">
 			<view class="Merit_item">
-				<view class="Merit_icon">
-					
+				<view class="Merit_icon" style="background: #F84819;">
+					团餐
 				</view>
 				<view class="Merit_name">
 					团餐
@@ -57,17 +57,18 @@
 			</view>
 			
 			<view class="Merit_item">
-				<view class="Merit_icon">
-					
+				<view class="Merit_icon" style="background: #FFA443;">
+					拼餐
 				</view>
 				<view class="Merit_name">
 					拼餐
 				</view>
+				
 			</view>
 			
 			<view class="Merit_item">
-				<view class="Merit_icon">
-					
+				<view class="Merit_icon" style="background: #9540CE;">
+					贵宾
 				</view>
 				<view class="Merit_name">
 					贵宾
@@ -121,14 +122,14 @@
 			</view>
 		</view>
 		<view class="good_all_box">
-			<view class="good_item_box">
+			<view class="good_item_box" v-for="(item,index) in storeList" :key='index' @click="rGoog(index)">
 				<view class="googImgBox">
-					
+					<image :src="item.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 				</view>
 				<view class="good_item_describe">
 					<view class="good_name_mueu">
 						<view class="good_name">
-							111111
+							{{item.storeName}}
 						</view>
 						<view class="good_mueu">
 							...
@@ -137,24 +138,28 @@
 					
 					<view class="good_describe">
 						<view class="good_score">
-							1
+							<!-- 1 -->4.8
 						</view>
 						<view class="good_sale">
-							2
+							{{item.saleNum||0}}
 						</view>
 					</view>
 					
 					<view class="good_performance">
 						<view class="good_start_price">
-							1
+							{{item.startingPrice}}
 						</view>
 						<view class="good_distance_time">
-							1
+							{{item.deliveryTime}}分钟 {{item.deliveryRange}}km
 						</view>
 					</view>
 					
 					<view class="good_describe_label_box">
-						<view class="good_item_describe_label">
+						
+						<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList" :key='i'>
+							{{foods}}
+						</view>
+						<!-- <view class="good_item_describe_label">
 							配送
 						</view>
 						<view class="good_item_describe_label">
@@ -162,21 +167,18 @@
 						</view>
 						<view class="good_item_describe_label">
 							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
+						</view> -->
 					</view>
 					<view class="good_taste_label_box">
-						<view class="good_item_taste_label_box">
+						<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
+							{{food}}
+						</view>
+						<!-- <view class="good_item_taste_label_box">
 							香辣
 						</view>
 						<view class="good_item_taste_label_box">
 							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
+						</view> -->
 						<view class="good_reserve">
 							预定
 						</view>
@@ -189,72 +191,6 @@
 			</view>
 				
 			
-			<view class="good_item_box">
-				<view class="googImgBox">
-					
-				</view>
-				<view class="good_item_describe">
-					<view class="good_name_mueu">
-						<view class="good_name">
-							111111
-						</view>
-						<view class="good_mueu">
-							...
-						</view>
-					</view>
-					
-					<view class="good_describe">
-						<view class="good_score">
-							1
-						</view>
-						<view class="good_sale">
-							2
-						</view>
-					</view>
-					
-					<view class="good_performance">
-						<view class="good_start_price">
-							1
-						</view>
-						<view class="good_distance_time">
-							1
-						</view>
-					</view>
-					
-					<view class="good_describe_label_box">
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-					</view>
-					<view class="good_taste_label_box">
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_reserve">
-							预定
-						</view>
-							
-					</view>
-					
-					
-					
-				</view>
-			</view>
 			
 			
 			
@@ -716,20 +652,67 @@
 </template>
 
 <script>
+	
+	import Api from '@/common/http.js'
 	export default {
 		data() {
 			return {
+				storeList:[],
 				navigation:'',
 			}
 		},
 		onLoad() {
-
+			this.getStore()
+		},
+		onShow() {
+			this.getLogLat()
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
+		
 		methods: {
-
+			getLogLat(){
+				uni.getLocation({
+					type: 'wgs84',
+					geocode:true,//设置该参数为true可直接获取经纬度及城市信息
+					success: function (res) {
+						
+						// console.log(res)
+						// that.addrDel = res;
+					},
+					fail: function () {
+						uni.showToast({
+							title: '获取地址失败，将导致部分功能不可用',
+							icon:'none'
+						});
+					}
+				});
+			},
+			getStore(){
+				Api.getStoreList({}).then(res => {
+					// console.log('res',res);
+					this.storeList = res.data
+					this.storeList.map((item)=>{
+						item.foodSortList = item.foodLabel.split(",")
+						item.appraiseManagerList = item.appraiseManager.split(",")
+					})
+					// this.storeList.foodSortList = this.storeList
+					// console.log('this.storeList.foodSortList',this.storeList)
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
+			rGoog(index){
+				uni.navigateTo({
+					url:'../../pagesA/goodDetails/goodDetails?id='+this.storeList[index].id
+				})
+			}
+			
+			
 		}
 	}
 </script>
@@ -793,8 +776,13 @@
 		width: 90rpx;
 		height: 90rpx;
 		margin: 20rpx;
-		background-color: #007AFF;
+		/* background-color: #007AFF; */
 		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		font-size: 30rpx;
 	}
 	
 	.Merit_name{

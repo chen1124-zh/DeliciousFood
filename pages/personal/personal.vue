@@ -2,16 +2,20 @@
 	<view>
 		<view class="user_information">
 			<view class="information">
-				<view class="user_left">
+				<view class="user_left"  @click="getUser()">
 					<view class="user_img">
-						
+						<image :src="userInfo.images" style="width: 100%;height: 100%;" mode=""></image>
 					</view>
-					<view class="">
+					<view class="" style="line-height: 110rpx;" v-if="!userInfo">
+						未登陆 
+					</view>
+					<view class="" v-else>
+						
 						<view class="user_name">
-							姓名
+							{{userInfo.nickName}}
 						</view>
 						<view class="user_phone">
-							134********
+							{{userInfo.mobile}}
 						</view>
 					</view>
 				</view>
@@ -262,10 +266,72 @@
 	export default {
 		data() {
 			return {
-				
+				userInfo:''
 			}
 		},
+		onShow() {
+			var user = uni.getStorageSync('user');
+			if(user != ''){
+				this.userInfo = user
+			}
+			
+		},
 		methods: {
+			getUser(){
+				var than = this
+				var user = uni.getStorageSync('user')
+				
+				if(user == ''){
+					uni.getUserProfile({
+						desc: '登录',
+						success: (res) => {
+							uni.login({
+								success: (ress) => {
+									let code = ress.code
+									console.log(code)
+									uni.request({
+										url: 'http://127.0.0.1:8080/user/save', //仅为示例，并非真实接口地址。
+										method:"POST", 
+										data: {           
+											"code":code,
+											"type":1, 
+											"rawData":{  
+												"nickName":res.userInfo.nickName,
+												"mobile":"17888888888",
+												"isVip":0,
+												"images":res.userInfo.avatarUrl,
+												"userName":"", 
+												"password":"", 
+												"accountType":1,
+												"gender":res.userInfo.gender
+											}
+										},
+										success: (resdata) => {
+											console.log(resdata)
+											this.userInfo = resdata.data.data
+											uni.setStorageSync('token',resdata.data.data.data.openId);
+											uni.setStorageSync('user',resdata.data.data.data);
+											
+											
+										}
+									});
+									
+								},
+							})
+						},
+						fail() {
+							uni.showToast({
+								title: '需要授权后才能继续',
+								duration: 1500,
+								icon: 'none'
+							})
+						}
+					})
+				}else{
+					this.user = user
+				}
+				
+			}
 			
 		}
 	}
@@ -296,6 +362,7 @@
 		background: #ccc;
 		border-radius: 50rpx;
 		margin-right: 10rpx;
+		overflow: hidden;
 	}
 	
 	.user_name{

@@ -68,6 +68,113 @@
 						"navigationStyle":"custom"
 					}
                 }
+                ,{
+                    "path" : "goodDetails/goodDetails",
+                    "style" : {
+						"navigationStyle":"custom"
+					}
+                }
+                ,{
+                    "path" : "reportBusiness/reportBusiness",
+                    "style" : {
+						"navigationBarTitleText": "举报商家"
+					}
+                }
+                ,{
+                    "path" : "BranchStore/BranchStore",
+                    "style" : {
+						"navigationBarTitleText": ""
+					}
+                }
+                ,{
+                    "path" : "security/security",
+                    "style" : {
+						"navigationBarTitleText": "食品安全档案"
+					}
+                }
+                ,{
+                    "path" : "commodityDetails/commodityDetails",
+                    "style" : {
+						"navigationStyle":"custom"
+					}
+                }
+                ,{
+                    "path" : "shoppingCart/shoppingCart",
+                    "style" : {
+						"navigationBarTitleText": "购物车",
+						"navigationBarBackgroundColor":"#0D92FF"
+					}
+                }
+                ,{
+                    "path" : "timely/timely",
+                    "style" : {
+						"navigationBarTitleText": "团餐",
+						"navigationBarBackgroundColor":"#0D92FF"
+					}
+                }
+				,{
+				    "path" : "choose/choose",
+				    "style" : {
+						"navigationStyle":"custom"
+					}
+				}
+                ,{
+                    "path" : "ginseng/ginseng",
+                    "style" : {
+						"navigationBarTitleText": "参团详情"
+					}
+                }
+                ,{
+                    "path" : "orderRemarks/orderRemarks",
+                    "style" : {
+						"navigationBarTitleText": "订单备注"
+					}
+                }
+                ,{
+                    "path" : "agreement/agreement",
+                    "style" : {
+						"navigationBarTitleText": "站点服务协议"
+					}
+                }
+                ,{
+                    "path" : "paymentSuccess/paymentSuccess",
+                    "style" : {
+						"navigationBarTitleText": ""
+					}
+                }
+                ,{
+                    "path" : "orderDetails/orderDetails",
+                    "style" : {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor":"#0D92FF"
+					}
+                }
+                ,{
+                    "path" : "afterSale/afterSale",
+                    "style" : {
+						"navigationBarTitleText": "申请售后"
+					}
+                }
+                ,{
+                    "path" : "Collection/Collection",
+                    "style" : {
+						"navigationBarTitleText": "关注店铺"
+					}
+                }
+                ,{
+                    "path" : "BrowseRecords/BrowseRecords",
+                    "style" : {
+						"navigationBarTitleText": "浏览记录"
+					}
+                }
+                ,{
+                    "path" : "address/address",
+                    "style" : {}
+                }
+                ,{
+                    "path" : "receiving/receiving",
+                    "style" : {}
+                }
             ]
 	}],
 	"tabBar":{
@@ -99,4 +206,6 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}
+	
+	
 }
