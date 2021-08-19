@@ -30,7 +30,7 @@
 		<view class="box" style="position: relative;top: -100rpx;">
 			<view class="shop_information">
 				<view class="shop_img">
-					
+					<image :src="store.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 				</view>
 				
 				<view class="shop_name">
@@ -94,7 +94,7 @@
 				</view>
 				
 				
-				<view class="" style="margin: 20rpx;color: #0293FF;">
+				<view class="" style="margin: 20rpx;color: #0293FF;" @click="weeks">
 					一周菜谱
 				</view>
 			</view>
@@ -414,6 +414,10 @@
 					})
 				});	
 			},
+			
+			weeks(){
+				
+			},
 			getGoodData(){
 				// this.shopData = uni.getStorageSync('shopData');
 				
@@ -468,6 +472,7 @@
 		width: 130rpx;
 		height: 130rpx;
 		background: #007AFF;
+		overflow: hidden;
 	}
 	
 	.shop_name{
@@ -598,7 +603,7 @@
 		align-items: center;
 		bottom: 0;
 		display: flex;
-		/* background: #007AFF; */
+		background: #fff;
 	}
 	
 	.Merit{

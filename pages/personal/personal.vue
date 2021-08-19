@@ -37,7 +37,7 @@
 						0
 					</view>
 					<view class="history_namehistory_name">
-						购物车
+						收藏	
 					</view>
 				</view>
 				<view class="history_item">
@@ -45,7 +45,7 @@
 						0
 					</view>
 					<view class="history_name">
-						购物车
+						评价
 					</view>
 				</view>
 				<view class="history_item">
@@ -53,7 +53,7 @@
 						0
 					</view>
 					<view class="history_name">
-						购物车
+						饭卡
 					</view>
 				</view>
 			</view>
@@ -106,26 +106,26 @@
 		</view>
 	
 		<view class="setMeal_box">
-			<view class="setMeal_item">
-				行政套餐
+			<view :class="switchs==1?'setMeal_item select_setMeal_item':'setMeal_item'" @click="selectSwitchs(1)">
+				为你推荐
 			</view>
-			<view class="setMeal_item">
-				自选套餐
+			<view :class="switchs==2?'setMeal_item select_setMeal_item':'setMeal_item'"  @click="selectSwitchs(2)">
+				新品推荐
 			</view>
-			<view class="setMeal_item">
-				会务套餐
+			<view :class="switchs==3?'setMeal_item select_setMeal_item':'setMeal_item'" @click="selectSwitchs(3)">
+				附近热卖
 			</view>
 		</view>
 		
 		<view class="good_all_box">
-			<view class="good_item_box">
+			<view class="good_item_box" v-for="(item,index) in storeList" :key='index' @click="rGoog(index)">
 				<view class="googImgBox">
-					
+					<image :src="item.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 				</view>
 				<view class="good_item_describe">
 					<view class="good_name_mueu">
 						<view class="good_name">
-							111111
+							{{item.storeName}}
 						</view>
 						<view class="good_mueu">
 							...
@@ -134,24 +134,28 @@
 					
 					<view class="good_describe">
 						<view class="good_score">
-							1
+							<!-- 1 -->4.8
 						</view>
 						<view class="good_sale">
-							2
+							{{item.saleNum||0}}
 						</view>
 					</view>
 					
 					<view class="good_performance">
 						<view class="good_start_price">
-							1
+							{{item.startingPrice}}
 						</view>
 						<view class="good_distance_time">
-							1
+							{{item.deliveryTime}}分钟 {{item.deliveryRange}}km
 						</view>
 					</view>
 					
 					<view class="good_describe_label_box">
-						<view class="good_item_describe_label">
+						
+						<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList" :key='i'>
+							{{foods}}
+						</view>
+						<!-- <view class="good_item_describe_label">
 							配送
 						</view>
 						<view class="good_item_describe_label">
@@ -159,21 +163,18 @@
 						</view>
 						<view class="good_item_describe_label">
 							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
+						</view> -->
 					</view>
 					<view class="good_taste_label_box">
-						<view class="good_item_taste_label_box">
+						<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
+							{{food}}
+						</view>
+						<!-- <view class="good_item_taste_label_box">
 							香辣
 						</view>
 						<view class="good_item_taste_label_box">
 							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
+						</view> -->
 						<view class="good_reserve">
 							预定
 						</view>
@@ -186,72 +187,6 @@
 			</view>
 				
 			
-			<view class="good_item_box">
-				<view class="googImgBox">
-					
-				</view>
-				<view class="good_item_describe">
-					<view class="good_name_mueu">
-						<view class="good_name">
-							111111
-						</view>
-						<view class="good_mueu">
-							...
-						</view>
-					</view>
-					
-					<view class="good_describe">
-						<view class="good_score">
-							1
-						</view>
-						<view class="good_sale">
-							2
-						</view>
-					</view>
-					
-					<view class="good_performance">
-						<view class="good_start_price">
-							1
-						</view>
-						<view class="good_distance_time">
-							1
-						</view>
-					</view>
-					
-					<view class="good_describe_label_box">
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-					</view>
-					<view class="good_taste_label_box">
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_reserve">
-							预定
-						</view>
-							
-					</view>
-					
-					
-					
-				</view>
-			</view>
 			
 			
 			
@@ -263,11 +198,17 @@
 </template>
 
 <script>
+	import Api from '@/common/http.js'
 	export default {
 		data() {
 			return {
-				userInfo:''
+				userInfo:'',
+				switchs:1,
+				storeList:[]
 			}
+		},
+		onLoad() {
+			this.getStore()
 		},
 		onShow() {
 			var user = uni.getStorageSync('user');
@@ -277,6 +218,31 @@
 			
 		},
 		methods: {
+			rGoog(index){
+				uni.navigateTo({
+					url:'../../pagesA/goodDetails/goodDetails?id='+this.storeList[index].id
+				})
+			},
+			selectSwitchs(index){
+				this.switchs = index
+			},
+			getStore(){
+				Api.getStoreList({}).then(res => {
+					// console.log('res',res);
+					this.storeList = res.data
+					this.storeList.map((item)=>{
+						item.foodSortList = item.foodLabel.split(",")
+						item.appraiseManagerList = item.appraiseManager.split(",")
+					})
+					// this.storeList.foodSortList = this.storeList
+					// console.log('this.storeList.foodSortList',this.storeList)
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
 			getUser(){
 				var than = this
 				var user = uni.getStorageSync('user')
@@ -458,6 +424,10 @@
 	.setMeal_item{
 		margin: 0 26rpx;
 		font-size: 30rpx;
+	}
+	
+	.select_setMeal_item{
+		font-weight: bold;
 	}
 	
 	
