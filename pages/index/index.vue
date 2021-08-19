@@ -843,6 +843,7 @@
 		border-radius: 10rpx;
 		background: #007AFF;
 		margin-right: 20rpx;
+		overflow: hidden;
 	}
 	.good_item_describe{
 		flex: 1;

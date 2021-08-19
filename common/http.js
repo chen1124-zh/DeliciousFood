@@ -29,6 +29,15 @@ function getMenuTypeList (data) {
 }
 
 
+// 查询商品
+function getProductList (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'product/getProductList', // 请求url
+		data: data // 参数
+	})
+}
+
 
 
 
@@ -46,5 +55,6 @@ function getMenuTypeList (data) {
 export default{
 	getOrderList,
 	getStoreList,
-	getMenuTypeList
+	getMenuTypeList,
+	getProductList
 }

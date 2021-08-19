@@ -1,9 +1,9 @@
 <template>
-	<view style="background: #2C405A;">
+	<view>
 		<view :style="{'width':'100%','height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx','position': 'fixed','top':'0','background': 'rgba(0,0,0,.3)'}" >
 			<view :style="{'height':navigation.height+'px','width':navigation.left+'px'}" class="topNavigation">
 				<view class="search" style="height: 100%;display: flex;align-items: center;justify-content: space-between;">
-					<view class="" 
+					<view class="" @click="fang" 
 					style="width: 50rpx;height: 50rpx;border-radius: 50%;background: rgba(0,0,0,.5);display: flex;justify-content: center;align-items: center;">
 						<uni-icons type="arrowleft" color="#fff"></uni-icons>
 					</view>
@@ -81,55 +81,78 @@
 			
 			
 			<view class="option">
-				<view class="">
-					点餐
-				</view>
-				<view class="">
-					评价
-				</view>
-				<view class="">
-					商家
+				<view class="" style="display: flex;">
+					<view :class="branch==1?'branch_select':''" @click="branch = 1" style="margin: 20rpx;">
+						点餐
+					</view>
+					<view :class="branch==2?'branch_select':''" @click="branch = 2"  style="margin: 20rpx;">
+						评价
+					</view>
+					<view :class="branch==3?'branch_select':''" @click="branch = 3"  style="margin: 20rpx;">
+						商家
+					</view>
 				</view>
 				
-				<view class="">
-					一周
+				
+				<view class="" style="margin: 20rpx;color: #0293FF;">
+					一周菜谱
 				</view>
 			</view>
 			
-			<view class="time">
-				<view class="">
-					午餐
+			<view class="time" v-if="branch == 1">
+				<view class="times">
+					<picker mode="selector" :range="cs" range-key="name" @change="cschange">
+						<view>{{cs[csIndex].name}}</view>
+					</picker>
 				</view>
-				<view class="">
-					123123
+				<view class="week">
+					
+					<view :class="week==1?'weekSelect':''" @click="week=1;">
+						周一
+					</view>
+					<view :class="week==2?'weekSelect':''" @click="week=2;">
+						周二
+					</view>
+					<view :class="week==3?'weekSelect':''" @click="week=3;">
+						周三
+					</view>
+					<view :class="week==4?'weekSelect':''" @click="week=4;">
+						周四
+					</view>
+					<view :class="week==5?'weekSelect':''" @click="week=5;">
+						周五
+					</view>
+					<view :class="week==6?'weekSelect':''" @click="week=6;getGoodData()">
+						周六
+					</view>
+					<view :class="week==0?'weekSelect':''" @click="week=0;getGoodData()">
+						周日
+					</view>
 				</view>
 			</view>
 			
-			<view class="business_box">
+			<view class="business_box" v-if="branch == 3">
 				<view class="business_describe">
 					本店
 				</view>
 				
 				<view class="describe_img_box">
-					<view class="describe_img">
-						
-					</view>
-					<view class="describe_img">
-						
+					<view class="describe_img" v-for="(item,index) in store.storeIntroductImgList" :key="index">
+						<image :src="item" mode="" style="width: 100%;height: 100%;"></image>
 					</view>
 				</view>
 				
-				<view class="about">
+				<view class="about" @click="food">
 					食品安全
 	 			</view>
 				<view class="about">
-					配送
+					配送服务：商家配送
 				</view>
 				<view class="about">
-					时间
+					配送时间：9:00-22:00
 				</view>
 				<view class="about">
-					分店
+					共1家分店
 				</view>
 				
 				<view class="">
@@ -138,14 +161,13 @@
 			</view>
 			
 			
-			<view class="good_box" style="margin-bottom: 100rpx;">
+			<view class="good_box" style="margin-bottom: 100rpx;" v-if="branch == 1">
 				<view class="good_left">
-					<view class="time">
-						早餐
-					</view>
+					
 					<view class="good_title_select">
-						<view class="" v-for="(item,index) in classifiList" :key="index">
-							<text>{{item.menuName}}</text>
+						<view :class="index == selectClassifi?'selectMenu':''"
+						 v-for="(item,index) in classifiList" :key="index">
+							<text >{{item.menuName}}</text>
 						</view>
 						<!-- <view class="">
 							<text>特色菜</text>
@@ -162,38 +184,39 @@
 					</view>
 				</view>
 				<view class="good_right">
-					<view class="good_title">
-						特色菜
+					<view class="good_title" style="text-align: center;">
+						{{classifiList[selectClassifi].menuName}}
 					</view>
 					<view class="good_item_box">
-						<view class="good_item">
+						<view class="good_item" v-for="(item,index) in goodList" :key='index'>
 							<view class="good_img">
-								
+								<image :src="item.img" mode="" style="width: 100%;height: 100%;"></image>
 							</view>
 							<view class="good_content">
 								<view class="good_name">
-									麻辣香锅
+									{{item.productName}}
 								</view>
 								<view class="good_describe">
-									12313213123123
+									{{item.productDetails}}
 								</view>
 								<view class="operation">
 									<view class="price_discount">
-										<view class="discount">
+										<view class="discount" v-if="false">
 											9.8
 										</view>
 										<view class="price">
-											4.5
+											{{item.productPrice}}
 										</view>
 									</view>
 									
 									<view class="">
-										<text class="">
+										+
+										<!-- <text class="">
 											修改
 										</text>
 										<text class="">
 											下架
-										</text>
+										</text> -->
 									</view>
 								</view>
 								
@@ -215,16 +238,16 @@
 					
 				</view>
 				<view class="">
-					<view class="">
-						59
+					<view class="" style="color: red;font-size: 32rpx;">
+						<text>￥</text> 59
 					</view>
-					<view class="">
-						30
+					<view class="" style="color: #898888;font-size: 24rpx;">
+						已优惠￥20
 					</view>
 				</view>
 			</view>
-			<view class="">
-				提交
+			<view class="op">
+				提交订单
 			</view>
 		</view>
 		
@@ -289,10 +312,41 @@
 	export default {
 		data() {
 			return {
+				cs:[
+					{
+						name:'早茶',
+						value:'zc'
+					},
+					{
+						name:'早餐',
+						value:'zcn'
+					},
+					{
+						name:'午餐',
+						value:'wc'
+					},
+					{
+						name:'下午茶',
+						value:'xwc'
+					},
+					{
+						name:'晚餐',
+						value:'wcn'
+					},
+					{
+						name:'夜宵',
+						value:'yx'
+					}
+				],
+				csIndex:0,
 				navigation:'',
 				storeId:'',
 				store:'',
-				classifiList:''
+				classifiList:[],
+				selectClassifi:0,
+				branch:1,
+				week:1,
+				goodList:[]
 			}
 		},
 		components:{
@@ -301,23 +355,45 @@
 		onLoad(op) {
 			this.storeId = op.id
 			this.getStroeData()
+			
+			
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			food(){
+				uni.navigateTo({
+					url:'../security/security'
+				})
+			},
+			fang(){
+				uni.navigateBack({
+					delta:-1
+				})
+			},
+			cschange(e){
+				this.csIndex = e.detail.value;
+				this.getGoodData()
+			},
 			getStroeData(){
 				
 				Api.getStoreList({id:this.storeId}).then(res => {
 					// console.log('res',res);
 					this.store = res.data[0]
+					
 					// this.storeList.map((item)=>{
+						this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
+						console.log('this.store',this.store)
 						this.store.foodSortList = this.store.foodLabel.split(",")
 						this.store.appraiseManagerList = this.store.appraiseManager.split(",")
 						this.store.servuceConfigurationList = this.store.servuceConfiguration.split(",")
+						
 					// })
 					// this.storeList.foodSortList = this.storeList
 					// console.log('this.storeList.foodSortList',this.storeList)
+					
+					
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -330,12 +406,50 @@
 				}
 				Api.getMenuTypeList(data).then(res => {
 					this.classifiList = res.data.data
+					this.getGoodData()
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
 						icon: 'none'
 					})
 				});	
+			},
+			getGoodData(){
+				// this.shopData = uni.getStorageSync('shopData');
+				
+				var data = {
+					 storeId:this.storeId,
+					 menuType:this.classifiList[this.selectClassifi].id,
+					 week1: this.week==1?1:'',
+					 week2: this.week==2?1:'',
+					 week3: this.week==3?1:'',
+					 week4: this.week==4?1:'',
+					 week5: this.week==5?1:'',
+					 week6: this.week==6?1:'',
+					 week7: this.week==0?1:'',
+					 zc: this.cs[this.csIndex].value == 'zc'?1:'',
+					 zcn: this.cs[this.csIndex].value == 'zcn'?1:'',
+					 wc: this.cs[this.csIndex].value == 'wc'?1:'',
+					 xwc: this.cs[this.csIndex].value == 'xwc'?1:'',
+					 wcn: this.cs[this.csIndex].value == 'wcn'?1:'',
+					 xy: this.cs[this.csIndex].value == 'xy'?1:'',
+				}
+				
+				
+				Api.getProductList(data).then(res => {
+					this.goodList = res.data.data
+					this.goodList.map((item)=>{
+						if(item.productImg != undefined){
+							item.img = item.productImg.split(',')[0]
+						}
+					})
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
 			}
 		}
 	}
@@ -392,6 +506,8 @@
 	.option{
 		display: flex;
 		padding: 0 20rpx;
+		justify-content: space-between;
+		align-items: center;
 	}
 	
 	.time{
@@ -406,11 +522,12 @@
 	.time{
 		margin: 20rpx;
 		padding:10rpx 20rpx;
-		background: #999;
+		/* background: #999; */
 	}
 	.good_title_select{
 		width: 190rpx;
-		background: #ccc;
+		background: #F8F8F8;
+		height: 100vh;
 	}
 	
 	.good_title_select view{
@@ -420,6 +537,13 @@
 	}
 	
 	.good_title_select view text{
+		display: block;
+		text-align: center;
+		padding: 10rpx 0;
+		margin: 10rpx 0;
+	}
+	
+	.good_title_select .selectMenu text{
 		display: block;
 		text-align: center;
 		padding: 10rpx 0;
@@ -448,6 +572,7 @@
 		height: 200rpx;
 		background: #000000;
 		margin-right: 10rpx;
+		overflow: hidden;
 	}
 	
 	.good_name{
@@ -473,7 +598,7 @@
 		align-items: center;
 		bottom: 0;
 		display: flex;
-		background: #007AFF;
+		/* background: #007AFF; */
 	}
 	
 	.Merit{
@@ -544,6 +669,55 @@
 		padding: 30rpx 0;
 		border-bottom: 1rpx solid #ccc;
 		font-size: 36rpx;
+	}
+	
+	.branch_select{
+		padding-bottom: 10rpx;
+		color: #DB7878;
+		font-weight: bold;
+		border-bottom: 6rpx solid #DB7878;
+	}
+	
+	.times{
+		background: #F0F0F0;
+		padding: 10rpx 20rpx;
+		margin-right: 20rpx;
+		border-radius: 20rpx;
+	}
+	
+	.week{
+		overflow-x: auto;
+		display: flex;
+		/* margin: 20rpx; */
+		flex-wrap: wrap;
+		flex: 1;
+	}
+	
+	.week view{
+		width: 120rpx;
+		text-align: center;
+		flex: 1;
+		padding: 10rpx 0;
+		border-radius: 15rpx 15rpx 0 15rpx;
+		box-shadow: 0rpx 0rpx 5rpx #ccc;
+	}
+	
+	.weekSelect{
+		color: #fff;
+		background: #028EFF;
+	}
+	
+	
+	.op{
+		padding: 0 50rpx;
+		background: #289EFF;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		font-weight: bold;
+		/* line-height: 100%; */
 	}
 	
 </style>
