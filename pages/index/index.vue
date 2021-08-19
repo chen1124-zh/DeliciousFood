@@ -14,10 +14,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="search">
+		<view class="search" @click="Tsearch">
 			<view class="search_box">
 				<view class=".search_icon">
-					
+					<image src="../../static/search_icon.png" mode="" style="width: 100%;height: 100%;"></image>
 				</view>
 				<view class="">
 					水煮牛肉
@@ -672,6 +672,11 @@
 		},
 		
 		methods: {
+			Tsearch(){
+				uni.navigateTo({
+					url:"../../pagesA/search/search"
+				})
+			},
 			getLogLat(){
 				uni.getLocation({
 					type: 'wgs84',
@@ -758,7 +763,7 @@
 		width: 40rpx;
 		height: 40rpx;
 		padding: 20rpx;
-		background: #ccc;
+		/* background: #ccc; */
 	}
 	.Carousel{
 		padding: 10rpx 25rpx;

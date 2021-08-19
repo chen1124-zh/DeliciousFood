@@ -2,11 +2,12 @@
 	<view>
 		<view class="search">
 			<view class="search_box">
-				<view class=".search_icon">
-					
+				<view class="search_icon">
+					<image src="../../static/search_icon.png" style="width: 100%;height: 100%;" mode=""></image>
 				</view>
 				<view class="">
-					水煮牛肉
+					<input type="text" v-model="ss" @confirm="TsrachResult" placeholder="水煮牛肉"/>
+					<!-- 水煮牛肉 -->
 				</view>
 			</view>
 		</view>
@@ -15,21 +16,16 @@
 			<view class="name">
 				历史搜索
 			</view>
-			<view class="d_icon">
+			<view class="d_icon" @click="DssList">
 				
 			</view>
 		</view>
 		
 		<view class="select_name">
-			<view class="item">
-				皮蛋瘦肉粥
+			<view class="item" v-for="(item,index) in ssList" :key='index' @click="tj">
+				{{item}}
 			</view>
-			<view class="item">
-				皮蛋瘦肉粥
-			</view>
-			<view class="item">
-				皮蛋瘦肉粥
-			</view>
+		
 		</view>
 	</view>
 </template>
@@ -38,11 +34,37 @@
 	export default {
 		data() {
 			return {
-				
+				ss:'',
+				ssList:[]
+			}
+		},
+		onLoad() {
+			var d = uni.getStorageSync('ssList')
+			if(d == ''){
+				this.ssList = []
+			}else{
+				this.ssList = d
 			}
 		},
 		methods: {
-			
+			tj(){
+				uni.navigateTo({
+					url:'../searchResult/searchResult'
+				})
+			},
+			DssList(){
+				uni.removeStorageSync({
+					key : 'ssList',
+				})
+				this.ssList = []
+			},
+			TsrachResult(){
+				this.ssList.push(this.ss)
+				uni.setStorageSync('ssList',this.ssList)
+				uni.navigateTo({
+					url:'../searchResult/searchResult'
+				})
+			}
 		}
 	}
 </script>
@@ -68,7 +90,7 @@
 		width: 40rpx;
 		height: 40rpx;
 		padding: 20rpx;
-		background: #ccc;
+		/* background: #ccc; */
 	}
 	
 	.title_name{

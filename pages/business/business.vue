@@ -5,7 +5,7 @@
 				<view class="search">
 					<view class="search_box">
 						<view class=".search_icon">
-							
+							<image src="../../static/search_icon.png" mode="" style="width: 100%;height: 100%;"></image>
 						</view>
 						<view class="">
 							水煮牛肉
@@ -166,15 +166,15 @@
 		align-items: center;
 		width: 100%;
 		color: #ccc;
-		background-color: #ccc;
+		background-color: #f0f0f0;
 		border-radius: 38rpx;
 	}
 	
 	.search_icon{
 		width: 40rpx;
 		height: 40rpx;
-		// padding: 20rpx;
-		background: #ccc;
+		padding: 20rpx;
+		// background: #ccc;
 	}
 	
 	
