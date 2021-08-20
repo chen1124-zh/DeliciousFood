@@ -39,6 +39,15 @@ function getProductList (data) {
 }
 
 
+// 添加购物车
+function addShoppingCart (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'shoppcart/addShoppingCart', // 请求url
+		data: data // 参数
+	})
+}
+
 
 
 
@@ -56,5 +65,6 @@ export default{
 	getOrderList,
 	getStoreList,
 	getMenuTypeList,
-	getProductList
+	getProductList,
+	addShoppingCart
 }

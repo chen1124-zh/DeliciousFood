@@ -6,7 +6,8 @@ const store = new Vuex.Store({
 		Navigation:{
 			top:0,
 			height:0
-		}
+		},
+		orderList:[]
 	},
 	getters:{
 		getNavigation:(state)=>{
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
 		}
 	},
     mutations: {
+		setOrder(state,order){
+			state.orderList.push(order)
+		},
 		setNavigation(state,NavigationData){
 			
 			state.Navigation = NavigationData

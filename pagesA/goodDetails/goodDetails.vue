@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view :style="{'width':'100%','height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx','position': 'fixed','top':'0','background': 'rgba(0,0,0,.3)'}" >
+		<view :style="{'width':'100%','height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx','position': 'fixed','top':'0','background': 'rgba(0,0,0,.3)','z-index':'101'}" >
 			<view :style="{'height':navigation.height+'px','width':navigation.left+'px'}" class="topNavigation">
 				<view class="search" style="height: 100%;display: flex;align-items: center;justify-content: space-between;">
 					<view class="" @click="fang" 
@@ -61,7 +61,7 @@
 			
 			<view class="relation">
 				<view class="">
-					广州
+					{{store.area}}{{store.address}}
 				</view>
 				<view class="">
 					联系商家
@@ -192,7 +192,7 @@
 							<view class="good_img">
 								<image :src="item.img" mode="" style="width: 100%;height: 100%;"></image>
 							</view>
-							<view class="good_content">
+							<view class="good_content" style="flex: 1;padding-right: 20rpx;">
 								<view class="good_name">
 									{{item.productName}}
 								</view>
@@ -205,12 +205,18 @@
 											9.8
 										</view>
 										<view class="price">
-											{{item.productPrice}}
+											<text style="font-size: 34rpx;">￥</text> <text style="font-size: 36rpx;">{{item.productPrice}}</text> 
 										</view>
 									</view>
 									
 									<view class="">
-										+
+										<view class="" @click="gauge(index)" v-if="item.specification!=''">
+											选规格
+										</view>
+										<view class="" v-else>
+											+
+										</view>
+										
 										<!-- <text class="">
 											修改
 										</text>
@@ -218,6 +224,10 @@
 											下架
 										</text> -->
 									</view>
+									<view class="">
+										
+									</view>
+									
 								</view>
 								
 							</view>
@@ -252,43 +262,33 @@
 		</view>
 		
 		
-		<view class="Merit">
-			<view class="Specifications">
-				<view class="Specifications_box">
+		<view class="Merit" v-if="g == true || y == true">
+			<view class="Specifications" v-if="g==true">
+				<view class="Specifications_box" >
 					<view class="food_name">
 						菜品名称
 					</view>
-					<view class="">
-						<view class="">
-							规格分类名称
-						</view>
-						<view class="">
-							规格名称
+					<view style="margin: 20rpx 0; display: flex;flex-wrap: wrap;">
+						<view :class="item.select == true?	'gaugeSelectItem':'gaugeItem'" 
+						 v-for="(item,index) in gaugeData.c" :key='index' @click="Xgauge(index)">
+							{{item.name}}
 						</view>
 					</view>
-					<view class="">
+					<view class="" style="display: flex;justify-content: space-between;">
 						<view class="">
-							规格分类名称
+							总价<text style="color: red;font-size: 34rpx;">￥</text> <text style="color: red;font-size: 36rpx;">{{jia}}</text>
 						</view>
-						<view class="">
-							规格名称
-						</view>
-					</view>
-					<view class="">
-						<view class="">
-							总价45
-						</view>
-						<view class="">
-							加入
+						<view class="" @click="addCat" style="padding: 10rpx 20rpx;background: #21A0FF;color: #fff;border-radius: 10rpx;">
+							加入购物车
 						</view>
 					</view>
 				</view>
-				<view class="">
+				<view class="x" @click="x">
 					x
 				</view>
 			</view>
 		
-			<view class="Aweek">
+			<view class="Aweek" v-if="y == true">
 				<view class="" style="display: flex;justify-content: space-between;">
 					<view class="">
 						午餐
@@ -346,7 +346,19 @@
 				selectClassifi:0,
 				branch:1,
 				week:1,
-				goodList:[]
+				goodList:[],
+				g:false,
+				y:false,
+				jia:0,
+				tempJia:0,
+				gaugeData:{},
+				cat:{
+					id:'',
+					good:[
+						
+					]
+				},
+				user:''
 			}
 		},
 		components:{
@@ -355,8 +367,8 @@
 		onLoad(op) {
 			this.storeId = op.id
 			this.getStroeData()
-			
-			
+			this.user = uni.getStorageSync('user')
+			this.cat.id = op.id
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
@@ -375,6 +387,88 @@
 			cschange(e){
 				this.csIndex = e.detail.value;
 				this.getGoodData()
+			},
+			Xgauge(index){
+				this.jia = this.tempJia
+				if(this.gaugeData.c[index].select == undefined){
+					this.gaugeData.c[index].select = true
+				}else{
+					this.gaugeData.c[index].select = !this.gaugeData.c[index].select
+				}
+				
+				this.gaugeData.c.map((item)=>{
+					if(item.select == true){
+						this.jia += parseFloat(item.price) 
+					}
+					
+				})
+				
+				
+				
+			},
+			
+			
+			addCat(){
+				
+				
+				// private String userId;     //用户id
+				// private String storeId;    //商店id
+				// private Integer num;       //数量
+				// private BigDecimal price;  //价格
+				// private BigDecimal total; //总价
+				// private String urlImages;   //图片
+				// private String productName;  //商品名称
+				// 		   private  String spec;   //规格
+				// private String remark;       //备注
+				var tempGauge = []
+				
+				
+				var urlImages = ''
+				var productName = ''
+				var price = ''
+				
+				for(var i=0;i<this.gaugeData.c.length;i++){
+					if(this.gaugeData.c[i].select == true){
+						tempGauge.push(this.gaugeData.c[i])
+					}
+				}
+				
+				for(var i = 0;i<this.goodList.length;i++){
+					if(this.gaugeData.i == this.goodList[i].id){
+						price = this.goodList[i].linedPrice;
+						urlImages = this.goodList[i].productImg;
+						productName = this.goodList[i].productName
+					}
+				}
+				
+				var data = {
+					userId:this.user.id,
+					storeId:this.storeId,
+					num:1,
+					price:price,
+					urlImages:urlImages,
+					productName:productName,
+					total:this.jia,
+					spec:JSON.stringify(tempGauge),
+					remark:''
+				}
+				Api.addShoppingCart(data).then(res => {
+					this.goodList = res.data.data
+					this.goodList.map((item)=>{
+						if(item.productImg != undefined){
+							item.img = item.productImg.split(',')[0]
+						}
+					})
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+				
+				
+				
 			},
 			getStroeData(){
 				
@@ -414,7 +508,23 @@
 					})
 				});	
 			},
-			
+			gauge(index){
+				this.g = true;
+				if(this.goodList[index].specification == ''){
+					
+				}else{
+					this.tempJia = this.goodList[index].productPrice
+					this.jia = this.goodList[index].productPrice
+					this.gaugeData.i = this.goodList[index].id
+					this.gaugeData.c = JSON.parse(this.goodList[index].specification) 
+					
+				}
+				
+				// console.log(this.goodList[index]);
+			},
+			x(){
+				this.g = false
+			},
 			weeks(){
 				
 			},
@@ -593,6 +703,7 @@
 	.operation{
 		display: flex;
 		align-items: flex-end;
+		justify-content: space-between;
 	}
 	
 	.Submit{
@@ -616,7 +727,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		display: none;	
+		/* display: none;	 */
 	}
 	.Specifications{
 		width: 100%;
@@ -723,6 +834,36 @@
 		color: #fff;
 		font-weight: bold;
 		/* line-height: 100%; */
+	}
+	
+	.gaugeItem{
+		padding: 10rpx;
+		border-radius: 10rpx;
+		border: 1rpx solid #999;
+		color: #999;
+	}
+	
+	.gaugeSelectItem{
+		padding: 10rpx;
+		border-radius: 10rpx;
+		border: 1rpx solid #007AFF;
+		color: #007AFF;
+	}
+	
+	.x{
+		margin-top: 20rpx;
+		font-size: 34rpx;
+		width: 50rpx;
+		height: 50rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		border: 4rpx solid #000;
+	}
+	
+	.price{
+		color: red;
 	}
 	
 </style>
