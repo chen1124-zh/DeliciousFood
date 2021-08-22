@@ -49,8 +49,44 @@ function addShoppingCart (data) {
 }
 
 
+// 查询购物车
+function getShoppingCart (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'shoppcart/getShoppingCart', // 请求url
+		data: data // 参数
+	})
+}
 
 
+// 删除购物车
+function deleteShoppingCar (data) {
+	return request({
+		method: "get", // 请求方式
+		url: 'shoppcart/deleteShoppingCar', // 请求url
+		data: data // 参数
+	})
+}
+
+
+// 修改购物车
+function updateShoppingCar (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'shoppcart/updateShoppingCar', // 请求url
+		data: data // 参数
+	})
+}
+
+
+// 生成订单
+function addOrder (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'order/addOrder', // 请求url
+		data: data // 参数
+	})
+}
 
 
 
@@ -66,5 +102,9 @@ export default{
 	getStoreList,
 	getMenuTypeList,
 	getProductList,
-	addShoppingCart
+	addShoppingCart,
+	getShoppingCart,
+	deleteShoppingCar,
+	updateShoppingCar,
+	addOrder 
 }

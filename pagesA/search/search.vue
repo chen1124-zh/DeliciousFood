@@ -47,6 +47,7 @@
 			}
 		},
 		methods: {
+			
 			tj(){
 				uni.navigateTo({
 					url:'../searchResult/searchResult'

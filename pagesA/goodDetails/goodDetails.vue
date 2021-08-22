@@ -166,8 +166,12 @@
 					
 					<view class="good_title_select">
 						<view :class="index == selectClassifi?'selectMenu':''"
+						style="position: relative;"
 						 v-for="(item,index) in classifiList" :key="index">
 							<text >{{item.menuName}}</text>
+							<view class="" style="position: absolute;right: 0;top: 0;background: red;" v-if="item.num">
+								{{item.num}}
+							</view>
 						</view>
 						<!-- <view class="">
 							<text>特色菜</text>
@@ -209,7 +213,7 @@
 										</view>
 									</view>
 									
-									<view class="">
+									<view class="" v-if="item.num==0">
 										<view class="" @click="gauge(index)" v-if="item.specification!=''">
 											选规格
 										</view>
@@ -224,8 +228,16 @@
 											下架
 										</text> -->
 									</view>
-									<view class="">
-										
+									<view class="stepper" v-else>
+										<view class="an" @click="reduce(index)">
+											-
+										</view>
+										<view class="" style="margin: 0 20rpx;">
+											{{item.num}}
+										</view>
+										<view class="an" @click="add(index)" style="background: #007AFF;color: #fff;">
+											+
+										</view>
 									</view>
 									
 								</view>
@@ -249,14 +261,14 @@
 				</view>
 				<view class="">
 					<view class="" style="color: red;font-size: 32rpx;">
-						<text>￥</text> 59
+						<text>￥</text> {{allJia}}
 					</view>
 					<view class="" style="color: #898888;font-size: 24rpx;">
 						已优惠￥20
 					</view>
 				</view>
 			</view>
-			<view class="op">
+			<view class="op" @click="opa()">
 				提交订单
 			</view>
 		</view>
@@ -352,13 +364,9 @@
 				jia:0,
 				tempJia:0,
 				gaugeData:{},
-				cat:{
-					id:'',
-					good:[
-						
-					]
-				},
-				user:''
+				cat:[],
+				user:'',
+				allJia:0
 			}
 		},
 		components:{
@@ -368,12 +376,120 @@
 			this.storeId = op.id
 			this.getStroeData()
 			this.user = uni.getStorageSync('user')
-			this.cat.id = op.id
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			opa(){
+				uni.navigateTo({
+					url:'../timely/timely?sid='+this.storeId
+				})
+			},
+			reduce(index){
+				this.goodList[index].num--
+				this.$forceUpdate()
+				this.allJia = 0
+				
+				
+				
+				this.cat.map((item)=>{
+					
+					if(this.goodList[index].id == item.productId){
+						item.num--
+						var data = item
+						
+						Api.updateShoppingCar(data).then(res => {
+							// this.classifiList[this.selectClassifi].num --
+							// this.$forceUpdate()
+						}).catch(err => {
+							uni.showToast({
+								title: err.msg,
+								icon: 'none'
+							})
+						});
+						
+					}
+					this.allJia += item.total*item.num
+				})
+				
+				if(this.goodList[index].num == 0){
+					
+					this.cat.map((item)=>{
+						if(this.goodList[index].id == item.productId){
+							var data = {
+								id:item.id
+							}
+							
+							Api.deleteShoppingCar(data).then(res => {
+								this.classifiList[this.selectClassifi].num --
+								this.$forceUpdate()
+							}).catch(err => {
+								uni.showToast({
+									title: err.msg,
+									icon: 'none'
+								})
+							});
+							
+						}
+					})
+				}
+				
+				
+			},
+			add(index){
+				this.goodList[index].num++
+				this.$forceUpdate()
+				this.allJia = 0
+				this.cat.map((item)=>{
+					if(this.goodList[index].id == item.productId){
+						item.num++
+						var data = item
+						
+						Api.updateShoppingCar(data).then(res => {
+							// this.classifiList[this.selectClassifi].num --
+							// this.$forceUpdate()
+						}).catch(err => {
+							uni.showToast({
+								title: err.msg,
+								icon: 'none'
+							})
+						});
+						
+					}
+					
+					this.allJia += item.total*item.num
+				})
+			},
+			getShoppingCartList(){
+				var data = {
+					userId:this.user.id,
+					storeId:this.storeId
+				}
+				this.allJia = 0
+				Api.getShoppingCart(data).then(res => {
+					console.log(res)
+					this.cat = res.data.data
+					this.cat.map((item,index)=>{
+						
+						
+						this.classifiList.map((items,indexs)=>{
+							if(items.id == item.meunId){
+								items.num ++
+							}
+						})
+						this.allJia += item.total*item.num
+					})
+					
+					this.getGoodData()
+					console.log('this.classifiList',this.classifiList)
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
 			food(){
 				uni.navigateTo({
 					url:'../security/security'
@@ -450,15 +566,24 @@
 					productName:productName,
 					total:this.jia,
 					spec:JSON.stringify(tempGauge),
+					productId:this.gaugeData.i,
+					meunId:this.classifiList[this.selectClassifi].id,
 					remark:''
 				}
 				Api.addShoppingCart(data).then(res => {
-					this.goodList = res.data.data
-					this.goodList.map((item)=>{
-						if(item.productImg != undefined){
-							item.img = item.productImg.split(',')[0]
+					this.classifiList[this.selectClassifi].num++
+					this.goodList.map((item,index)=>{
+						if(item.id == this.gaugeData.i){
+							item.num++
 						}
+						
 					})
+					this.cat.push(res.data.data)
+					this.allJia = 0
+					this.cat.map((item,index)=>{
+						this.allJia = item.total
+					})
+					this.g = false
 					
 				}).catch(err => {
 					uni.showToast({
@@ -500,7 +625,13 @@
 				}
 				Api.getMenuTypeList(data).then(res => {
 					this.classifiList = res.data.data
-					this.getGoodData()
+					
+					this.classifiList.map((item,index)=>{
+						item.num = 0
+					})
+					this.getShoppingCartList()
+					
+					
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -553,10 +684,22 @@
 				Api.getProductList(data).then(res => {
 					this.goodList = res.data.data
 					this.goodList.map((item)=>{
+						item.num = 0
 						if(item.productImg != undefined){
 							item.img = item.productImg.split(',')[0]
 						}
 					})
+					
+					this.cat.map((item,index)=>{
+						this.goodList.map((items,indexs)=>{
+							if(item.productId == items.id){
+								items.num = item.num
+							}
+						})
+						
+					})
+					
+					console.log('this.goodList',this.goodList)
 					
 				}).catch(err => {
 					uni.showToast({
@@ -864,6 +1007,23 @@
 	
 	.price{
 		color: red;
+	}
+	
+	.stepper{
+		display: flex;
+		align-items: center;
+	}
+	
+	.an{
+		width: 30rpx;
+		height: 30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* padding: 10rpx; */
+		border-radius: 50%;
+		border: 4rpx solid #007AFF;
+		color: #007AFF;
 	}
 	
 </style>
