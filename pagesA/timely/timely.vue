@@ -62,7 +62,10 @@
 						 <!-- <picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
 							<view class="uni-input">{{date}}</view>
 						</picker> -->
-						5月5日 周三 12:45
+						<picker mode="multiSelector" @change="changeTime" @columnchange='confirms' :value="ptimes" :range="ptime">
+							<view class="uni-input">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}</view>
+						</picker>
+						
 					</view>
 					<!-- <view class="">
 						座位
@@ -86,7 +89,7 @@
 				<view class="han">
 					<view class="">
 						
-						<view class="">
+						<view class="" @click="Tdi">
 							地址
 						</view>
 						<view class="" style="display: flex;font-size: 28rpx;color: #999;">
@@ -298,11 +301,33 @@
 <script>
 	import Api from '@/common/http.js'
 	export default {
+		filters:{
+			Day(time){
+				var d = {
+					0:'日',
+					1:'一',
+					2:'二',
+					3:'三',
+					4:'四',
+					5:'五',
+					6:'六'
+				}
+				return d[time]
+			}
+		},
 		data() {
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
+				ptime:[
+					[],
+					[],
+					[],
+					[]
+				],
+				ptimes:[0,0,0,0],
+				time:new Date(),
 				index:0,
 				g:true,
 				total:0,
@@ -315,14 +340,44 @@
 			}
 		},
 		computed: {
-		        startDate() {
-		            return this.getDate('start');
-		        },
-		        endDate() {
-		            return this.getDate('end');
-		        }
-		    },
+			startDate() {
+				return this.getDate('start');
+			},
+			endDate() {
+				return this.getDate('end');
+			}
+		},
 		onLoad(op) {
+			
+			
+			this.ptime[0] = [
+				1,2,3,4,5,6,7,8,9,10,11,12
+			]
+			
+			this.ptimes[0] = this.time.getMonth()
+			
+			var tempptime1 = this.getDayNumByYearMonth(this.time.getFullYear(),this.time.getMonth()+1)
+			for(var i = 1;i<=tempptime1;i++){
+				this.ptime[1].push(i)
+				if(this.time.getDate() == i-1){
+					this.ptimes[1] = i
+				}
+			}
+			
+			this.ptime[2] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+			
+			
+			this.ptimes[2] = this.time.getHours()
+			
+			
+			for(var i = 0;i<60;i++){
+				this.ptime[3].push(i)
+			}
+			
+			this.ptimes[3] = this.time.getMinutes()
+			
+			
+			
 			this.storeId = op.sid
 			
 			this.user = uni.getStorageSync('user')
@@ -333,6 +388,72 @@
 			
 		},
 		methods: {
+			changeTime(event){
+				this.ptimes = event.detail.value
+				var d = `${this.time.getFullYear()}-${this.ptime[0][this.ptimes[0]]}-${this.ptime[1][this.ptimes[1]]} ${this.ptime[2][this.ptimes[2]]}:${this.ptime[3][this.ptimes[3]]}`
+				
+				console.log(d)
+				var tempDate = new Date(d)
+				
+				this.time = tempDate
+				
+			},
+			confirms(event){
+				if(event.detail.column == 0){
+					var d = []
+					var tempptime1 = this.getDayNumByYearMonth(this.time.getFullYear(),event.detail.value+1)
+					for(var i = 1;i<=tempptime1;i++){
+						d.push(i)
+						// if(this.time.getDate() == i-1){
+						// 	this.ptimes[1] = i
+						// }
+					}
+					console.log
+					this.ptime[1] = d
+					this.ptimes[1] = 0
+					
+					this.$forceUpdate()
+				}
+				console.log(event)
+			},
+			
+			/**
+			 * 判断某年是否闰年
+			 */
+			isRuinian(year){
+			      if((year%4==0 && year%100!=0)||(year%400==0)){
+					  return 29;
+				  }
+				  return 28;
+			},
+			 
+			/**
+			 * 根据年和月获取该月有几天
+			 */
+			getDayNumByYearMonth(year,month){
+			        switch (month) {
+			               case 1:
+			               case 3:
+			               case 5:
+			               case 7:
+			               case 8:
+			               case 10:
+			               case 12:
+			                      return 31;
+			                      break;
+			               case 4:
+			               case 6:
+			               case 9:
+			               case 11:
+			                      return 30;
+			                      break;
+			               case 2:
+			                     return this.isRuinian(year);
+			       }
+			},
+			
+			
+			
 			bindDateChange: function(e) {
 				this.date = e.target.value
 			},
@@ -423,6 +544,11 @@
 						icon: 'none'
 					})
 				});	
+			},
+			Tdi(){
+				uni.navigateTo({
+					url:'../receiving/receiving'
+				})
 			},
 			getStor(){
 				Api.getStoreList({id:this.storeId}).then(res => {

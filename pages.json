@@ -169,11 +169,15 @@
                 }
                 ,{
                     "path" : "address/address",
-                    "style" : {}
+                    "style" : {
+						"navigationBarTitleText": "新增收货地址"
+					}
                 }
                 ,{
                     "path" : "receiving/receiving",
-                    "style" : {}
+                    "style" : {
+						"navigationBarTitleText": "收货地址"
+					}
                 }
             ]
 	}],

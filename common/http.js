@@ -89,6 +89,26 @@ function addOrder (data) {
 }
 
 
+// 地址列表
+function getAddressList (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'address/getAddressList', // 请求url
+		data: data // 参数
+	})
+}
+
+
+// 新增地址
+function addAddress (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'address/addAddress', // 请求url
+		data: data // 参数
+	})
+}
+
+
 
 
 
@@ -106,5 +126,7 @@ export default{
 	getShoppingCart,
 	deleteShoppingCar,
 	updateShoppingCar,
-	addOrder 
+	addOrder,
+	getAddressList,
+	addAddress
 }

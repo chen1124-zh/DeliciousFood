@@ -256,7 +256,7 @@
 									let code = ress.code
 									console.log(code)
 									uni.request({
-										url: 'http://127.0.0.1:8080/user/save', //仅为示例，并非真实接口地址。
+										url: 'http://47.113.217.251:8080/user/save', //仅为示例，并非真实接口地址。
 										method:"POST", 
 										data: {           
 											"code":code,
@@ -273,7 +273,7 @@
 											}
 										},
 										success: (resdata) => {
-											console.log(resdata)
+											console.log('resdata',resdata)
 											this.userInfo = resdata.data.data
 											uni.setStorageSync('token',resdata.data.data.data.openId);
 											uni.setStorageSync('user',resdata.data.data.data);

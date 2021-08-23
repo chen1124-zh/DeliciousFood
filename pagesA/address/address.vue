@@ -59,6 +59,7 @@
 </template>
 
 <script>
+	import Api from '@/common/http.js'
 	export default {
 		data() {
 			return {
@@ -72,7 +73,7 @@
 		},
 		onShow() {
 			var user = uni.getStorageSync('user')
-			this.userId = user.openId
+			this.userId = user.id
 		},
 		methods: {
 			addRess(){
@@ -94,33 +95,30 @@
 					return
 				}
 				
+				var data = {
+					mobile:this.mobile,         //手机号
+					nickName:this.nickName,     //昵称
+					address:this.region+this.address,      //地址
+					userId:this.userId,       //用户id
+					status:0
+				}
 				
-				
-				
-				
-				
-				uni.request({
-					url: 'http://47.113.217.251:8080/address/addAddress ', //仅为示例，并非真实接口地址。
-					method: "POST",
-					data: {
-						mobile:this.mobile,         //手机号
-						nickName:this.nickName,     //昵称
-						address:this.region+this.address,      //地址
-						userId:this.userId,       //用户id
-					},
-					success: (resdata) => {
-						uni.showToast({
-							title:'新增成功',
-							icon:'none'
+				Api.addAddress(data).then(res => {
+					uni.showToast({
+						title:'新增成功',
+						icon:'none'
+					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:-1
 						})
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta:-1
-							})
-						},1000)
-						console.log(resdata)
-						
-					}
+					},1000)
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
 				});
 			}
 		}

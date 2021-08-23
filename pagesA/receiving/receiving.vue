@@ -34,6 +34,7 @@
 </template>
 
 <script>
+	import Api from '@/common/http.js'
 	export default {
 		data() {
 			return {
@@ -42,14 +43,14 @@
 				receivingList:[]
 			}
 		},
-		onShow() {
+		async onShow() {
 			var user = uni.getStorageSync('user');
 			if(user == ''){
 				
 			}else{
 				this.user = user
 			}
-			this.getReceiving()
+			await this.getReceiving()
 		},
 		methods: {
 			addressT(){
@@ -58,18 +59,16 @@
 				})
 			},
 			getReceiving(){
-				uni.request({
-					url: 'http://47.113.217.251:8080/address/getAddressList ', //仅为示例，并非真实接口地址。
-					method: "POST",
-					data: {
-						userId:this.user.open
-					},
-					success: (resdata) => {
-						this.receivingList = resdata.data.data
-						console.log(resdata)
-						
-					}
-				});
+				Api.getAddressList({userId:this.user.id}).then(res => {
+					this.receivingList = res.data
+					
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});	
 			}
 		}
 	}
