@@ -110,7 +110,14 @@ function addAddress (data) {
 
 
 
-
+// 获取轮播图
+function queryList (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'rotationImages/queryList', // 请求url
+		data: data // 参数
+	})
+}
 
 
 
@@ -128,5 +135,6 @@ export default{
 	updateShoppingCar,
 	addOrder,
 	getAddressList,
-	addAddress
+	addAddress,
+	queryList
 }

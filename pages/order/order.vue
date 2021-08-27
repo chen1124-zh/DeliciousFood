@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		
-		<view class="good_order_box">
+		<view class="good_order_box" @click="orderD()">
 			<view class="good_item_order">
 				<view class="good_item_top">
 					<view class="item_order_box">
@@ -94,7 +94,11 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
-			
+			orderD(){
+				uni.navigateTo({
+					url:'../../pagesA/orderDetails/orderDetails'
+				})
+			}
 		}
 	}
 </script>

@@ -562,13 +562,14 @@
 					storeId:this.storeId,
 					num:1,
 					price:price,
-					urlImages:urlImages,
+					urlImages:urlImages||'',
 					productName:productName,
 					total:this.jia,
 					spec:JSON.stringify(tempGauge),
 					productId:this.gaugeData.i,
 					meunId:this.classifiList[this.selectClassifi].id,
-					remark:''
+					status:0,
+					remark:''	
 				}
 				Api.addShoppingCart(data).then(res => {
 					this.classifiList[this.selectClassifi].num++

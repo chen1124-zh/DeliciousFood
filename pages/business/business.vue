@@ -2,7 +2,7 @@
 	<view>
 		<view :style="{'height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx'}" >
 			<view :style="{'height':navigation.height+'px','width':navigation.left+'px'}" class="topNavigation">
-				<view class="search">
+				<view class="search"  @click="Tsearch">
 					<view class="search_box">
 						<view class=".search_icon">
 							<image src="../../static/search_icon.png" mode="" style="width: 100%;height: 100%;"></image>
@@ -73,26 +73,11 @@
 						<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList" :key='i'>
 							{{foods}}
 						</view>
-						<!-- <view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view>
-						<view class="good_item_describe_label">
-							配送
-						</view> -->
 					</view>
 					<view class="good_taste_label_box">
 						<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
 							{{food}}
 						</view>
-						<!-- <view class="good_item_taste_label_box">
-							香辣
-						</view>
-						<view class="good_item_taste_label_box">
-							香辣
-						</view> -->
 						<view class="good_reserve">
 							预定
 						</view>
@@ -131,6 +116,16 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			Tsearch(){
+				uni.navigateTo({
+					url:"../../pagesA/search/search"
+				})
+			},
+			rGoog(index){
+				uni.navigateTo({
+					url:'../../pagesA/goodDetails/goodDetails?id='+this.storeList[index].id
+				})
+			},
 			getStore(){
 				Api.getStoreList({}).then(res => {
 					// console.log('res',res);

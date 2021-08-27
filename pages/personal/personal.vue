@@ -71,7 +71,7 @@
 				<view class="often_item_box">
 					<view class="often_item">
 						<view class="often_icon">
-							
+							<image src="../../static/user.png"  mode=""></image>
 						</view>
 						<view class="often_name">
 							我的客服
@@ -79,7 +79,7 @@
 					</view>
 					<view class="often_item">
 						<view class="often_icon">
-							
+							<image src="../../static/news.png" mode=""></image>
 						</view>
 						<view class="often_name">
 							消息
@@ -87,7 +87,7 @@
 					</view>
 					<view class="often_item">
 						<view class="often_icon">
-							
+							<image src="../../static/feedback.png" mode=""></image>
 						</view>
 						<view class="often_name">
 							意见反馈
@@ -95,7 +95,7 @@
 					</view>
 					<view class="often_item">
 						<view class="often_icon">
-							
+							<image src="../../static/footprint.png" mode=""></image>
 						</view>
 						<view class="often_name">
 							足迹
@@ -304,7 +304,10 @@
 </script>
 
 <style>
-	
+	image{
+		width: 100%;
+		height: 100%;
+	}
 	.user_information{
 		background: #0D92FF;
 		padding-bottom: 40rpx;
@@ -406,7 +409,7 @@
 	.often_icon{
 		width: 60rpx;
 		height: 60rpx;
-		background: #000000;
+		/* background: #000000; */
 		margin: 20rpx 0;
 	}
 	
