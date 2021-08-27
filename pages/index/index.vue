@@ -34,7 +34,7 @@
 			</swiper>
 		</view>
 
-		<view class="back" style="margin-bottom: 30rpx;">
+		<view class="back">
 			<view class="Merit">
 				<view class="Merit_item">
 					<view class="Merit_icon" style="background: #F84819;">
@@ -440,10 +440,10 @@
 							</view>
 						</view>
 						<view class="good_mune_box">
-							<view class="good_item_mune_box" v-for="(items,indexs) in item.goodLists" :key='indexs'>
+							<view class="good_item_mune_box" v-for="(items,indexs) in item.goodLists" v-if="indexs <3" :key='indexs'>
 			
 								<view class="good_mune_img">
-									<image :src="items.img" mode=""></image>
+									<image :src="items.productImg" mode=""></image>
 								</view>
 								<view class="good_mune_name">
 									{{items.productName}}
@@ -519,10 +519,10 @@
 				navigation: '',
 			}
 		},
-		onLoad() {
-			this.getStore()
-			this.queryList()
-			this.getMenuTypeList()
+		async onLoad() {
+			await this.getStore()
+			await this.queryList()
+			await this.getMenuTypeList()
 		},
 		onShow() {
 			this.getLogLat()
@@ -599,7 +599,7 @@
 				});
 			},
 			getStore() {
-				Api.getStoreList({}).then(res => {
+				Api.getStoreList({}).then((res) => {
 					this.storeList = res.data
 					this.storeList.map((item) => {
 						item.foodSortList = []
@@ -650,25 +650,14 @@
 						})
 						
 						
-						console.log(this.nearbyStoreList)
+						this.getnearbyStoreGoodList()
+						
+						
 					})
 					
 					
 					
-					 var datas = {
-						productSet:'',
-						storeId:item.id
-					 }
-					 Api.getProductList(datas).then(ress => {
-						item.goodLists = ress.data.data
-						item.goodLists.img = item.goodList.productImg.spilt(',')
-						console.log('item',item)
-					 }).catch(err => {
-						uni.showToast({
-							title: err.msg,
-							icon: 'none'
-						})
-					 });
+					 
 						 
 						 
 				}).catch(err => {
@@ -684,6 +673,33 @@
 				uni.navigateTo({
 					url: '../../pagesA/goodDetails/goodDetails?id=' + this.storeList[index].id
 				})
+			},
+			async getnearbyStoreGoodList(){
+				for (var i = 0; i < this.nearbyStoreList.length; i++) {
+					
+					var datas = {
+						productSet:'',
+						storeId:this.nearbyStoreList[i].id
+					}
+					await Api.getProductList(datas).then(ress => {
+						this.nearbyStoreList[i].goodLists = ress.data.data
+						// for (var j = 0; j < this.nearbyStoreList[i].goodLists.length; j++) {
+						// 	this.nearbyStoreList[i].goodLists.img = this.nearbyStoreList[i].goodLists.productImg.spilt(',')[0]
+						// }
+						// this.nearbyStoreList[i].goodLists.map((item)=>{
+						// 	console.log(item.productImg)
+						// 	item.img = item.productImg.spilt(',')[0]
+						// })
+						// this.nearbyStoreList[i].goodLists.img = this.nearbyStoreList[i].goodLists.productImg.spilt(',')[0]
+					}).catch(err => {
+						uni.showToast({
+							title: err.msg,
+							icon: 'none'
+						})
+					});
+				}
+				console.log(this.nearbyStoreList)
+				this.$forceUpdate()
 			}
 		}
 	}
@@ -848,6 +864,9 @@
 	}
 
 	.good_name {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		font-weight: bold;
 		font-size: 30rpx;
 		color: #000;
@@ -1026,13 +1045,22 @@
 		background: #007AFF;
 
 	}
+	
+	.good_mune_name{
+		font-weight: bold;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
 	.good_mune_price {
 		font-size: 26rpx;
+		color: red;
 	}
 	
 	.back{
 		background: #fff;
 		padding: 20rpx 0;
+		margin-bottom: 30rpx;
 	}
 </style>
