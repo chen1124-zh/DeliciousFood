@@ -11,17 +11,39 @@
 		</view>
 		
 		<view class="screen_select">
-			<view class="screen_select_name">
-				全部
+			<view class="screen_select_name" @click="orderselect(0)">
+				<text :class="orderstatic == 0?'words':''">全部</text>
+				<view class="line" v-if="orderstatic == 0">
+					
+				</view>
 			</view>
-			<view class="screen_select_name">
-				全部
+			<view class="screen_select_name" @click="orderselect(1)">
+				
+				<text :class="orderstatic == 1?'words':''">团餐</text>
+				<view class="line" v-if="orderstatic == 1">
+					
+				</view>
 			</view>
-			<view class="screen_select_name">
-				全部
+			<view class="screen_select_name" @click="orderselect(2)">
+				
+				<text :class="orderstatic == 2?'words':''">拼餐</text>
+				<view class="line" v-if="orderstatic == 2">
+					
+				</view>
 			</view>
-			<view class="screen_select_name">
-				全部
+			<view class="screen_select_name" @click="orderselect(3)">
+				
+				<text :class="orderstatic == 3?'words':''">零食</text>
+				<view class="line" v-if="orderstatic == 3">
+					
+				</view>
+			</view>
+			<view class="screen_select_name" @click="orderselect(4)">
+				
+				<text :class="orderstatic == 4?'words':''">贵宾</text>
+				<view class="line" v-if="orderstatic == 4">
+					
+				</view>
 			</view>
 		</view>
 		
@@ -87,13 +109,17 @@
 	export default {
 		data() {
 			return {
-				navigation:''
+				navigation:'',
+				orderstatic:0
 			}
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			orderselect(index){
+				this.orderstatic = index
+			},
 			orderD(){
 				uni.navigateTo({
 					url:'../../pagesA/orderDetails/orderDetails'
@@ -122,8 +148,9 @@
 	
 	.screen_select_name{
 		font-size: 36rpx;
-		padding:20rpx 40rpx;
+		margin:20rpx 30rpx;
 		color: #fff;
+		position: relative;
 	}
 	
 	.good_item_order{
@@ -216,5 +243,19 @@
 		margin-left: 10rpx;
 	}
 	
+	.line{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 10rpx;
+		border-radius: 5rpx;
+		background: #FFA107;
+		/* z-index: -1; */
+	}
 	
+	.words{
+		font-weight: bold;
+		position: relative;
+		z-index: 101;
+	}
 </style>
