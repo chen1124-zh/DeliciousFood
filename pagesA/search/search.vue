@@ -17,7 +17,7 @@
 				历史搜索
 			</view>
 			<view class="d_icon" @click="DssList">
-				
+				<uni-icons type="trash"></uni-icons>
 			</view>
 		</view>
 		
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+	import uniIcons from '@/components/uni-icons/uni-icons.vue'
 	export default {
 		data() {
 			return {
@@ -45,6 +46,9 @@
 			}else{
 				this.ssList = d
 			}
+		},
+		components:{
+			uniIcons
 		},
 		methods: {
 			
@@ -108,7 +112,7 @@
 	.d_icon{
 		width: 30rpx;
 		height: 30rpx;
-		background-color: #000000;
+		/* background-color: #000000; */
 	}
 	
 	

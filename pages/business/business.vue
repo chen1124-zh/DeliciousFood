@@ -16,23 +16,25 @@
 		</view>
 		
 		
-		<view class="">
-			<view class="screen_box">
-				<view class="screen_left">
-					
-					<view class="select_item">
-						综艺排序
-					</view>
-					<view class="select_item">
-						距离
-					</view>
-					<view class="select_item">
-						销量
-					</view>
+		<view class="screen_box">
+			<view class="screen_left">
+				
+				<view class="select_item">
+					<picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
+						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">{{sorte[storeIndex].name}}
+							<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
+						</view>
+					</picker>
 				</view>
-				<view class="screen">
-					筛选
+				<view class="select_item">
+					距离
 				</view>
+				<view class="select_item">
+					销量
+				</view>
+			</view>
+			<view class="screen">
+				筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 			</view>
 		</view>
 		<view class="good_all_box">
@@ -52,18 +54,18 @@
 					
 					<view class="good_describe">
 						<view class="good_score">
-							<!-- 1 -->4.8
+							<uni-icons type="star-filled" color='#F8621E' size='20'></uni-icons>4.8
 						</view>
 						<view class="good_sale">
-							{{item.saleNum||0}}
+							月售{{item.saleNum||0}}
 						</view>
 					</view>
-					
-					<view class="good_performance">
+							
+					<view class="good_performance" v-if="item.startingPrice">
 						<view class="good_start_price">
-							{{item.startingPrice}}
+							起送{{item.startingPrice}}
 						</view>
-						<view class="good_distance_time">
+						<view class="good_distance_time" v-if="item.deliveryTime && item.deliveryRange">
 							{{item.deliveryTime}}分钟 {{item.deliveryRange}}km
 						</view>
 					</view>
@@ -75,11 +77,13 @@
 						</view>
 					</view>
 					<view class="good_taste_label_box">
-						<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
-							{{food}}
+						<view style="flex: 1;overflow-x: auto;display: flex;margin-right: 10rpx;">
+							<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
+								{{food}}
+							</view>
 						</view>
 						<view class="good_reserve">
-							预定
+							支持预定
 						</view>
 							
 					</view>
@@ -104,7 +108,12 @@
 		data() {
 			return {
 				navigation:null,
-				storeList:[]
+				storeList:[],
+				sorte: [{
+					name: '综艺排序',
+					value: 'zc'
+				}],
+				storeIndex: 0,
 			}
 		},
 		onLoad() {
@@ -130,9 +139,29 @@
 				Api.getStoreList({}).then(res => {
 					// console.log('res',res);
 					this.storeList = res.data
-					this.storeList.map((item)=>{
-						item.foodSortList = item.foodLabel.split(",")
-						item.appraiseManagerList = item.appraiseManager.split(",")
+					this.storeList.map((item) => {
+						item.foodSortList = []
+						var foodLabelObj = JSON.parse(item.foodLabel)
+						
+						foodLabelObj.system.map((items)=>{
+							item.foodSortList.push(items.name)
+						})
+						
+						foodLabelObj.custom.map((items)=>{
+							item.foodSortList.push(items)
+						})
+						
+						item.appraiseManagerList = []
+						var appraiseManagerObj = JSON.parse(item.appraiseManager)
+						appraiseManagerObj.system.map((items)=>{
+							item.appraiseManagerList.push(items.name)
+						})
+						
+						appraiseManagerObj.custom.map((items)=>{
+							item.appraiseManagerList.push(items)
+						})
+						
+						
 					})
 					// this.storeList.foodSortList = this.storeList
 					// console.log('this.storeList.foodSortList',this.storeList)
@@ -181,11 +210,13 @@
 	
 	.screen_left{
 		display: flex;
+		align-items: center;
 	}
 	
 	.select_item{
 		margin: 0 10rpx;
 		font-size: 24rpx;
+		color: #999;
 	}
 	
 	
@@ -200,9 +231,11 @@
 		border-radius: 10rpx;
 		background: #007AFF;
 		margin-right: 20rpx;
+		overflow: hidden;
 	}
 	.good_item_describe{
 		flex: 1;
+		overflow: hidden;
 	}
 	
 	.good_name_mueu{
@@ -222,6 +255,9 @@
 	.good_score{
 		margin-right: 20rpx;
 		font-size: 28rpx;
+		color: #F8621E;
+		display: flex;
+		align-items: center;
 	}
 	
 	.good_sale{
@@ -230,6 +266,8 @@
 	
 	.good_start_price,.good_distance_time,.good_describe_label_box,.good_taste_label_box{
 		font-size: 24rpx;
+		color: #999;
+		margin-top: 10rpx;
 	}
 	
 	.good_performance{
@@ -240,7 +278,7 @@
 	
 	.good_describe_label_box{
 		display: flex;
-		
+		overflow-x: auto;
 	}
 	
 	.good_item_describe_label{
@@ -249,6 +287,7 @@
 		margin-right: 16rpx;
 		padding: 2rpx 20rpx;
 		border-radius: 1rpx;
+		white-space: nowrap;
 	}
 	
 	.good_item_taste_label_box{
@@ -257,6 +296,7 @@
 		margin-right: 16rpx;
 		padding: 2rpx 20rpx;
 		border-radius: 1rpx;
+		white-space: nowrap;
 	}
 	
 	.good_taste_label_box{

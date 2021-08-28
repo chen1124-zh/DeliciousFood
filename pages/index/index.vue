@@ -443,7 +443,7 @@
 							<view class="good_item_mune_box" v-for="(items,indexs) in item.goodLists" v-if="indexs <3" :key='indexs'>
 			
 								<view class="good_mune_img">
-									<image :src="items.productImg" mode=""></image>
+									<image :src="items.productImg||'../../static/tempGood2.png'" mode=""></image>
 								</view>
 								<view class="good_mune_name">
 									{{items.productName}}
@@ -654,11 +654,6 @@
 						
 						
 					})
-					
-					
-					
-					 
-						 
 						 
 				}).catch(err => {
 					uni.showToast({
@@ -683,14 +678,6 @@
 					}
 					await Api.getProductList(datas).then(ress => {
 						this.nearbyStoreList[i].goodLists = ress.data.data
-						// for (var j = 0; j < this.nearbyStoreList[i].goodLists.length; j++) {
-						// 	this.nearbyStoreList[i].goodLists.img = this.nearbyStoreList[i].goodLists.productImg.spilt(',')[0]
-						// }
-						// this.nearbyStoreList[i].goodLists.map((item)=>{
-						// 	console.log(item.productImg)
-						// 	item.img = item.productImg.spilt(',')[0]
-						// })
-						// this.nearbyStoreList[i].goodLists.img = this.nearbyStoreList[i].goodLists.productImg.spilt(',')[0]
 					}).catch(err => {
 						uni.showToast({
 							title: err.msg,
@@ -698,7 +685,6 @@
 						})
 					});
 				}
-				console.log(this.nearbyStoreList)
 				this.$forceUpdate()
 			}
 		}
