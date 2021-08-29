@@ -64,8 +64,11 @@
 				this.ssList = []
 			},
 			TsrachResult(){
-				this.ssList.push(this.ss)
-				uni.setStorageSync('ssList',this.ssList)
+				if(this.ss != ''){
+					this.ssList.push(this.ss)
+					uni.setStorageSync('ssList',this.ssList)
+				}
+				
 				uni.navigateTo({
 					url:'../searchResult/searchResult'
 				})

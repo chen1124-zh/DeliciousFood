@@ -88,16 +88,7 @@
 						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xian = !xian">{{sorte[storeIndex].name}}
 							<uni-icons type="arrowdown" color='#007AFF' ></uni-icons>
 						</view>
-						<view class="drop_down_box" v-if="xian">
-							<view class="choice" v-for="(item,index) in sorte" :key='index' @click="storeIndex = index,xian = false">
-								<view :class="index == storeIndex?'choiceselect':''"> 
-									{{item.name}}
-								</view>
-								<view class="" v-if="index == storeIndex">
-									<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
-								</view>
-							</view>
-						</view>
+						
 					</view>
 			
 					
@@ -110,6 +101,17 @@
 				</view>
 				<view class="screen">
 					筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
+				</view>
+				
+				<view class="drop_down_box" v-if="xian">
+					<view class="choice" v-for="(item,index) in sorte" :key='index' @click="storeIndex = index,xian = false">
+						<view :class="index == storeIndex?'choiceselect':''"> 
+							{{item.name}}
+						</view>
+						<view class="" v-if="index == storeIndex">
+							<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
+						</view>
+					</view>
 				</view>
 			</view>
 			
@@ -814,6 +816,7 @@
 	}
 
 	.screen_box {
+		position: relative;
 		margin: 0 10rpx;
 		display: flex;
 		justify-content: space-between;
@@ -1099,7 +1102,7 @@
 		position: absolute;
 		z-index: 101;
 		top: 100%;
-		left: -130rpx;
+		/* left: -130rpx; */
 		background: #fff;
 		width: 100vw;
 	}

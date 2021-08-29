@@ -2,7 +2,7 @@
 	<view>
 		<view :style="{'height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx'}" >
 			<view :style="{'height':navigation.height+'px','width':navigation.left+'px'}" class="topNavigation">
-				<view class="search">
+				<view class="search" @click="returnSearch()">
 					<view class="search_box">
 						<view class="search_icon">
 							<image src="../../static/search_icon.png" style="width: 100%;height: 100%;" mode=""></image>
@@ -20,11 +20,13 @@
 			<view class="screen_left">
 				
 				<view class="select_item">
-					<picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
-						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">{{sorte[storeIndex].name}}
-							<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
-						</view>
-					</picker>
+					<!-- <picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
+						
+					</picker> -->
+					<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xian = !xian">{{sorte[storeIndex].name}}
+						<uni-icons type="arrowdown" color='#007AFF' ></uni-icons>
+					</view>
+					
 				</view>
 				<view class="select_item">
 					距离
@@ -35,6 +37,17 @@
 			</view>
 			<view class="screen">
 				筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
+			</view>
+			
+			<view class="drop_down_box" v-if="xian">
+				<view class="choice" v-for="(item,index) in sorte" :key='index' @click="storeIndex = index,xian = false">
+					<view :class="index == storeIndex?'choiceselect':''"> 
+						{{item.name}}
+					</view>
+					<view class="" v-if="index == storeIndex">
+						<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="good_all_box">
@@ -112,15 +125,38 @@
 
 <script>
 	import Api from '@/common/http.js'
-	export default {
+	export default { 
 		data() {
 			return {
+				xian:false,
 				navigation:null,
 				storeList:[],
-				sorte: [{
-					name: '综艺排序',
-					value: 'zc'
-				}],
+				sorte: [
+					{
+						name: '综艺排序',
+					},
+					{
+						name:'销量最高',
+					},
+					{
+						name:'距离最近'
+					},
+					{
+						name:'好评优先'
+					},
+					{
+						name:'起送价最低'
+					},
+					{
+						name:'配送最快'
+					},
+					{
+						name:'人均从低到高'
+					},
+					{
+						name:'人均从高到低'
+					}
+				],
 				storeIndex: 0,
 			}
 		},
@@ -133,6 +169,11 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			returnSearch(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			getStore(){
 				Api.getStoreList({}).then(res => {
 					// console.log('res',res);
@@ -206,6 +247,7 @@
 	
 	
 	.screen_box{
+		position: relative;
 		margin: 0 10rpx;
 		display: flex;
 		justify-content: space-between;
@@ -223,6 +265,7 @@
 	}
 	
 	.select_item{
+		position: relative;
 		margin: 0 10rpx;
 		font-size: 24rpx;
 		color: #999;
@@ -315,5 +358,29 @@
 	.good_reserve{
 		padding: 10rpx;
 		border: 1rpx solid #999;
+	}
+	
+	
+	.drop_down_box{
+		position: absolute;
+		z-index: 101;
+		top: 100%;
+		// left: -130rpx;
+		background: #fff;
+		width: 100vw;
+	}
+	
+	.choice{
+		display: flex;
+		justify-content: space-between;
+		font-size: 30rpx;
+		padding: 30rpx;
+		color: #999;
+		/* border-bottom: 1rpx solid #f0f0f0; */
+	}
+	
+	.choiceselect{
+		color: #007AFF;
+		font-weight: bold;
 	}
 </style>
