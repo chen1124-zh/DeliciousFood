@@ -367,7 +367,7 @@
 				classifiList: [],
 				selectClassifi: 0,
 				branch: 1,
-				week: 1,
+				week: 0,
 				goodList: [],
 				g: false,
 				y: false,

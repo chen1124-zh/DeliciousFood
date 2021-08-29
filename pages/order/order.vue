@@ -11,44 +11,44 @@
 		</view>
 		
 		<view class="screen_select">
+			<view class="screen_select_name" @click="orderselect(-1)">
+				<text :class="orderstatic == -1?'words':''">全部</text>
+				<view class="line" v-if="orderstatic == -1">
+					
+				</view>
+			</view>
 			<view class="screen_select_name" @click="orderselect(0)">
-				<text :class="orderstatic == 0?'words':''">全部</text>
+				
+				<text :class="orderstatic == 0?'words':''">团餐</text>
 				<view class="line" v-if="orderstatic == 0">
 					
 				</view>
 			</view>
 			<view class="screen_select_name" @click="orderselect(1)">
 				
-				<text :class="orderstatic == 1?'words':''">团餐</text>
+				<text :class="orderstatic == 1?'words':''">拼餐</text>
 				<view class="line" v-if="orderstatic == 1">
 					
 				</view>
 			</view>
 			<view class="screen_select_name" @click="orderselect(2)">
 				
-				<text :class="orderstatic == 2?'words':''">拼餐</text>
+				<text :class="orderstatic == 2?'words':''">零餐</text>
 				<view class="line" v-if="orderstatic == 2">
 					
 				</view>
 			</view>
 			<view class="screen_select_name" @click="orderselect(3)">
 				
-				<text :class="orderstatic == 3?'words':''">零食</text>
+				<text :class="orderstatic == 3?'words':''">贵宾</text>
 				<view class="line" v-if="orderstatic == 3">
-					
-				</view>
-			</view>
-			<view class="screen_select_name" @click="orderselect(4)">
-				
-				<text :class="orderstatic == 4?'words':''">贵宾</text>
-				<view class="line" v-if="orderstatic == 4">
 					
 				</view>
 			</view>
 		</view>
 		
 		<view class="good_order_box" @click="orderD()">
-			<view class="good_item_order">
+			<view class="good_item_order" v-for="(item,index) in orderDataList" :key='index' v-if="item.orderStatus == orderstatic || orderstatic == -1">
 				<view class="good_item_top">
 					<view class="item_order_box">
 						<view class="good_logo">
@@ -66,21 +66,21 @@
 				
 				<view class="order_miao">
 					<view class="order_img_name">
-						<view class="order_img">
+						<view class="order_img" v-for="(items,indexs) in item.orderItemList" :key='indexs'>
 							<view class="order_item_img">
-								
+								<image :src="items.productImg" style="width: 100%;height: 100%;" mode=""></image>
 							</view>
 						</view>
-						<view class="order_item_name">
-							鱼蛋分、肥牛
+						<view class="order_item_name"  v-for="(items,indexs) in item.orderItemList" :key='indexs'>
+							{{item.productName}}、
 						</view>
 					</view>
 					<view class="order_price_num">
 						<view class="order_item_price">
-							25.5
+							￥{{item.price}}
 						</view>
 						<view class="order_item_num">
-							共4件
+							共{{item.num}}件
 						</view>
 					</view>
 				</view>
@@ -106,17 +106,49 @@
 </template>
 
 <script>
+	import Api from "@/common/http.js"
 	export default {
 		data() {
 			return {
 				navigation:'',
-				orderstatic:0
+				orderstatic:-1,
+				orderDataList:'',
+				user:''
 			}
+		},
+		onShow() {
+			var user = uni.getStorageSync('user');
+			this.user = user
+			this.getOrderList()
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			getOrderList(){
+				var data = {
+					userId:this.user.id,
+					storeId:''
+				}
+				Api.getOrderList(data).then(res => {
+					this.orderDataList = res.data.data
+					
+					this.orderDataList.map((item,index)=>{
+						item.num = 0
+						item.price = 0
+						item.orderItemList.map((items,indexs)=>{
+							item.num += items.num
+							item.price = items.price
+						})
+					})
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+				
+			},
 			orderselect(index){
 				this.orderstatic = index
 			},
@@ -131,8 +163,7 @@
 
 <style>
 	.content{
-		background: #cccc;
-		height: 100vh;
+		background: #F8F8F8;
 	}
 	
 	.topNavigation{
@@ -214,6 +245,7 @@
 	}
 	
 	.order_item_price{
+		text-align: center;
 		color: #000;
 		font-size: 50rpx;
 	}
@@ -221,6 +253,7 @@
 	.order_item_num{
 		font-size: 26rpx;
 		text-align: center;
+		color: #B4BDB5;
 	}
 	
 	.difference{

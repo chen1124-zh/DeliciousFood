@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		
 		<view :style="{'height':navigation.height+'px',
 						'paddingTop': navigation.top + 'px',
 						'paddingBottom':'10rpx',
@@ -14,6 +15,7 @@
 				</view>
 			</view>
 		</view>
+		
 		<view class="search" @click="Tsearch">
 			<view class="search_box">
 				<view class="search_icon">
@@ -65,7 +67,12 @@
 				</view>
 			</view>
 			
+			
+		
+			
 			<view class="screen_box">
+				
+				
 				<view class="screen_left">
 					<view class="select_item">
 						<picker mode="selector" :range="cs" range-key="name" @change="cschange">
@@ -75,12 +82,25 @@
 						</picker>
 					</view>
 					<view class="select_item">
-						<picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
-							<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">{{sorte[storeIndex].name}}
-								<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
+						<!-- <picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
+							
+						</picker> -->
+						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xian = !xian">{{sorte[storeIndex].name}}
+							<uni-icons type="arrowdown" color='#007AFF' ></uni-icons>
+						</view>
+						<view class="drop_down_box" v-if="xian">
+							<view class="choice" v-for="(item,index) in sorte" :key='index' @click="storeIndex = index,xian = false">
+								<view :class="index == storeIndex?'choiceselect':''"> 
+									{{item.name}}
+								</view>
+								<view class="" v-if="index == storeIndex">
+									<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
+								</view>
 							</view>
-						</picker>
+						</view>
 					</view>
+			
+					
 					<view class="select_item">
 						距离
 					</view>
@@ -92,6 +112,7 @@
 					筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 				</view>
 			</view>
+			
 			
 			<view class="setMeal_box">
 				<view class="setMeal_item" :style="{'color': selectPackage == 1?'#028EFF':'#999'}" @click="selectPackage = 1">
@@ -479,6 +500,7 @@
 	export default {
 		data() {
 			return {	
+				xian:false,
 				selectNearby:1,
 				foodLabel:[],
 				selectPackage:1,
@@ -509,10 +531,32 @@
 					}
 				],
 				csIndex: 0,
-				sorte: [{
-					name: '综艺排序',
-					value: 'zc'
-				}],
+				sorte: [
+					{
+						name: '综艺排序',
+					},
+					{
+						name:'销量最高',
+					},
+					{
+						name:'距离最近'
+					},
+					{
+						name:'好评优先'
+					},
+					{
+						name:'起送价最低'
+					},
+					{
+						name:'配送最快'
+					},
+					{
+						name:'人均从低到高'
+					},
+					{
+						name:'人均从高到低'
+					}
+				],
 				storeIndex: 0,
 				storeList:[],
 				nearbyStoreList:[],
@@ -788,6 +832,7 @@
 	}
 
 	.select_item {
+		position: relative;
 		margin: 0 10rpx;
 		font-size: 24rpx;
 		color: #999;
@@ -1049,4 +1094,28 @@
 		padding: 20rpx 0;
 		margin-bottom: 30rpx;
 	}
+	
+	.drop_down_box{
+		position: absolute;
+		z-index: 101;
+		top: 100%;
+		left: -130rpx;
+		background: #fff;
+		width: 100vw;
+	}
+	
+	.choice{
+		display: flex;
+		justify-content: space-between;
+		font-size: 30rpx;
+		padding: 30rpx;
+		color: #999;
+		/* border-bottom: 1rpx solid #f0f0f0; */
+	}
+	
+	.choiceselect{
+		color: #007AFF;
+		font-weight: bold;
+	}
+	
 </style>
