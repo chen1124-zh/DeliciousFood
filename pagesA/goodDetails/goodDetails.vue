@@ -4,13 +4,13 @@
 			:style="{'width':'100%','height':navigation.height+'px','paddingTop': navigation.top + 'px','paddingBottom':'10rpx','position': 'fixed','top':'0','background': 'rgba(0,0,0,.3)','z-index':'101'}">
 			<view :style="{'height':navigation.height+'px','width':navigation.left+'px'}" class="topNavigation">
 				<view class="search"
-					style="height: 100%;display: flex;align-items: center;justify-content: space-between;">
+					style="height: 100%;display: flex;align-items: center;justify-content: space-between;padding: 0 20rpx;">
 					<view class="" @click="fang"
 						style="width: 50rpx;height: 50rpx;border-radius: 50%;background: rgba(0,0,0,.5);display: flex;justify-content: center;align-items: center;">
 						<uni-icons type="arrowleft" color="#fff"></uni-icons>
 					</view>
 					<view class="">
-						<uni-icons type="star"></uni-icons>
+						<uni-icons type="star" size="28" class="#000"></uni-icons>
 
 					</view>
 					<!-- <view class="">
@@ -24,8 +24,6 @@
 			<view class="">
 				<image :src="store.storeIntroductImg" mode="" style="width: 100%;"></image>
 			</view>
-
-
 		</view>
 
 
@@ -666,6 +664,7 @@
 					productId: this.gaugeData.i,
 					meunId: this.classifiList[this.selectClassifi].id,
 					status: 0,
+					favourable:'',
 					remark: ''
 				}
 				Api.addShoppingCart(data).then(res => {
@@ -949,6 +948,10 @@
 		text-align: center;
 		padding: 10rpx 0;
 		margin: 10rpx 0;
+	}
+	
+	.good_title_select .selectMenu{
+		background: #fff;
 	}
 
 	.good_title_select .selectMenu text {

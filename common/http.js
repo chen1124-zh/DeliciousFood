@@ -119,8 +119,14 @@ function queryList (data) {
 	})
 }
 
-
-
+// 获取轮播图
+function getSite (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'site/getSite', // 请求url
+		data: data // 参数
+	})
+}
 
 
 
@@ -136,5 +142,6 @@ export default{
 	addOrder,
 	getAddressList,
 	addAddress,
-	queryList
+	queryList,
+	getSite
 }

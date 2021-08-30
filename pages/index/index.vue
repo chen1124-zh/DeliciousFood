@@ -1,13 +1,13 @@
 <template>
 	<view class="content">
-		
+
 		<view :style="{'height':navigation.height+'px',
 						'paddingTop': navigation.top + 'px',
 						'paddingBottom':'10rpx',
 						'backgroundColor':'#0D92FF',
 						'color':'#fff'}">
 			<view :style="{'height':navigation.height+'px'}" class="topNavigation">
-				<view class="address">
+				<view class="address" @click="show">
 					街道
 				</view>
 				<view style="text-align: center;">
@@ -15,7 +15,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="search" @click="Tsearch">
 			<view class="search_box">
 				<view class="search_icon">
@@ -46,7 +46,7 @@
 						团餐
 					</view>
 				</view>
-			
+
 				<view class="Merit_item">
 					<view class="Merit_icon" style="background: #FFA443;">
 						拼餐
@@ -54,9 +54,9 @@
 					<view class="Merit_name">
 						拼餐
 					</view>
-			
+
 				</view>
-			
+
 				<view class="Merit_item">
 					<view class="Merit_icon" style="background: #9540CE;">
 						贵宾
@@ -66,13 +66,13 @@
 					</view>
 				</view>
 			</view>
-			
-			
-		
-			
+
+
+
+
 			<view class="screen_box">
-				
-				
+
+
 				<view class="screen_left">
 					<view class="select_item">
 						<picker mode="selector" :range="cs" range-key="name" @change="cschange">
@@ -85,13 +85,14 @@
 						<!-- <picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
 							
 						</picker> -->
-						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xian = !xian">{{sorte[storeIndex].name}}
-							<uni-icons type="arrowdown" color='#007AFF' ></uni-icons>
+						<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xian = !xian">
+							{{sorte[storeIndex].name}}
+							<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
 						</view>
-						
+
 					</view>
-			
-					
+
+
 					<view class="select_item">
 						距离
 					</view>
@@ -102,10 +103,11 @@
 				<view class="screen">
 					筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 				</view>
-				
+
 				<view class="drop_down_box" v-if="xian">
-					<view class="choice" v-for="(item,index) in sorte" :key='index' @click="storeIndex = index,xian = false">
-						<view :class="index == storeIndex?'choiceselect':''"> 
+					<view class="choice" v-for="(item,index) in sorte" :key='index'
+						@click="storeIndex = index,xian = false">
+						<view :class="index == storeIndex?'choiceselect':''">
 							{{item.name}}
 						</view>
 						<view class="" v-if="index == storeIndex">
@@ -114,20 +116,23 @@
 					</view>
 				</view>
 			</view>
-			
-			
+
+
 			<view class="setMeal_box">
-				<view class="setMeal_item" :style="{'color': selectPackage == 1?'#028EFF':'#999'}" @click="selectPackage = 1">
+				<view class="setMeal_item" :style="{'color': selectPackage == 1?'#028EFF':'#999'}"
+					@click="selectPackage = 1">
 					行政套餐
 				</view>
-				<view class="setMeal_item" :style="{'color': selectPackage == 2?'#028EFF':'#999'}" @click="selectPackage = 2">
+				<view class="setMeal_item" :style="{'color': selectPackage == 2?'#028EFF':'#999'}"
+					@click="selectPackage = 2">
 					自选套餐
 				</view>
-				<view class="setMeal_item" :style="{'color': selectPackage == 3?'#028EFF':'#999'}" @click="selectPackage = 3">
+				<view class="setMeal_item" :style="{'color': selectPackage == 3?'#028EFF':'#999'}"
+					@click="selectPackage = 3">
 					会务套餐
 				</view>
 			</view>
-			
+
 			<view class="label_box">
 				<view class="label_item" v-for="(item,index) in foodLabel" :key='index'>
 					{{item.menuName}}
@@ -147,7 +152,7 @@
 								...
 							</view>
 						</view>
-			
+
 						<view class="good_describe">
 							<view class="good_score">
 								<uni-icons type="star-filled" color='#F8621E' size='20'></uni-icons>4.8
@@ -156,7 +161,7 @@
 								月售{{item.saleNum||0}}
 							</view>
 						</view>
-			
+
 						<view class="good_performance" v-if="item.startingPrice">
 							<view class="good_start_price">
 								起送{{item.startingPrice}}
@@ -165,10 +170,11 @@
 								{{item.deliveryTime}}分钟 {{item.deliveryRange}}km
 							</view>
 						</view>
-			
+
 						<view class="good_describe_label_box">
-			
-							<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList" :key='i'>
+
+							<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
+								:key='i'>
 								{{foods}}
 							</view>
 						</view>
@@ -178,28 +184,28 @@
 									{{food}}
 								</view>
 							</view>
-							
+
 							<view class="good_reserve">
-								支持预定 	
+								支持预定
 							</view>
-			
+
 						</view>
-			
-			
-			
+
+
+
 					</view>
 				</view>
-			
+
 			</view>
-			
+
 		</view>
-		
+
 		<view class="back">
 			<view class="member_box" v-if="false">
 				<view class="title">
 					会员专区
 				</view>
-			
+
 				<view class="bac_img">
 					<view class="bac_title">
 						品质午餐
@@ -207,7 +213,7 @@
 					<view class="food_box">
 						<view class="food_item">
 							<view class="food_img">
-			
+
 							</view>
 							<view class="food_describe">
 								<view class="food_name">
@@ -242,10 +248,10 @@
 								</view>
 							</view>
 						</view>
-			
+
 						<view class="food_item">
 							<view class="food_img">
-			
+
 							</view>
 							<view class="food_describe">
 								<view class="food_name">
@@ -280,10 +286,10 @@
 								</view>
 							</view>
 						</view>
-			
+
 					</view>
 				</view>
-			
+
 				<view class="bac_img">
 					<view class="bac_title">
 						品质午餐
@@ -291,7 +297,7 @@
 					<view class="food_box">
 						<view class="food_item">
 							<view class="food_img">
-			
+
 							</view>
 							<view class="food_describe">
 								<view class="food_name">
@@ -326,10 +332,10 @@
 								</view>
 							</view>
 						</view>
-			
+
 						<view class="food_item">
 							<view class="food_img">
-			
+
 							</view>
 							<view class="food_describe">
 								<view class="food_name">
@@ -364,30 +370,33 @@
 								</view>
 							</view>
 						</view>
-			
+
 					</view>
 				</view>
-			
-			
+
+
 			</view>
-			
-			
+
+
 			<view class="select_box">
 				<view class="setMeal_box">
-					<view class="setMeal_item" :style="{'color': selectNearby == 1?'#028EFF':'#999'}" @click="selectNearby = 1">
+					<view class="setMeal_item" :style="{'color': selectNearby == 1?'#028EFF':'#999'}"
+						@click="selectNearby = 1">
 						附近商家
 					</view>
-					<view class="setMeal_item" :style="{'color': selectNearby == 2?'#028EFF':'#999'}" @click="selectNearby = 2">
+					<view class="setMeal_item" :style="{'color': selectNearby == 2?'#028EFF':'#999'}"
+						@click="selectNearby = 2">
 						新品推荐
 					</view>
-					
+
 				</view>
 				<view class="screen_box">
 					<view class="screen_left">
-						
+
 						<view class="select_item">
 							<picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
-								<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">{{sorte[storeIndex].name}}
+								<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">
+									{{sorte[storeIndex].name}}
 									<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
 								</view>
 							</picker>
@@ -403,16 +412,16 @@
 						筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 					</view>
 				</view>
-			
+
 				<view class="label_box">
 					<view class="label_item" v-for="(item,index) in foodLabel" :key='index'>
 						{{item.menuName}}
 					</view>
 				</view>
-			
+
 				<view class="good_all_box">
 					<view class="goodBox" v-for="(item,index) in nearbyStoreList" :key='index' @click="rGoog(index)">
-						<view class="good_item_box" >
+						<view class="good_item_box">
 							<view class="googImgBox">
 								<image :src="item.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 							</view>
@@ -425,7 +434,7 @@
 										...
 									</view>
 								</view>
-										
+
 								<view class="good_describe">
 									<view class="good_score">
 										<uni-icons type="star-filled" color='#F8621E' size='20'></uni-icons>4.8
@@ -434,7 +443,7 @@
 										月售{{item.saleNum||0}}
 									</view>
 								</view>
-										
+
 								<view class="good_performance" v-if="item.startingPrice">
 									<view class="good_start_price">
 										起送{{item.startingPrice}}
@@ -443,28 +452,31 @@
 										{{item.deliveryTime}}分钟 {{item.deliveryRange}}km
 									</view>
 								</view>
-										
+
 								<view class="good_describe_label_box">
-										
-									<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList" :key='i'>
+
+									<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
+										:key='i'>
 										{{foods}}
 									</view>
 								</view>
 								<view class="good_taste_label_box">
 									<view style="flex: 1;overflow-x: auto;display: flex;margin-right: 10rpx;">
-										<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
+										<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList"
+											:key='i'>
 											{{food}}
 										</view>
 									</view>
 									<view class="good_reserve">
-										支持预定 	
+										支持预定
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="good_mune_box">
-							<view class="good_item_mune_box" v-for="(items,indexs) in item.goodLists" v-if="indexs <3" :key='indexs'>
-			
+							<view class="good_item_mune_box" v-for="(items,indexs) in item.goodLists" v-if="indexs <3"
+								:key='indexs'>
+
 								<view class="good_mune_img">
 									<image :src="items.productImg||'../../static/tempGood2.png'" mode=""></image>
 								</view>
@@ -475,37 +487,61 @@
 									￥{{items.productPrice}}
 								</view>
 							</view>
-							
+
 						</view>
 					</view>
-			
-					
-			
-			
-			
+
+
+
+
+
 				</view>
-			
+
 			</view>
-			
+
 		</view>
 
 
-		<view class="ShoppingCart">
+		<view class="ShoppingCart" @click="jumpCat">
 			<image src="../../static/car.png" style="width: 50%;height: 50%;" mode=""></image>
 		</view>
+		
+		<popup-layer ref="popupRef" :direction="'top'" v-model="boolShow">
+			<view class="zidingyiBox">
+				<view class="title">
+					选择站点
+				</view>
+				<view class="close" @click="close">
+					关闭
+				</view>
+
+				<view class="">
+					<view class="" v-for="(item,index) in siteList" :key="index">
+						<view class="">
+							{{item.siteName}}<text>距离886米</text>
+						</view>
+						<view class="">
+							{{item.address}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</popup-layer>
 	</view>
 </template>
 
 <script>
+	import popupLayer from '@/components/popup-layer/popup-layer.vue';
 	import Api from '@/common/http.js'
 	import uniIcons from '@/components/uni-icons/uni-icons.vue'
 	export default {
 		data() {
-			return {	
-				xian:false,
-				selectNearby:1,
-				foodLabel:[],
-				selectPackage:1,
+			return {
+				siteList: [],
+				xian: false,
+				selectNearby: 1,
+				foodLabel: [],
+				selectPackage: 1,
 				lbList: [],
 				cs: [{
 						name: '早茶',
@@ -533,36 +569,37 @@
 					}
 				],
 				csIndex: 0,
-				sorte: [
-					{
+				sorte: [{
 						name: '综艺排序',
 					},
 					{
-						name:'销量最高',
+						name: '销量最高',
 					},
 					{
-						name:'距离最近'
+						name: '距离最近'
 					},
 					{
-						name:'好评优先'
+						name: '好评优先'
 					},
 					{
-						name:'起送价最低'
+						name: '起送价最低'
 					},
 					{
-						name:'配送最快'
+						name: '配送最快'
 					},
 					{
-						name:'人均从低到高'
+						name: '人均从低到高'
 					},
 					{
-						name:'人均从高到低'
+						name: '人均从高到低'
 					}
 				],
 				storeIndex: 0,
-				storeList:[],
-				nearbyStoreList:[],
+				storeList: [],
+				nearbyStoreList: [],
 				navigation: '',
+				latitude: '',
+				longitude: ''
 			}
 		},
 		async onLoad() {
@@ -571,22 +608,79 @@
 			await this.getMenuTypeList()
 		},
 		onShow() {
+			this.getSiteList()
 			this.getLogLat()
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
-
+		components: {
+			popupLayer
+		},
 		methods: {
-			getMenuTypeList(){
+			jumpCat(){
+				
+				uni.navigateTo({
+					url:'../../pagesA/shoppingCart/shoppingCart'
+				})
+			},
+			show() {
+				this.$refs.popupRef.show(); // 或者 boolShow = rue
+			},
+			close() {
+				this.$refs.popupRef.close() // 或者 boolShow = rue
+			},
+			getDistance(latitude, longitude) {
+				uni.request({
+					url: 'https://apis.map.qq.com/ws/distance/v1/matrix', //仅为示例，并非真实接口地址。
+					method: 'GET',
+					data: {
+						mode: 'walking',
+						from: this.this.latitude + ',' + this.longitude,
+						to: latitude + ',' + longitude,
+						key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //获取key
+					},
+					success: (res) => {
+						console.log(res);
+						let hw = res.data.result.rows[0].elements[0].distance; //拿到距离(米)
+						if (hw && hw !== -1) {
+							if (hw < 1000) {
+								hw = hw + 'm';
+							}
+							//转换成公里
+							else {
+								hw = (hw / 2 / 500).toFixed(2) + 'km'
+							}
+						} else {
+							hw = "距离太近或请刷新重试"
+						}
+						console.log(hw);
+					}
+				});
+			},
+			getSiteList() {
+				var data = {
+					siteName: ''
+				}
+
+				Api.getSite(data).then(res => {
+					console.log(res)
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
+			getMenuTypeList() {
 				this.foodLabel = []
 				var data = {
-					id:'',
-					productId:''
+					id: '',
+					productId: ''
 				}
 				Api.getMenuTypeList(data).then(res => {
-					res.data.data.map((item)=>{
-						if(item.type == 1){
+					res.data.data.map((item) => {
+						if (item.type == 1) {
 							this.foodLabel.push(item)
 						}
 					})
@@ -631,10 +725,9 @@
 				uni.getLocation({
 					type: 'wgs84',
 					geocode: true, //设置该参数为true可直接获取经纬度及城市信息
-					success: function(res) {
-
-						// console.log(res)
-						// that.addrDel = res;
+					success: (res) => {
+						this.latitude = res.latitude
+						this.longitude = res.longitude
 					},
 					fail: function() {
 						uni.showToast({
@@ -650,77 +743,77 @@
 					this.storeList.map((item) => {
 						item.foodSortList = []
 						var foodLabelObj = JSON.parse(item.foodLabel)
-						
-						foodLabelObj.system.map((items)=>{
+
+						foodLabelObj.system.map((items) => {
 							item.foodSortList.push(items.name)
 						})
-						
-						foodLabelObj.custom.map((items)=>{
+
+						foodLabelObj.custom.map((items) => {
 							item.foodSortList.push(items)
 						})
-						
+
 						item.appraiseManagerList = []
 						var appraiseManagerObj = JSON.parse(item.appraiseManager)
-						appraiseManagerObj.system.map((items)=>{
+						appraiseManagerObj.system.map((items) => {
 							item.appraiseManagerList.push(items.name)
 						})
-						
-						appraiseManagerObj.custom.map((items)=>{
+
+						appraiseManagerObj.custom.map((items) => {
 							item.appraiseManagerList.push(items)
 						})
-						
-						
+
+
 					})
-					
+
 					this.nearbyStoreList = res.data
 					this.nearbyStoreList.map((item) => {
 						item.foodSortList = []
 						var foodLabelObj = JSON.parse(item.foodLabel)
-						
-						foodLabelObj.system.map((items)=>{
+
+						foodLabelObj.system.map((items) => {
 							item.foodSortList.push(items.name)
 						})
-						
-						foodLabelObj.custom.map((items)=>{
+
+						foodLabelObj.custom.map((items) => {
 							item.foodSortList.push(items)
 						})
-						
+
 						item.appraiseManagerList = []
 						var appraiseManagerObj = JSON.parse(item.appraiseManager)
-						appraiseManagerObj.system.map((items)=>{
+						appraiseManagerObj.system.map((items) => {
 							item.appraiseManagerList.push(items.name)
 						})
-						
-						appraiseManagerObj.custom.map((items)=>{
+
+						appraiseManagerObj.custom.map((items) => {
 							item.appraiseManagerList.push(items)
 						})
-						
-						
+
+
 						this.getnearbyStoreGoodList()
-						
-						
+
+
 					})
-						 
+
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
 						icon: 'none'
 					})
 				});
-				
-				
+
+
 			},
 			rGoog(index) {
 				uni.navigateTo({
 					url: '../../pagesA/goodDetails/goodDetails?id=' + this.storeList[index].id
 				})
 			},
-			async getnearbyStoreGoodList(){
+			async getnearbyStoreGoodList() {
 				for (var i = 0; i < this.nearbyStoreList.length; i++) {
-					
+
 					var datas = {
-						productSet:'',
-						storeId:this.nearbyStoreList[i].id
+						productSet: '',
+						storeId: this.nearbyStoreList[i].id
 					}
 					await Api.getProductList(datas).then(ress => {
 						this.nearbyStoreList[i].goodLists = ress.data.data
@@ -737,7 +830,7 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	image {
 		width: 100%;
 		height: 100%;
@@ -827,8 +920,8 @@
 		display: flex;
 		align-items: center;
 	}
-	
-	.screen{
+
+	.screen {
 		font-size: 28rpx;
 		margin-right: 10rpx;
 		color: #999;
@@ -1079,8 +1172,8 @@
 		background: #007AFF;
 
 	}
-	
-	.good_mune_name{
+
+	.good_mune_name {
 		font-weight: bold;
 		white-space: nowrap;
 		overflow: hidden;
@@ -1091,14 +1184,14 @@
 		font-size: 26rpx;
 		color: red;
 	}
-	
-	.back{
+
+	.back {
 		background: #fff;
 		padding: 20rpx 0;
 		margin-bottom: 30rpx;
 	}
-	
-	.drop_down_box{
+
+	.drop_down_box {
 		position: absolute;
 		z-index: 101;
 		top: 100%;
@@ -1106,8 +1199,8 @@
 		background: #fff;
 		width: 100vw;
 	}
-	
-	.choice{
+
+	.choice {
 		display: flex;
 		justify-content: space-between;
 		font-size: 30rpx;
@@ -1115,10 +1208,30 @@
 		color: #999;
 		/* border-bottom: 1rpx solid #f0f0f0; */
 	}
-	
-	.choiceselect{
+
+	.choiceselect {
 		color: #007AFF;
 		font-weight: bold;
 	}
-	
+
+
+	.zidingyiBox {
+		position: relative;
+		padding: 20rpx;
+		border-radius: 20rpx 20rpx 0 0;
+
+		.title {
+			font-size: 36rpx;
+			font-weight: bold;
+			color: #999;
+			text-align: center;
+
+		}
+
+		.close {
+			position: absolute;
+			top: 20rpx;
+			right: 20rpx;
+		}
+	}
 </style>

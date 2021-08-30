@@ -206,7 +206,7 @@
 				{{store.storeName}}
 			</view>
 			<view class="shop_good">
-				<view class="shop_item"  v-for="(item,index) in cat" :key="index">
+				<view class="shop_item"  v-for="(item,index) in cat[0].shoppingCarts" :key="index">
 					<view class="shop_item_introduce">
 						<view class="shop_item_img">
 							<image :src="item.urlImages" mode="" style="width: 100%;height: 100%;"></image>
@@ -336,7 +336,7 @@
 				store:'',
 				cat:'',
 				date: currentDate,
-				
+				orderId:''
 			}
 		},
 		computed: {
@@ -473,28 +473,36 @@
 				return `${year}-${month}-${day}`;
 			},
 			addorder(){
-				
+				console.log(123213)
 				var orderItemList = []
 				
 				var realBalance = 0
 				var shoppingCartId=''
+				
+				
 				this.cat.map((item,index)=>{
-					realBalance+=item.total
-					shoppingCartId +=item.id+','
-					orderItemList.push({
-						productName:item.productName,
-						spec:item.spec,
-						productId:item.productId,
-						amount:item.total,
-						num:item.num,
-						price:item.price,
-						productImg:item.urlImages,
-						mealType:''
+					item.shoppingCarts.map((items)=>{
+						realBalance+=items.total
+						shoppingCartId +=items.id+','
+						orderItemList.push({
+							productName:items.productName,
+							spec:items.spec,
+							productId:items.productId,
+							amount:items.total,
+							num:items.num,
+							price:items.price,
+							productImg:items.urlImages,
+							mealType:'',
+							
+						})
 					})
 					
 				})
+				
 				shoppingCartId = shoppingCartId.substring(0,shoppingCartId.length-1)
 				var data = {
+					addIncome:0,
+					people:1,
 					storeId:this.storeId,
 					orderStatus:0,
 					total:realBalance,
@@ -515,29 +523,11 @@
 					realBalance:realBalance,
 					orderItemList:orderItemList
 				}
-				// String id;   //订单id                                                             
-				// 											 String storeId;   //商铺id
-				// 											 Integer orderStatus;   //订单状态
-				// 											 BigDecimal total;      //总价
-				// 											 BigDecimal packing;    //包装费
-				// 											 String orderNo;      //订单号
-				// 											 String appointmentTime;    //预约时间
-				// 											 Integer payType;            //支付方式
-				// 											 String  mealType;       //就餐方式
-				// 											 String userId;          //用户ID
-				// 											 String mobile;             //手机号码
-				// 											 String orderName;           //下单名字
-				// 											 String remarks;           //备注
-				// 											 Integer orderType;           //订单类型
-				// 											 String deliveryClerk;        //配送方式
-				// 											 String deliveryClerkNum;       //配送员电话
-				// 											 String shoppingCartId;         //购物车id   用逗号分隔
-				// 											 String address;              //收货地址 
-				//                                              List<OrderItem> orderItemList;   //订单详情				
-				// 											   订单详情的参数: 	 String productName;      //商品名称
 			
 				Api.addOrder(data).then(res => {
-					console.log('res',res)
+					
+					this.orderId = res.data.data.id
+					console.log('ressdfasdfsdaf',res)
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -552,15 +542,15 @@
 			},
 			getStor(){
 				Api.getStoreList({id:this.storeId}).then(res => {
-					// console.log('res',res);
+					console.log('res',res);
 					this.store = res.data[0]
 					
 					// this.storeList.map((item)=>{
-						this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
-						// console.log('this.store',this.store)
-						this.store.foodSortList = this.store.foodLabel.split(",")
-						this.store.appraiseManagerList = this.store.appraiseManager.split(",")
-						this.store.servuceConfigurationList = this.store.servuceConfiguration.split(",")
+						// this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
+						// // console.log('this.store',this.store)
+						// this.store.foodSortList = this.store.foodLabel.split(",")
+						// this.store.appraiseManagerList = this.store.appraiseManager.split(",")
+						// this.store.servuceConfigurationList = this.store.servuceConfiguration.split(",")
 						
 					// })
 					// this.storeList.foodSortList = this.storeList
@@ -581,25 +571,17 @@
 				}
 				this.allJia = 0
 				Api.getShoppingCart(data).then(res => {
-					// console.log(res)
+				
 					this.cat = res.data.data
-					
 					this.cat.map((item,index)=>{
-						this.total += item.total*item.num
-						item.specObj = JSON.parse(item.spec) 
+						item.shoppingCarts.map((items)=>{
+							this.total += items.total
+							items.specObj = JSON.parse(items.spec) 
+						})
+						
 					})
 						
-						this.addorder()
-					// 	this.classifiList.map((items,indexs)=>{
-					// 		if(items.id == item.meunId){
-					// 			items.num ++
-					// 		}
-					// 	})
-					// 	this.allJia += item.total*item.num
-					// })
-					
-					// this.getGoodData()
-					// console.log('this.classifiList',this.classifiList)
+					this.addorder()
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
