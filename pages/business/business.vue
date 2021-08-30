@@ -288,6 +288,7 @@
 	.good_describe{
 		display: flex;
 		margin: 5rpx 0;
+		align-items: center;
 	}
 	
 	.good_score{
@@ -300,6 +301,7 @@
 	
 	.good_sale{
 		font-size: 28rpx;
+		color: #999;
 	}
 	
 	.good_start_price,.good_distance_time,.good_describe_label_box,.good_taste_label_box{

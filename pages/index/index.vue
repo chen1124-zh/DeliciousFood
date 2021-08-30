@@ -8,7 +8,7 @@
 						'color':'#fff'}">
 			<view :style="{'height':navigation.height+'px'}" class="topNavigation">
 				<view class="address" @click="show">
-					街道
+					{{siteList[siteIndex].siteName || ''}}
 				</view>
 				<view style="text-align: center;">
 					美食天下
@@ -515,12 +515,12 @@
 					关闭
 				</view>
 
-				<view class="">
-					<view class="" v-for="(item,index) in siteList" :key="index">
+				<view class="siteBox">
+					<view class="siteItem" v-for="(item,index) in siteList" :key="index" v-if="item.siteName&&item.address" @click="switchSite(index)">
 						<view class="">
-							{{item.siteName}}<text>距离886米</text>
+							<text class="siteName">{{item.siteName}}</text><text class="distances">距离{{item.distance||"0m"}}</text>
 						</view>
-						<view class="">
+						<view class="siteAddress">
 							{{item.address}}
 						</view>
 					</view>
@@ -538,6 +538,7 @@
 		data() {
 			return {
 				siteList: [],
+				siteIndex:0,
 				xian: false,
 				selectNearby: 1,
 				foodLabel: [],
@@ -603,21 +604,26 @@
 			}
 		},
 		async onLoad() {
+			await this.getLogLat()
 			await this.getStore()
 			await this.queryList()
 			await this.getMenuTypeList()
-		},
+			
+		}, 
 		onShow() {
-			this.getSiteList()
-			this.getLogLat()
+			
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		components: {
 			popupLayer
-		},
+		}, 
 		methods: {
+			switchSite(index){
+				this.siteIndex = index;
+				this.close()
+			},
 			jumpCat(){
 				
 				uni.navigateTo({
@@ -630,33 +636,46 @@
 			close() {
 				this.$refs.popupRef.close() // 或者 boolShow = rue
 			},
-			getDistance(latitude, longitude) {
-				uni.request({
-					url: 'https://apis.map.qq.com/ws/distance/v1/matrix', //仅为示例，并非真实接口地址。
-					method: 'GET',
-					data: {
-						mode: 'walking',
-						from: this.this.latitude + ',' + this.longitude,
-						to: latitude + ',' + longitude,
-						key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //获取key
-					},
-					success: (res) => {
-						console.log(res);
-						let hw = res.data.result.rows[0].elements[0].distance; //拿到距离(米)
-						if (hw && hw !== -1) {
-							if (hw < 1000) {
-								hw = hw + 'm';
+			getDistance() {
+				
+				this.siteList.map((item,index)=>{					 
+					uni.request({
+						url: 'https://apis.map.qq.com/ws/distance/v1/matrix', //仅为示例，并非真实接口地址。
+						method: 'GET',
+						data: {
+							mode: 'walking',
+							from: this.latitude + ',' + this.longitude,
+							to: item.latitude + ',' + this.longitude,
+							key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //获取key
+						},
+						success: (res) => {
+							console.log(res)
+							if(res.data.status == 0){
+								let hw = res.data.result.rows[0].elements[0].distance; //拿到距离(米)
+								if (hw && hw !== -1) {
+									if (hw < 1000) {
+										hw = hw + 'm';
+									}
+									//转换成公里
+									else {
+										hw = (hw / 2 / 500).toFixed(2) + 'km'
+									}
+								} else {
+									hw = "距离太近或请刷新重试"
+								}
+								item.distance = hw
+							}else{
+								item.distance = "0m"
 							}
-							//转换成公里
-							else {
-								hw = (hw / 2 / 500).toFixed(2) + 'km'
-							}
-						} else {
-							hw = "距离太近或请刷新重试"
+							
 						}
-						console.log(hw);
-					}
-				});
+					});
+					
+					
+					console.log(item)
+				})
+				
+				
 			},
 			getSiteList() {
 				var data = {
@@ -664,7 +683,13 @@
 				}
 
 				Api.getSite(data).then(res => {
-					console.log(res)
+					this.siteList = res.data.data
+					// console.log()
+					this.siteList.map(item=>{
+						item.distance = "0m"
+					})
+					this.getDistance()
+					
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -726,8 +751,11 @@
 					type: 'wgs84',
 					geocode: true, //设置该参数为true可直接获取经纬度及城市信息
 					success: (res) => {
+						
 						this.latitude = res.latitude
 						this.longitude = res.longitude
+						
+						this.getSiteList()
 					},
 					fail: function() {
 						uni.showToast({
@@ -1232,6 +1260,33 @@
 			position: absolute;
 			top: 20rpx;
 			right: 20rpx;
+			color: #ccc;
+		}
+	}
+	
+	.siteBox{
+		height: 900rpx;
+		overflow-y: auto;
+		
+		.siteItem{
+			padding: 30rpx;
+			border-bottom: 1rpx solid #f0f0f0;
+			.siteName{
+				font-size: 34rpx;
+			}
+			
+			.distances{
+				background: #EBF5FF;
+				color: #6CA1F4;
+				padding: 0 10rpx;
+				font-size: 28rpx;
+				border-radius: 10rpx;
+			}
+			
+			.siteAddress{
+				font-size: 28rpx;
+				color: #999;
+			}
 		}
 	}
 </style>
