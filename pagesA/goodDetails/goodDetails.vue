@@ -197,7 +197,7 @@
 									{{item.productName}}
 								</view>
 								<view class="good_describe">
-									{{item.productDetails||'暂无介绍'}}
+									{{item.describe||'暂无介绍'}}
 								</view>
 								<view class="operation">
 									<view class="price_discount">
@@ -206,15 +206,15 @@
 										</view>
 										<view class="price">
 											<text style="font-size: 34rpx;">￥</text> <text
-												style="font-size: 36rpx;">{{item.productPrice}}</text>
+												style="font-size: 36rpx;">{{item.specifications[0].content[0].price}}</text>
 										</view>
 									</view>
 
 									<view class="" v-if="item.num==0">
-										<view class="" @click="gauge(index)" v-if="item.specification!=''">
+										<view class="gauge" @click="gauge(index)" v-if="item.s.length > 1">
 											选规格
 										</view>
-										<view class="" v-else>
+										<view class="an" v-else @click="addShe(index)" style="background: #007AFF;color: #fff;">
 											+
 										</view>
 									</view>
@@ -272,7 +272,7 @@
 					</view>
 					
 					
-					<view style="margin: 20rpx 0; display: flex;flex-wrap: wrap;">
+					<view style="margin: 20rpx 0;">
 						<view v-for="(item,index) in gaugeData.c" :key='index' >
 							<view class="Stitle">
 								{{item.title}}
@@ -570,6 +570,7 @@
 						Api.updateShoppingCar(data).then(res => {
 							// this.classifiList[this.selectClassifi].num --
 							// this.$forceUpdate()
+							this.allJia += item.total * item.num 
 						}).catch(err => {
 							uni.showToast({
 								title: err.msg,
@@ -579,7 +580,7 @@
 
 					}
 
-					this.allJia += item.total * item.num
+					
 				})
 			},
 			getShoppingCartList() {
@@ -627,11 +628,20 @@
 			},
 			Xgauge(index,indexs) {
 				this.jia = this.tempJia
-				if (this.gaugeData.c[index].content[indexs].select == undefined) {
-					this.gaugeData.c[index].content[indexs].select = true
-				} else {
-					this.gaugeData.c[index].content[indexs].select = !this.gaugeData.c[index].content[indexs].select
-				}
+				this.gaugeData.c[index].content.map((item,i)=>{
+					
+					if(indexs == i){
+						item.select = true
+					}else{
+						item.select = false
+					}
+					
+				})
+				// if (this.gaugeData.c[index].content[indexs].select == undefined) {
+				// 	this.gaugeData.c[index].content[indexs].select = true
+				// } else {
+				// 	this.gaugeData.c[index].content[indexs].select = !this.gaugeData.c[index].content[indexs].select
+				// }
 
 				this.gaugeData.c.map((item) => {
 					item.content.map((items)=>{
@@ -727,6 +737,70 @@
 
 
 			},
+			addShe(index){
+				var tempGauge = []
+				
+				
+				var urlImages = ''
+				var productName = ''
+				var price = ''
+				console.log(this.goodList[index])
+				for (var i = 0; i < this.goodList[index].specifications.length; i++) {
+							
+					for (var j = 0; j<this.goodList[index].specifications[i].content.length; j++){
+							this.goodList[index].specifications[i].content[j].select = true
+							tempGauge.push(this.goodList[index].specifications[i].content[j])
+							
+							this.jia += Number(this.goodList[index].specifications[i].content[j].price) 
+					}
+					
+				}
+				
+				price = this.goodList[index].linedPrice;
+				urlImages = this.goodList[index].productImg;
+				productName = this.goodList[index].productName
+			
+				
+				var data = {
+					userId: this.user.id,
+					storeId: this.storeId,
+					num: 1,
+					price: price,
+					urlImages: urlImages || '',
+					productName: productName,
+					total: this.jia,
+					spec: JSON.stringify(tempGauge),
+					productId: this.goodList[index].id,
+					meunId: this.classifiList[this.selectClassifi].id,
+					status: 0,
+					favourable:'',
+					remark: '',
+					discounted:0
+				}
+				Api.addShoppingCart(data).then(res => {
+					this.classifiList[this.selectClassifi].num++
+				// 	this.goodList.map((item, index) => {
+				// 		if (item.id == this.gaugeData.i) {
+				// 			item.num++
+				// 		}
+				
+				// 	})
+					
+					this.goodList[index].num++
+					this.cat.push(res.data.data)
+					this.allJia = 0
+					this.cat.map((item, index) => {
+						this.allJia = item.total
+					})
+					// this.g = false
+				
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
 			getStroeData() {
 
 				Api.getStoreList({
@@ -774,15 +848,7 @@
 						this.store.servuceConfigurationList.push(items)
 					})
 					
-					
-					// this.store.foodSortList = this.store.foodLabel.split(",")
-					// this.store.appraiseManagerList = this.store.appraiseManager.split(",")
-					// this.store.servuceConfigurationList = this.store.servuceConfiguration.split(",")
-		
-					// })
-					// this.storeList.foodSortList = this.storeList
-					// console.log('this.storeList.foodSortList',this.storeList)
-
+				
 
 				}).catch(err => {
 					uni.showToast({
@@ -819,8 +885,6 @@
 					this.jia = this.goodList[index].productPrice
 					this.gaugeData.i = this.goodList[index].id
 					this.gaugeData.c = JSON.parse(this.goodList[index].specification)
-					console.log(this.gaugeData.c)
-
 				}
 
 				// console.log(this.goodList[index]);
@@ -856,6 +920,18 @@
 				Api.getProductList(data).then(res => {
 					this.goodList = res.data.data
 					this.goodList.map((item) => {
+						
+						var tempSpecification =  JSON.parse(item.specification) 
+						item.s = []
+						tempSpecification.map(items=>{
+							items.content.map((itemsx)=>{
+								item.s.push(itemsx)
+							})
+						})
+						
+						
+						item.specifications = JSON.parse(item.specification) 
+						
 						item.num = 0
 						if (item.productImg != undefined) {
 							item.img = item.productImg.split(',')[0]
@@ -968,7 +1044,7 @@
 	}
 
 	.good_title_select {
-		width: 190rpx;
+		width: 200rpx;
 		background: #F8F8F8;
 		height: 100vh;
 	}
@@ -984,6 +1060,7 @@
 		text-align: center;
 		padding: 10rpx 0;
 		margin: 10rpx 0;
+		font-size: 28rpx;
 	}
 	
 	.good_title_select .selectMenu{
@@ -996,6 +1073,7 @@
 		padding: 10rpx 0;
 		margin: 10rpx 0;
 		border-left: 4rpx solid #007AFF;
+		font-size: 28rpx;
 	}
 
 	.good_right {
@@ -1179,6 +1257,8 @@
 		border: 1rpx solid #999;
 		color: #999;
 		text-align: center;
+		display: inline-block;
+		margin-right: 20rpx;
 	}
 
 	.gaugeSelectItem {
@@ -1187,6 +1267,8 @@
 		border: 1rpx solid #007AFF;
 		color: #007AFF;
 		text-align: center;
+		display: inline-block;
+		margin-right: 20rpx;
 	}
 
 	.x {
@@ -1256,5 +1338,13 @@
 		margin: 10rpx 0;
 	}
 	
+	
+	.gauge{
+		    background: #1897FF;
+		    font-size: 26rpx;
+		    padding: 10rpx;
+		    border-radius: 10rpx;
+		    color: #fff;
+	}
 	
 </style>
