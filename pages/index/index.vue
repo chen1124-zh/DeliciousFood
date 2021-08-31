@@ -186,7 +186,7 @@
 							</view>
 
 							<view class="good_reserve">
-								支持预定
+								支持预订
 							</view>
 
 						</view>
@@ -468,7 +468,7 @@
 										</view>
 									</view>
 									<view class="good_reserve">
-										支持预定
+										支持预订
 									</view>
 								</view>
 							</view>
@@ -571,7 +571,7 @@
 				],
 				csIndex: 0,
 				sorte: [{
-						name: '综艺排序',
+						name: '综合排序',
 					},
 					{
 						name: '销量最高',

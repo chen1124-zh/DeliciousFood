@@ -41,7 +41,7 @@
 				</view>
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="title" style="font-weight: bold;">
-						预定电话
+						预订电话
 					</view>
 					<view class="" style="display: flex;">
 						<view class="" style="margin-right: 20rpx;">
@@ -56,7 +56,7 @@
 				</view>
 				<view class="han">
 					<view class="title">
-						预定时间
+						预订时间
 					</view>
 					<view class="">
 						 <!-- <picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
@@ -108,7 +108,7 @@
 				
 				<view class="han">
 					<view class="title">
-						预定时间
+						预订时间
 					</view>
 					<view class="">
 						5月5日 周三 12:45
@@ -131,7 +131,7 @@
 				</view>
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="title" style="font-weight: bold;">
-						预定电话
+						预订电话
 					</view>
 					<view class="" style="display: flex;">
 						<view class="" style="margin-right: 20rpx;">
@@ -169,7 +169,7 @@
 				</view>
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="title" style="font-weight: bold;">
-						预定电话
+						预订电话
 					</view>
 					<view class="" style="display: flex;">
 						<view class="" style="margin-right: 20rpx;">

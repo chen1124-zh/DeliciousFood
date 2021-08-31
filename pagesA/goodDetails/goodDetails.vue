@@ -21,7 +21,7 @@
 		</view>
 
 		<view class="">
-			<view class="">
+			<view class="" style="height: 380rpx;overflow: hidden;">
 				<image :src="store.storeIntroductImg" mode="" style="width: 100%;"></image>
 			</view>
 		</view>
@@ -60,10 +60,10 @@
 			</view>
 
 			<view class="relation">
-				<view class="address">
+				<view class="address" @click="locations()">
 					{{store.area}}{{store.address}}>
 				</view>
-				<view class="contact">
+				<view class="contact"  @click.stop="gitPhone">
 					<view class="">
 						<uni-icons type="phone-filled" color="#289EFF" size="30"></uni-icons>
 					</view>
@@ -94,7 +94,7 @@
 				</view>
 				
 				<view class="good_reserve">
-					支持预定 	
+					支持预订
 				</view>
 						
 			</view>
@@ -135,24 +135,7 @@
 							周{{weekStr[item.day]}}
 						</view>						
 					</view>
-					<!-- <view :class="week==2?'weekSelect':''" class="day" @click="week=2;">
-						周二
-					</view>
-					<view :class="week==3?'weekSelect':''" class="day" @click="week=3;">
-						周三
-					</view>
-					<view :class="week==4?'weekSelect':''" class="day" @click="week=4;">
-						周四
-					</view>
-					<view :class="week==5?'weekSelect':''" class="day" @click="week=5;">
-						周五
-					</view>
-					<view :class="week==6?'weekSelect':''" class="day" @click="week=6;">
-						周六
-					</view>
-					<view :class="week==0?'weekSelect':''" class="day" @click="week=0;">
-						周日
-					</view> -->
+				
 				</view>
 			</view>
 
@@ -287,16 +270,26 @@
 					<view class="food_name">
 						菜品名称
 					</view>
+					
+					
 					<view style="margin: 20rpx 0; display: flex;flex-wrap: wrap;">
-						<view :class="item.select == true?	'gaugeSelectItem':'gaugeItem'"
-							v-for="(item,index) in gaugeData.c" :key='index' @click="Xgauge(index)">
-							{{item.name}}
+						<view v-for="(item,index) in gaugeData.c" :key='index' >
+							<view class="Stitle">
+								{{item.title}}
+							</view>
+							<view :class="items.select == true?	'gaugeSelectItem':'gaugeItem'"
+							 v-for="(items,indexs) in item.content" :key='indexs' @click="Xgauge(index,indexs)">
+								{{items.name}}
+							</view>
+							<!--  -->
+							
 						</view>
 					</view>
+					
 					<view class="" style="display: flex;justify-content: space-between;">
 						<view class="">
-							总价<text style="color: red;font-size: 34rpx;">￥</text> <text
-								style="color: red;font-size: 36rpx;">{{jia}}</text>
+							总价<text style="color: red;font-size: 48rpx;">￥</text> <text
+								style="color: red;font-size: 50rpx;">{{jia}}</text>
 						</view>
 						<view class="" @click="addCat"
 							style="padding: 10rpx 20rpx;background: #21A0FF;color: #fff;border-radius: 10rpx;">
@@ -437,6 +430,38 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			gitPhone(){
+				uni.showActionSheet({
+				    itemList: ['1899999990'],
+					itemColor:'#1890FF',
+				    success: function (res) {
+						
+						
+						uni.makePhoneCall({
+						    phoneNumber: '1899999990' //仅为示例
+						});
+						
+				        console.log(res);
+				    },
+				    fail: function (res) {
+				        console.log(res.errMsg);
+				    }
+				});
+			},
+			locations(){
+				var latitude = Number(this.store.latitude)
+				var longitude = Number(this.store.longitude)
+				uni.getLocation({
+					success(res){
+						uni.openLocation({
+							latitude:latitude,
+							longitude:longitude,
+							scale:15,
+						})
+					}
+				})
+				
+			},
 			/**
 			 * 判断某年是否闰年
 			 */
@@ -600,25 +625,28 @@
 				this.csIndex = e.detail.value;
 				this.getGoodData()
 			},
-			Xgauge(index) {
+			Xgauge(index,indexs) {
 				this.jia = this.tempJia
-				if (this.gaugeData.c[index].select == undefined) {
-					this.gaugeData.c[index].select = true
+				if (this.gaugeData.c[index].content[indexs].select == undefined) {
+					this.gaugeData.c[index].content[indexs].select = true
 				} else {
-					this.gaugeData.c[index].select = !this.gaugeData.c[index].select
+					this.gaugeData.c[index].content[indexs].select = !this.gaugeData.c[index].content[indexs].select
 				}
 
 				this.gaugeData.c.map((item) => {
-					if (item.select == true) {
-						this.jia += parseFloat(item.price)
-					}
+					item.content.map((items)=>{
+						if (items.select == true) {
+							this.jia += parseFloat(items.price)
+						}
+					})
+					
 
 				})
 
 
 
 			},
-
+			
 			addCat() {
 
 
@@ -639,11 +667,17 @@
 				var price = ''
 
 				for (var i = 0; i < this.gaugeData.c.length; i++) {
-					if (this.gaugeData.c[i].select == true) {
-						tempGauge.push(this.gaugeData.c[i])
-					}
-				}
+			
+					for (var j = 0; j<this.gaugeData.c[i].content.length; j++){
 
+						if (this.gaugeData.c[i].content[j].select == true) {
+
+							tempGauge.push(this.gaugeData.c[i].content[j])
+						}
+					}
+					
+				}
+				
 				for (var i = 0; i < this.goodList.length; i++) {
 					if (this.gaugeData.i == this.goodList[i].id) {
 						price = this.goodList[i].linedPrice;
@@ -665,7 +699,8 @@
 					meunId: this.classifiList[this.selectClassifi].id,
 					status: 0,
 					favourable:'',
-					remark: ''
+					remark: '',
+					discounted:0
 				}
 				Api.addShoppingCart(data).then(res => {
 					this.classifiList[this.selectClassifi].num++
@@ -784,6 +819,7 @@
 					this.jia = this.goodList[index].productPrice
 					this.gaugeData.i = this.goodList[index].id
 					this.gaugeData.c = JSON.parse(this.goodList[index].specification)
+					console.log(this.gaugeData.c)
 
 				}
 
@@ -1036,7 +1072,7 @@
 	}
 
 	.Specifications_box {
-		width: 90%;
+		width: 80%;
 		background: #fff;
 		border-radius: 20rpx;
 		padding: 20rpx;
@@ -1044,7 +1080,8 @@
 
 	.food_name {
 		font-size: 40rpx;
-		color: #333;
+		color: #999;
+		font-weight: bold;
 	}
 
 
@@ -1141,6 +1178,7 @@
 		border-radius: 10rpx;
 		border: 1rpx solid #999;
 		color: #999;
+		text-align: center;
 	}
 
 	.gaugeSelectItem {
@@ -1148,6 +1186,7 @@
 		border-radius: 10rpx;
 		border: 1rpx solid #007AFF;
 		color: #007AFF;
+		text-align: center;
 	}
 
 	.x {
@@ -1211,6 +1250,10 @@
 	.good_reserve {
 		padding: 5rpx 10rpx;
 		border: 1rpx solid #999;
+	}
+	
+	.Stitle{
+		margin: 10rpx 0;
 	}
 	
 	

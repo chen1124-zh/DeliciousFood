@@ -58,7 +58,7 @@
 							香辣
 						</view>
 						<view class="good_reserve">
-							预定
+							预订
 						</view>
 							
 					</view>
@@ -126,7 +126,7 @@
 							香辣
 						</view>
 						<view class="good_reserve">
-							预定
+							预订
 						</view>
 							
 					</view>

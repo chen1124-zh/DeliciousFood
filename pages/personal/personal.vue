@@ -172,7 +172,7 @@
 							</view>
 						</view>
 						<view class="good_reserve">
-							支持预定 	
+							支持预订
 						</view>
 							
 					</view>
