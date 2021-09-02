@@ -138,32 +138,32 @@
 					{{item.menuName}}
 				</view>
 			</view>
-			<view class="good_all_box">
-				<view class="good_item_box" v-for="(item,index) in storeList" :key='index' @click="rGoog(index)">
-					<view class="googImgBox">
+			<view class="shop_all_box">
+				<view class="shop_item_box" v-for="(item,index) in storeList" :key='index' @click="rGoog(index)">
+					<view class="shopImgBox">
 						<image :src="item.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 					</view>
-					<view class="good_item_describe">
-						<view class="good_name_mueu">
-							<view class="good_name">
+					<view class="shop_item_describe">
+						<view class="shop_name_mueu">
+							<view class="shop_name">
 								{{item.storeName}}
 							</view>
-							<view class="good_mueu">
+							<view class="shop_mueu">
 								...
 							</view>
 						</view>
 
-						<view class="good_describe">
-							<view class="good_score">
+						<view class="shop_describe">
+							<view class="shop_score">
 								<uni-icons type="star-filled" color='#F8621E' size='20'></uni-icons>4.8
 							</view>
-							<view class="good_sale">
+							<view class="shop_sale">
 								月售{{item.saleNum||0}}
 							</view>
 						</view>
 
-						<view class="good_performance" v-if="item.startingPrice">
-							<view class="good_start_price">
+						<view class="shop_performance" v-if="item.startingPrice">
+							<view class="shop_start_price">
 								起送{{item.startingPrice}}
 							</view>
 							<view class="good_distance_time" v-if="item.deliveryTime && item.deliveryRange">
@@ -171,21 +171,21 @@
 							</view>
 						</view>
 
-						<view class="good_describe_label_box">
+						<view class="shop_describe_label_box">
 
-							<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
+							<view class="shop_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
 								:key='i'>
 								{{foods}}
 							</view>
 						</view>
-						<view class="good_taste_label_box">
+						<view class="shop_taste_label_box">
 							<view style="flex: 1;overflow-x: auto;display: flex;margin-right: 10rpx;">
-								<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
+								<view class="shop_item_taste_label_box" v-for="(food,i) in item.foodSortList" :key='i'>
 									{{food}}
 								</view>
 							</view>
 
-							<view class="good_reserve">
+							<view class="shop_reserve">
 								支持预订
 							</view>
 
@@ -394,12 +394,14 @@
 					<view class="screen_left">
 
 						<view class="select_item">
-							<picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
-								<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;">
-									{{sorte[storeIndex].name}}
-									<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
-								</view>
-							</picker>
+							<!-- <picker mode="selector" :range="sorte" range-key="name" @change="sortchange">
+								
+							</picker> -->
+							<view style="font-weight: bold;font-size: 30rpx;color: #007AFF;" @click="xians = !xians">
+								{{sortes[storeIndexs].name}}
+								<uni-icons type="arrowdown" color='#007AFF'></uni-icons>
+							</view>
+						
 						</view>
 						<view class="select_item">
 							距离
@@ -411,6 +413,72 @@
 					<view class="screen">
 						筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 					</view>
+					
+					<view class="drop_down_box" v-if="xians">
+						<view class="choice" v-for="(item,index) in sortes" :key='index'
+							@click="storeIndexs = index,xians = false">
+							<view :class="index == storeIndexs?'choiceselect':''">
+								{{item.name}}
+							</view>
+							<view class="" v-if="index == storeIndexs">
+								<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
+							</view>
+						</view>
+					</view>
+					
+					
+					<view class="drop_down_box">
+						<view class="">
+							商家服务
+						</view>
+						<view class="">
+							<view class="">
+								<view class="">
+									<image src="" mode=""></image>
+								</view>
+								<view class="">
+									商家配送
+								</view>
+							</view>
+							<view class="">
+								<view class="">
+									<image src="" mode=""></image>
+								</view>
+								<view class="">
+									支持配送
+								</view>
+							</view>
+							<view class="">
+								<view class="">
+									<image src="" mode=""></image>
+								</view>
+								<view class="">
+									到店自取
+								</view>
+							</view>
+							<view class="">
+								<view class="">
+									<image src="" mode=""></image>
+								</view>
+								<view class="">
+									贵宾服务
+								</view>	
+							</view>
+						</view>
+					
+						<view class="">
+							人均价格
+						</view>
+						
+						<view class="">
+							<view class="">
+								清空
+							</view>
+							<view class="">
+								搜索
+							</view>
+						</view>
+					</view>
 				</view>
 
 				<view class="label_box">
@@ -419,33 +487,33 @@
 					</view>
 				</view>
 
-				<view class="good_all_box">
-					<view class="goodBox" v-for="(item,index) in nearbyStoreList" :key='index' @click="rGoog(index)">
-						<view class="good_item_box">
-							<view class="googImgBox">
+				<view class="shop_all_box" v-if="selectNearby == 1">
+					<view class="shopBox" v-for="(item,index) in nearbyStoreList" :key='index' @click="rGoog(index)">
+						<view class="shop_item_box">
+							<view class="shopImgBox">
 								<image :src="item.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
 							</view>
-							<view class="good_item_describe">
-								<view class="good_name_mueu">
-									<view class="good_name">
+							<view class="shop_item_describe">
+								<view class="shop_name_mueu">
+									<view class="shop_name">
 										{{item.storeName}}
 									</view>
-									<view class="good_mueu">
+									<view class="shop_mueu">
 										...
 									</view>
 								</view>
 
-								<view class="good_describe">
-									<view class="good_score">
+								<view class="shop_describe">
+									<view class="shop_score">
 										<uni-icons type="star-filled" color='#F8621E' size='20'></uni-icons>4.8
 									</view>
-									<view class="good_sale">
+									<view class="shop_sale">
 										月售{{item.saleNum||0}}
 									</view>
 								</view>
 
-								<view class="good_performance" v-if="item.startingPrice">
-									<view class="good_start_price">
+								<view class="shop_performance" v-if="item.startingPrice">
+									<view class="shop_start_price">
 										起送{{item.startingPrice}}
 									</view>
 									<view class="good_distance_time" v-if="item.deliveryTime && item.deliveryRange">
@@ -453,21 +521,21 @@
 									</view>
 								</view>
 
-								<view class="good_describe_label_box">
+								<view class="shop_describe_label_box">
 
-									<view class="good_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
+									<view class="shop_item_describe_label" v-for="(foods,i) in item.appraiseManagerList"
 										:key='i'>
 										{{foods}}
 									</view>
 								</view>
-								<view class="good_taste_label_box">
+								<view class="shop_taste_label_box">
 									<view style="flex: 1;overflow-x: auto;display: flex;margin-right: 10rpx;">
-										<view class="good_item_taste_label_box" v-for="(food,i) in item.foodSortList"
+										<view class="shop_item_taste_label_box" v-for="(food,i) in item.foodSortList"
 											:key='i'>
 											{{food}}
 										</view>
 									</view>
-									<view class="good_reserve">
+									<view class="shop_reserve">
 										支持预订
 									</view>
 								</view>
@@ -492,20 +560,50 @@
 					</view>
 
 
-
-
-
 				</view>
+				
+				
 
 			</view>
 
+		</view>
+		
+		<view class="goodList" v-if="selectNearby == 2">
+			<view class="goodItem" v-for="(item,index) in goodList" :key='index' @click="rGoogs(index)">
+				<view class="good_img">
+					<image src="../../static/tempGood2.png" mode=""></image>
+				</view>
+				<view class="goodRight">
+					<view class="goodName">
+						{{item.productName}}
+						
+					</view>
+					<view class="goodTime">
+						<text>{{item.deliveryTime||0}}分钟</text> <text>{{item.deliveryRange||0}}km</text> <text>起送{{item.startingPrice||0}}</text>
+					</view>
+					<view class="good_p">
+						￥{{item.p||0}}
+					</view>
+					<view class="good_shop">
+						<view class="good_shop_img">
+							<image :src="item.storeLogo" mode=""></image>
+						</view>
+						<view class="good_shop_name">
+							{{item.storeName||"店铺名称"}}
+						</view>
+						<view class="good_shop_P">
+							<uni-icons type="star-filled" color='#F8621E' size='18'></uni-icons>4.8
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 
 		<view class="ShoppingCart" @click="jumpCat">
 			<image src="../../static/car.png" style="width: 50%;height: 50%;" mode=""></image>
 		</view>
-		
+
 		<popup-layer ref="popupRef" :direction="'top'" v-model="boolShow">
 			<view class="zidingyiBox">
 				<view class="title">
@@ -516,9 +614,11 @@
 				</view>
 
 				<view class="siteBox">
-					<view class="siteItem" v-for="(item,index) in siteList" :key="index" v-if="item.siteName&&item.address" @click="switchSite(index)">
+					<view class="siteItem" v-for="(item,index) in siteList" :key="index"
+						v-if="item.siteName&&item.address" @click="switchSite(index)">
 						<view class="">
-							<text class="siteName">{{item.siteName}}</text><text class="distances">距离{{item.distance||"0m"}}</text>
+							<text class="siteName">{{item.siteName}}</text><text
+								class="distances">距离{{item.distance||"0m"}}</text>
 						</view>
 						<view class="siteAddress">
 							{{item.address}}
@@ -538,7 +638,7 @@
 		data() {
 			return {
 				siteList: [],
-				siteIndex:0,
+				siteIndex: 0,
 				xian: false,
 				selectNearby: 1,
 				foodLabel: [],
@@ -600,7 +700,37 @@
 				nearbyStoreList: [],
 				navigation: '',
 				latitude: '',
-				longitude: ''
+				longitude: '',
+				goodList:[],
+				
+				
+				sortes: [{
+						name: '综合排序',
+					},
+					{
+						name: '销量最高',
+					},
+					{
+						name: '距离最近'
+					},
+					{
+						name: '好评优先'
+					},
+					{
+						name: '起送价最低'
+					},
+					{
+						name: '配送最快'
+					},
+					{
+						name: '人均从低到高'
+					},
+					{
+						name: '人均从高到低'
+					}
+				],
+				storeIndexs: 0,
+				xians:false
 			}
 		},
 		async onLoad() {
@@ -608,26 +738,27 @@
 			await this.getStore()
 			await this.queryList()
 			await this.getMenuTypeList()
-			
-		}, 
+			await this.getGoodList()
+
+		},
 		onShow() {
-			
+
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		components: {
 			popupLayer
-		}, 
+		},
 		methods: {
-			switchSite(index){
+			switchSite(index) {
 				this.siteIndex = index;
 				this.close()
 			},
-			jumpCat(){
-				
+			jumpCat() {
+
 				uni.navigateTo({
-					url:'../../pagesA/shoppingCart/shoppingCart'
+					url: '../../pagesA/shoppingCart/shoppingCart'
 				})
 			},
 			show() {
@@ -637,8 +768,8 @@
 				this.$refs.popupRef.close() // 或者 boolShow = rue
 			},
 			getDistance() {
-				
-				this.siteList.map((item,index)=>{					 
+
+				this.siteList.map((item, index) => {
 					uni.request({
 						url: 'https://apis.map.qq.com/ws/distance/v1/matrix', //仅为示例，并非真实接口地址。
 						method: 'GET',
@@ -650,7 +781,7 @@
 						},
 						success: (res) => {
 							console.log(res)
-							if(res.data.status == 0){
+							if (res.data.status == 0) {
 								let hw = res.data.result.rows[0].elements[0].distance; //拿到距离(米)
 								if (hw && hw !== -1) {
 									if (hw < 1000) {
@@ -664,18 +795,18 @@
 									hw = "距离太近或请刷新重试"
 								}
 								item.distance = hw
-							}else{
+							} else {
 								item.distance = "0m"
 							}
-							
+
 						}
 					});
-					
-					
+
+
 					console.log(item)
 				})
-				
-				
+
+
 			},
 			getSiteList() {
 				var data = {
@@ -685,11 +816,11 @@
 				Api.getSite(data).then(res => {
 					this.siteList = res.data.data
 					// console.log()
-					this.siteList.map(item=>{
+					this.siteList.map(item => {
 						item.distance = "0m"
 					})
 					this.getDistance()
-					
+
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -751,10 +882,10 @@
 					type: 'wgs84',
 					geocode: true, //设置该参数为true可直接获取经纬度及城市信息
 					success: (res) => {
-						
+
 						this.latitude = res.latitude
 						this.longitude = res.longitude
-						
+
 						this.getSiteList()
 					},
 					fail: function() {
@@ -836,6 +967,11 @@
 					url: '../../pagesA/goodDetails/goodDetails?id=' + this.storeList[index].id
 				})
 			},
+			rGoogs(index){
+				uni.navigateTo({
+					url: '../../pagesA/goodDetails/goodDetails?id=' + this.goodList[index].storeId
+				})
+			},
 			async getnearbyStoreGoodList() {
 				for (var i = 0; i < this.nearbyStoreList.length; i++) {
 
@@ -853,7 +989,44 @@
 					});
 				}
 				this.$forceUpdate()
+			},
+			getGoodList(){
+				Api.getProductList({}).then(ress => {
+					this.goodList = ress.data.data
+					
+					this.goodList.map(item=>{
+						var d = JSON.parse(item.specification) 
+						item.p = d[0].content[0].price
+						
+						
+						Api.getStoreList({id:item.storeId}).then(res => {
+							
+							item.deliveryTime = res.data[0].deliveryTime
+							item.deliveryRange = res.data[0].deliveryRange
+							item.storeName = res.data[0].storeName
+							item.storeLogo = res.data[0].storeLogo
+							item.startingPrice = res.data[0].startingPrice
+						}).catch(err => {
+							uni.showToast({
+								title: err.msg,
+								icon: 'none'
+							})
+						});
+						
+						
+						
+						
+						
+					})
+					// this.nearbyStoreList[i].goodLists = ress.data.data
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
 			}
+			
 		}
 	}
 </script>
@@ -990,16 +1163,16 @@
 		white-space: nowrap;
 	}
 
-	.good_all_box {
+	.shop_all_box {
 		margin-bottom: 30rpx;
 	}
 
-	.good_item_box {
+	.shop_item_box {
 		display: flex;
 		margin: 20rpx;
 	}
 
-	.googImgBox {
+	.shopImgBox {
 		width: 170rpx;
 		height: 170rpx;
 		border-radius: 10rpx;
@@ -1008,17 +1181,17 @@
 		overflow: hidden;
 	}
 
-	.good_item_describe {
+	.shop_item_describe {
 		flex: 1;
 		overflow: hidden;
 	}
 
-	.good_name_mueu {
+	.shop_name_mueu {
 		display: flex;
 		justify-content: space-between;
 	}
 
-	.good_name {
+	.shop_name {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1027,13 +1200,13 @@
 		color: #000;
 	}
 
-	.good_describe {
+	.shop_describe {
 		display: flex;
 		margin: 5rpx 0;
 		align-items: center;
 	}
 
-	.good_score {
+	.shop_score {
 		margin-right: 20rpx;
 		font-size: 28rpx;
 		color: #F8621E;
@@ -1041,32 +1214,32 @@
 		align-items: center;
 	}
 
-	.good_sale {
+	.shop_sale {
 		font-size: 28rpx;
 		color: #999;
 	}
 
-	.good_start_price,
+	.shop_start_price,
 	.good_distance_time,
-	.good_describe_label_box,
-	.good_taste_label_box {
+	.shop_describe_label_box,
+	.shop_taste_label_box {
 		font-size: 24rpx;
 		color: #999;
 		margin-top: 10rpx;
 	}
 
-	.good_performance {
+	.shop_performance {
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
 	}
 
-	.good_describe_label_box {
+	.shop_describe_label_box {
 		display: flex;
 		overflow-x: auto;
 	}
 
-	.good_item_describe_label {
+	.shop_item_describe_label {
 		color: #E19D58;
 		background: #FEF4E9;
 		margin-right: 16rpx;
@@ -1075,7 +1248,7 @@
 		white-space: nowrap;
 	}
 
-	.good_item_taste_label_box {
+	.shop_item_taste_label_box {
 		color: #EEACAA;
 		border: 1rpx solid #FCFCFC;
 		margin-right: 16rpx;
@@ -1084,13 +1257,13 @@
 		white-space: nowrap;
 	}
 
-	.good_taste_label_box {
+	.shop_taste_label_box {
 		display: flex;
 		margin-top: 10rpx;
 		overflow: hidden;
 	}
 
-	.good_reserve {
+	.shop_reserve {
 		padding: 5rpx 10rpx;
 		border: 1rpx solid #999;
 	}
@@ -1263,30 +1436,86 @@
 			color: #ccc;
 		}
 	}
-	
-	.siteBox{
+
+	.siteBox {
 		height: 900rpx;
 		overflow-y: auto;
-		
-		.siteItem{
+
+		.siteItem {
 			padding: 30rpx;
 			border-bottom: 1rpx solid #f0f0f0;
-			.siteName{
+
+			.siteName {
 				font-size: 34rpx;
 			}
-			
-			.distances{
+
+			.distances {
 				background: #EBF5FF;
 				color: #6CA1F4;
 				padding: 0 10rpx;
 				font-size: 28rpx;
 				border-radius: 10rpx;
 			}
-			
-			.siteAddress{
+
+			.siteAddress {
 				font-size: 28rpx;
 				color: #999;
 			}
 		}
 	}
+	
+	
+	
+	.goodList{
+		
+		.goodItem{
+			display: flex;
+			padding: 20rpx;
+			margin-bottom: 20rpx;
+			background: #fff;
+			.good_img{
+				width: 150rpx;
+				height: 150rpx;
+			}
+			.goodRight{
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				.goodName{
+					font-size: 30rpx;
+					font-weight: bold;
+				}
+				.goodTime{
+					text{
+						font-size: 24rpx;
+						color: #999;
+						margin-right: 10rpx;
+					}
+				}
+				.good_p{
+					font-size: 28rpx;
+					color: red;
+				}
+				.good_shop{
+					display: flex;
+					align-items: center;
+					.good_shop_img{
+						width: 50rpx;
+						height: 50rpx;
+						border-radius: 50%;
+					}
+					.good_shop_name{
+						font-size: 24rpx;
+					}
+					.good_shop_P{
+						margin-left: 50rpx;
+						color: #F8621E;
+						font-size: 24rpx;
+					}
+				}
+			}
+		}
+		
+	}
+	
 </style>
