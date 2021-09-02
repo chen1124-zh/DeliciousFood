@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<view style="position: fixed;top: 0; height: 290rpx;background: #1093FF;width: 100%;z-index: -1;">
+	<view class="contact" >
+		<view class="bar">
 			
 		</view>
 		<view class="bao">
@@ -18,28 +18,31 @@
 			</view>
 		</view>
 		<view class="shop">
-			
-			
-			
 			<view class="" v-if="index == 0">
-				<view class="han" style="display: flex;justify-content: space-between;">
+				<view class="han">
 					<view class="">
-						<view class="">
-							name
+						<view class="position">
+							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
+							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
+							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
 						</view>
 						<view class="">
-							{{store.area}}{{store.address}}
+							{{siteList[siteIndex].address}}
 						</view>
-						<view class="" style="font-size: 28rpx;color: #999;">
+						<view class="system">
 							系统自动为您选择就近站点
 						</view>
 					</view>
-					<view class="">
-						距离 
+					<view class="distance">
+						<view class="distanceStr">
+							距您{{siteList[siteIndex].distance}} <uni-icons type="arrowright" color='#2697F4'></uni-icons>
+						</view>
+						<image src="../../static/distance.png" mode="widthFix" class="distanceIcon"></image>
+						
 					</view>
 					
 				</view>
-				<view class="han" style="display: flex;justify-content: space-between;">
+				<view class="han">
 					<view class="title" style="font-weight: bold;">
 						预订电话
 					</view>
@@ -51,7 +54,9 @@
 						<view class="" style="color: #007AFF;">
 							{{user.mobile}}
 						</view>
-						
+						<view class="">
+							<uni-icons type="compose"></uni-icons>
+						</view>
 					</view>
 				</view>
 				<view class="han">
@@ -71,7 +76,6 @@
 						座位
 					</view> -->
 				</view>
-				
 				<view class="han">
 					<view class="title">
 						订座
@@ -81,9 +85,13 @@
 					</view>
 				</view>
 			
-		
+				<view class="invitation" v-if="type!=0">
+					邀请好友
+				</view>
+				<view class="cancel" v-if="type!=0">
+					取消拼团
+				</view>
 			</view>
-		
 		
 			<view class="" v-if="index == 1">
 				<view class="han">
@@ -119,13 +127,24 @@
 			<view class="" v-if="index == 2">
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="">
-						
+						<view class="position">
+							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
+							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
+							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
+						</view>
 						<view class="">
-							{{store.area}}{{store.address}}
+							{{siteList[siteIndex].address}}
+						</view>
+						<view class="system">
+							系统自动为您选择就近站点
 						</view>
 					</view>
-					<view class="">
-						距离 
+					<view class="distance">
+						<view class="distanceStr">
+							距您{{siteList[siteIndex].distance}} <uni-icons type="arrowright" color='#2697F4'></uni-icons>
+						</view>
+						<image src="../../static/distance.png" mode="widthFix" class="distanceIcon"></image>
+						
 					</view>
 					
 				</view>
@@ -157,13 +176,24 @@
 			<view class="" v-if="index == 3">
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="">
-						
+						<view class="position">
+							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
+							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
+							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
+						</view>
 						<view class="">
-							{{store.area}}{{store.address}}
+							{{siteList[siteIndex].address}}
+						</view>
+						<view class="system">
+							系统自动为您选择就近站点
 						</view>
 					</view>
-					<view class="">
-						距离 
+					<view class="distance">
+						<view class="distanceStr">
+							距您{{siteList[siteIndex].distance}} <uni-icons type="arrowright" color='#2697F4'></uni-icons>
+						</view>
+						<image src="../../static/distance.png" mode="widthFix" class="distanceIcon"></image>
+						
 					</view>
 					
 				</view>
@@ -201,42 +231,81 @@
 			</view>
 		</view>
 		
-		<view class="single_shop">
-			<view class="title" style="margin-bottom: 30rpx;">
+		<view class="single_shop" style="padding-bottom: 20rpx;">
+			
+			<view class="participate"  v-if="type!=0">
+				参团记录
+			</view>
+			
+			<view class="title" v-if="type==0">
 				{{store.storeName}}
 			</view>
-			<view class="shop_good">
-				<view class="shop_item"  v-for="(item,index) in cat[0].shoppingCarts" :key="index">
+			<view class="shop_good" v-for="(itemd,indexd) in userCatList" :key='indexd'>
+				
+				<view class="userContent" style="margin: 30rpx 20rpx;" v-if="type!=0">
+					<view class="user">
+						<view class="userImg">
+							<image :src="itemd.userImg" mode="widthFix"></image>
+						</view>
+						<view class="userName">
+							{{itemd.userName}}
+						</view>
+						<view class="my" v-if="indexd == 0">
+							我
+						</view>
+					</view>
+					<view class="addGood" v-if="indexd == 0">
+						添加商品
+					</view>
+				</view>
+				
+				<view class="shop_item"  v-for="(item,index) in itemd.userCat.shoppingCarts" :key="index">
 					<view class="shop_item_introduce">
 						<view class="shop_item_img">
-							<image :src="item.urlImages" mode="" style="width: 100%;height: 100%;"></image>
+							<image :src="item.urlImages" mode="widthFix" ></image>
 						</view>
-						<view class="" style="display: flex;flex-direction: column;justify-content: center;">
-							<view class="" style="font-size: 30rpx;">
+						<view class="he">
+							<view class="productName">
 								{{item.productName}}
 							</view>
-							<view class="" style="font-size: 24rpx;color: #999;" >
+							<view class="gg">
 								<text v-for="(items,indexs) in item.specObj" :key='indexs'>{{items.name}}</text>
 							</view>
 							
 						</view>
 					</view>
 					
-					<view class="" style="font-size: 24rpx;">
+					<view class="num">
 						x {{item.num}}
 					</view>
-					<view class="">
-						{{item.total}}
+					<view class="tiem_total">
+						￥{{item.total}}
 					</view>
 				</view>
 				
+				<view class="Subtotal">
+					小计：￥{{itemd.total}}
+				</view>
 				
+				<view class="money" v-if="type==0">
+					<view class="surplus">
+						<view class="packing" >
+							包装费
+						</view>
+						<view class="">
+							餐盒
+						</view>
+					</view>
+					<view class="">
+						￥{{itemd.total}}
+					</view>
+				</view>
 				
 			</view>
 			
-			<view class="" style="display: flex;justify-content: space-between;margin: 10rpx 0;">
-				<view class="" style="display: flex;font-size: 28rpx;">
-					<view class="" style="margin: 0 10rpx;color: #2697F4;background: #EBF5FF;">
+			<!-- <view class="money"  v-if="type==0" >
+				<view class="surplus">
+					<view class="packing" >
 						包装费
 					</view>
 					<view class="">
@@ -246,12 +315,29 @@
 				<view class="">
 					￥{{total}}
 				</view>
+			</view> -->
+			
+			<view class="total"  v-if="type!=0">
+				<view class="total_name">
+					合计
+				</view>
+				<view class="">
+					<view class="totalForehead">
+						￥{{total}}
+					</view>
+					<view class="discount">
+						已优惠￥0
+					</view>
+				</view>
+				
 			</view>
+			
+			
 		</view>
 		
 		
-		<view class="single_shop" style="font-size: 28rpx;">
-			<view class="" style="padding:10rpx 0rpx; display: flex;justify-content: space-between;">
+		<view class="single_shop">
+			<view class="unified">
 				<view class="title">
 					支付方式
 				</view>
@@ -261,7 +347,7 @@
 				</view>
 				
 			</view>
-			<view class="" style="padding:10rpx 0rpx; display: flex;justify-content: space-between;">
+			<view class="unified">
 				<view class="title">
 					订单备注
 				</view>
@@ -273,7 +359,7 @@
 			</view>
 		</view>
 		
-		<view class="" style="display: flex;margin: 20rpx;">
+		<view class="agreement">
 			<view 
 			@click="g = !g"
 			style="width: 30rpx;height: 30rpx; border: 1rpx solid #999;margin-right: 10rpx;display: flex;justify-content: center;align-items: center;">
@@ -281,7 +367,11 @@
 			</view> 我已阅读并同意 <text style="color: #007AFF;">《站点服务协议》</text>
 		</view>
 		
-		<view class="payment">
+		<view class="submit"  v-if="type!=0">
+			提交订单
+		</view>
+		
+		<view class="payment"  v-if="type==0">
 			<view class="" style="flex: 1;background: #49453A;color: #fff;padding-left: 10rpx;display: flex;align-items: center;">
 				<view class="" style="font-size: 36rpx;">
 					￥{{total}}
@@ -300,6 +390,7 @@
 
 <script>
 	import Api from '@/common/http.js'
+	import uniIcons from "@/components/uni-icons/uni-icons.vue"
 	export default {
 		filters:{
 			Day(time){
@@ -315,6 +406,9 @@
 				return d[time]
 			}
 		},
+		components:{
+			uniIcons
+		},
 		data() {
 			const currentDate = this.getDate({
 				format: true
@@ -326,6 +420,76 @@
 					[],
 					[]
 				],
+				userCatList:[
+					{
+						total:10,
+						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+						userName:'名字',
+						userCat:{
+							
+							shoppingCarts:[
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								}
+							],
+							storeId: "42",
+							storeName: "测试店铺1",
+							total: 1,
+							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+							message: "成功",
+							
+						}
+					},
+					{
+						total:10,
+						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+						userName:'名字',
+						userCat:{
+							
+							shoppingCarts:[
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								}
+							],
+							storeId: "42",
+							storeName: "测试店铺1",
+							total: 1,
+							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+							message: "成功",
+							
+						}
+					}
+				],
 				ptimes:[0,0,0,0],
 				time:new Date(),
 				index:0,
@@ -336,7 +500,10 @@
 				store:'',
 				cat:'',
 				date: currentDate,
-				orderId:''
+				orderId:'',
+				siteList:[],
+				siteIndex:0,
+				type:0,
 			}
 		},
 		computed: {
@@ -349,7 +516,7 @@
 		},
 		onLoad(op) {
 			
-			
+			this.getSiteList()
 			this.ptime[0] = [
 				1,2,3,4,5,6,7,8,9,10,11,12
 			]
@@ -376,18 +543,231 @@
 			
 			this.ptimes[3] = this.time.getMinutes()
 			
-			
-			
 			this.storeId = op.sid
+			
+			this.type = op.type
+			
+			if(this.type == 0){
+				this.userCatList = [
+					{
+						total:10,
+						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+						userName:'名字',
+						userCat:{
+							
+							shoppingCarts:[
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								},
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								},
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								}
+							],
+							storeId: "42",
+							storeName: "测试店铺1",
+							total: 1,
+							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+							message: "成功",
+							
+						}
+					}
+				]
+			}else{
+				this.userCatList = [
+					{
+						total:10,
+						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+						userName:'名字',
+						userCat:{
+							
+							shoppingCarts:[
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								}
+							],
+							storeId: "42",
+							storeName: "测试店铺1",
+							total: 1,
+							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+							message: "成功",
+							
+						}
+					},
+					{
+						total:10,
+						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+						userName:'名字',
+						userCat:{
+							
+							shoppingCarts:[
+								{
+									createTime: 1630565326000,
+									discounted: "0",
+									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+									num: 1,
+									price: 1,
+									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+									productName: "商品名称1",
+									spec: "[{'name':'名称','price':'1','select':true}]",
+									status: 0,
+									storeId: "42",
+									storeName: "测试店铺1",
+									total: 1,
+									updateTime: 1630565326000,
+									urlImages: "../../static/tempGood2.png",
+									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								}
+							],
+							storeId: "42",
+							storeName: "测试店铺1",
+							total: 1,
+							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+							message: "成功",
+							
+						}
+					}
+				]
+			}
+			
+			
+			
+			
+			
 			
 			this.user = uni.getStorageSync('user')
 			this.getStor()
-			this.getShoppingCartList()
+			// this.getShoppingCartList()
 			
 			
 			
 		},
 		methods: {
+			
+			getSiteList() {
+				var data = {
+					siteName: ''
+				}
+			
+				Api.getSite(data).then(res => {
+					this.siteList = res.data.data
+					// console.log()
+					this.siteList.map(item=>{
+						item.distance = "0m"
+					})
+					// this.getDistance()
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
+			
+			getDistance() {
+				
+				this.siteList.map((item,index)=>{					 
+					uni.request({
+						url: 'https://apis.map.qq.com/ws/distance/v1/matrix', //仅为示例，并非真实接口地址。
+						method: 'GET',
+						data: {
+							mode: 'walking',
+							from: this.latitude + ',' + this.longitude,
+							to: item.latitude + ',' + item.longitude,
+							key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //获取key
+						},
+						success: (res) => {
+							console.log(res)
+							if(res.data.status == 0){
+								let hw = res.data.result.rows[0].elements[0].distance; //拿到距离(米)
+								if (hw && hw !== -1) {
+									if (hw < 1000) {
+										hw = hw + 'm';
+									}
+									//转换成公里
+									else {
+										hw = (hw / 2 / 500).toFixed(2) + 'km'
+									}
+								} else {
+									hw = "距离太近或请刷新重试"
+								}
+								item.distance = hw
+							}else{
+								item.distance = "0m"
+							}
+							
+						}
+					});
+				
+				})
+				
+				
+			},
+			
 			changeTime(event){
 				this.ptimes = event.detail.value
 				var d = `${this.time.getFullYear()}-${this.ptime[0][this.ptimes[0]]}-${this.ptime[1][this.ptimes[1]]} ${this.ptime[2][this.ptimes[2]]}:${this.ptime[3][this.ptimes[3]]}`
@@ -414,7 +794,6 @@
 					
 					this.$forceUpdate()
 				}
-				console.log(event)
 			},
 			
 			/**
@@ -473,7 +852,6 @@
 				return `${year}-${month}-${day}`;
 			},
 			addorder(){
-				console.log(123213)
 				var orderItemList = []
 				
 				var realBalance = 0
@@ -542,19 +920,7 @@
 			},
 			getStor(){
 				Api.getStoreList({id:this.storeId}).then(res => {
-					console.log('res',res);
 					this.store = res.data[0]
-					
-					// this.storeList.map((item)=>{
-						// this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
-						// // console.log('this.store',this.store)
-						// this.store.foodSortList = this.store.foodLabel.split(",")
-						// this.store.appraiseManagerList = this.store.appraiseManager.split(",")
-						// this.store.servuceConfigurationList = this.store.servuceConfiguration.split(",")
-						
-					// })
-					// this.storeList.foodSortList = this.storeList
-					// console.log('this.storeList.foodSortList',this.storeList)
 					
 					
 				}).catch(err => {
@@ -593,78 +959,313 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	
-	.title{
-		font-weight: bold;
-	}
-	
-	.bao{
-		display: flex;
-		margin: 20rpx;
-		margin-bottom: 0;
-	}
-	
-	.bao view{
-		flex: 1;
-		border-radius: 10rpx 10rpx 0 0;
-		background: #fff;
-		padding: 10rpx;
-		text-align: center;
-	}
-	
-	.shop{
-		margin: 0 20rpx;
-		background: #FFF;
-		padding: 20rpx;
-	}
-	
-	.single_shop{
-		margin: 30rpx;
-		box-shadow: 0 0 20rpx #f0f0f0;
-		/* background: #007AFF; */
-		border-radius: 10rpx;
-		padding: 20rpx;
-	}
-	
-	.shop_item{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	
-	.shop_item_img{
-		width: 100rpx;
-		height: 100rpx;
-		background: #000000;
-		margin-right: 20rpx;
-	}
-	
-	.shop_item_introduce{
-		display: flex;
-	}
-	
-	.payment{
-		display: flex;
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		/* padding: 30rpx 0 30rpx 0; */
+	.contact{
+		background: #F8F8F8;
+		padding-bottom: 120rpx;
 		
+		image{
+			width: 100%;
+		}
+		
+		.title{
+			font-weight: bold;
+		}
+		
+		.bar{
+			position: fixed;
+			top: 0;
+			height: 290rpx;
+			background: #1093FF;
+			width: 100%;
+			z-index: 0;
+		}
+		
+		.bao{
+			display: flex;
+			margin: 20rpx;
+			margin-bottom: 0;
+			position: relative;
+			view{
+				flex: 1;
+				border-radius: 10rpx 10rpx 0 0;
+				background: #fff;
+				padding: 10rpx;
+				text-align: center;
+			}
+		}
+		
+		.shop{
+			margin: 0 20rpx;
+			background: #FFF;
+			padding: 20rpx;
+			position: relative;
+			border-radius: 0 0 20rpx 20rpx;
+			.han{
+				display: flex;
+				justify-content: space-between;
+				font-size: 28rpx;
+				padding: 20rpx 0;
+				margin: 10rpx 0;
+				border-bottom: 1rpx solid #ccc;
+			}
+			
+			.han:last-child{
+				border: 0;
+			}
+			
+			.invitation{
+				margin: 30rpx;
+				border-radius: 40rpx;
+				padding: 20rpx 30rpx;
+				// width: 100%;
+				background: #289EFF;
+				color: #fff;
+				text-align: center;
+			}
+			
+			.cancel{
+				color: #999;
+				text-align: center;
+			}
+		}
+		
+		
+		.single_shop{
+			position: relative;
+			margin: 20rpx;
+			// box-shadow: 0 0 20rpx #f0f0f0;	
+			border-radius: 10rpx;
+			
+			font-size: 28rpx;
+			background: #fff;
+			overflow: hidden;
+			
+			
+			.participate{
+				padding: 10rpx;
+				color: #fff;
+				// width: 100%;
+				text-align: center;
+				background: #FF8D00;
+			}
+			
+			.shop_good{
+				border-bottom: 1rpx solid #f0f0f0;
+				.userContent{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin: 20rpx;
+					.user{
+					
+						display: flex;
+						align-items: center;
+						.userImg{
+							width: 70rpx;
+							height: 70rpx;
+							border-radius: 50%;
+							overflow: hidden;
+						}
+						
+						.userName{
+							margin-left: 20rpx;
+							font-size: 34rpx;
+							font-weight: bold;
+						}
+						
+						.my{
+							background: #EBF5FF;
+							padding: 10rpx 20rpx;
+							color: #26B0F8;
+							font-size: 28rpx;
+							margin-left: 20rpx;
+							border-radius: 10rpx;
+						}
+					}
+					
+					.addGood{
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 140rpx;
+						height: 50rpx;
+						border-radius: 10rpx;
+						border: 1rpx solid #FF8D00;
+						color: #FF8D00;
+					}
+				}
+				
+				
+				.shop_item{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin:10rpx 20rpx;
+					.shop_item_introduce{
+						display: flex;
+						
+						.shop_item_img{
+							width: 100rpx;
+							height: 100rpx;
+							background: #000000;
+							margin-right: 20rpx;
+						}
+						
+						.he{
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+							.productName{
+								font-size: 30rpx;
+							}
+							
+							.gg{
+								font-size: 24rpx;
+								color: #999;
+							}
+							
+							.num{
+								font-size: 24rpx;
+							}
+						}
+					}
+				
+				
+					.tiem_total{
+						font-size: 32rpx;
+						font-weight: bold;
+					}
+				}
+				
+				.Subtotal{
+					text-align: right;
+					margin: 20rpx;
+					font-size: 32rpx;
+					font-weight: bold;
+				}
+			}
+			
+			.shop_good:last-child{
+				border-bottom:0;
+			}
+			
+			
+			.total{
+				display: flex;
+				justify-content: space-between;
+				margin:20rpx;
+				.total_name{
+					font-size: 28rpx;
+				}
+				.totalForehead{
+					font-size: 45rpx;
+					font-weight: bold;
+					text-align: right;
+				}
+				
+				.discount{
+					font-size: 24rpx;
+					color: #999;
+					text-align: right;
+				}
+			}
+		
+			.unified{
+				margin: 20rpx;
+				padding:10rpx 0rpx;
+				display: flex;
+				justify-content: space-between;
+			}
+		}
+		
+		.money{
+			display: flex;
+			justify-content: space-between;
+			margin: 10rpx 20rpx;
+			
+			.surplus{
+				display: flex;font-size: 28rpx;
+				.packing{
+					margin: 0 10rpx;
+					color: #2697F4;
+					background: #EBF5FF;
+				}
+			}
+		}
+		
+		
+		.payment{
+			display: flex;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+		}
+		
+		.index{
+			background: #FF8D00 !important;
+			color: #fff;
+		}
+		
+		.position{
+			display: flex;
+			align-items: center;
+			.icon{
+				width: 60rpx;
+			}
+			.positionName{
+				font-weight: bold;
+				margin: 0 10rpx;
+			}
+			.switchs{
+				display: inline-block;
+				background: #EBF5FF;
+				color: #2697F5;
+				padding: 5rpx;
+				border-radius: 10rpx;
+			}
+		}
+		
+		.distance{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.distanceStr{
+				display: inline-block;
+				background: #EBF5FF;
+				color: #2697F5;
+				padding: 5rpx;
+				border-radius: 10rpx;
+			}
+			
+			.distanceIcon{
+				width: 60rpx;
+			}
+		}
+		
+		
+		.system{
+			font-size: 24rpx;
+			color: #999;
+		}
+		
+		.agreement{
+			display: flex;
+			margin: 20rpx;
+		}
+		
+		.submit{
+			margin: 30rpx;
+			border-radius: 10rpx;
+			background: #289EFF;
+			color: #fff;
+			text-align: center;
+			padding: 20rpx;
+		}
 	}
 	
-	.han{
-		display: flex;
-		justify-content: space-between;
-		font-size: 28rpx;
-		padding: 20rpx 0;
-		margin: 10rpx 0;
-		border-bottom: 1rpx solid #ccc;
-	}
 	
-	.index{
-		background: #FF8D00 !important;
-		color: #fff;
-	}
+	
 	
 </style>

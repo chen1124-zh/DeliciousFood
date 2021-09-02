@@ -277,6 +277,7 @@
 										data: {           
 											"code":code,
 											"type":1, 
+											
 											"rawData":{  
 												"nickName":res.userInfo.nickName,
 												"mobile":"17888888888",
@@ -285,12 +286,16 @@
 												"userName":"", 
 												"password":"", 
 												"accountType":1,
-												"gender":res.userInfo.gender
+												"gender":res.userInfo.gender,
+												"addTotal":0,
+												"orderNum":0,
+												"accountMoney":0,
+												"isvipLevel":0,
+												"name":res.userInfo.nickName,
 											}
 										},
 										success: (resdata) => {
-											console.log('resdata',resdata)
-											this.userInfo = resdata.data.data
+											this.userInfo = resdata.data.data.data
 											uni.setStorageSync('token',resdata.data.data.data.openId);
 											uni.setStorageSync('user',resdata.data.data.data);
 											

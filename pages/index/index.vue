@@ -645,7 +645,7 @@
 						data: {
 							mode: 'walking',
 							from: this.latitude + ',' + this.longitude,
-							to: item.latitude + ',' + this.longitude,
+							to: item.latitude + ',' + item.longitude,
 							key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //获取key
 						},
 						success: (res) => {

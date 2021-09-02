@@ -112,7 +112,8 @@
                     "path" : "timely/timely",
                     "style" : {
 						"navigationBarTitleText": "团餐",
-						"navigationBarBackgroundColor":"#0D92FF"
+						"navigationBarBackgroundColor":"#0D92FF",
+						"navigationBarTextStyle":"white"
 					}
                 }
 				,{

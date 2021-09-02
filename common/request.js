@@ -1,4 +1,4 @@
-const commoneUrl = "http://47.113.217.251:8080/";
+const commoneUrl = "https://jk.ytxhh.top/api/";
 
 
 const request = (config) => {
@@ -7,7 +7,7 @@ const request = (config) => {
 	if(!config.data){
 		config.data = {};
 	}
-	console.log('config',config)
+	// console.log('config',config)
 	// var token = uni.getStorageSync('token')
 	
 	// if(token == ''){

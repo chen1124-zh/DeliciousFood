@@ -13,9 +13,6 @@
 						<uni-icons type="star" size="28" class="#000"></uni-icons>
 
 					</view>
-					<!-- <view class="">
-						s
-					</view> -->
 				</view>
 			</view>
 		</view>
@@ -27,7 +24,7 @@
 		</view>
 
 
-		<view class="box" style="position: relative;top: -100rpx;">
+		<view class="box">
 			<view class="shop_information">
 				<view class="shop_img">
 					<image :src="store.storeLogo" mode="" style="width: 100%;height: 100%;"></image>
@@ -63,14 +60,14 @@
 				<view class="address" @click="locations()">
 					{{store.area}}{{store.address}}>
 				</view>
-				<view class="contact"  @click.stop="gitPhone">
+				<view class="contact" @click.stop="gitPhone">
 					<view class="">
 						<uni-icons type="phone-filled" color="#289EFF" size="30"></uni-icons>
 					</view>
 					<view class="" style="color: #289EFF;font-size: 28rpx;">
 						联系商家
 					</view>
-					
+
 				</view>
 			</view>
 			<view class="" style="display: flex;">
@@ -79,24 +76,17 @@
 				</view>
 			</view>
 
-		<!-- 	<view class="" style="display: flex;">
-				<view class="lableBox" v-for="(item,index) in store.foodSortList" :key="index">
-					{{item}}
-				</view>
-			</view> -->
-			
-			
 			<view class="good_taste_label_box">
 				<view style="flex: 1;overflow-x: auto;display: flex;margin-right: 10rpx;">
 					<view class="good_item_taste_label_box" v-for="(food,i) in store.foodSortList" :key='i'>
 						{{food}}
 					</view>
 				</view>
-				
+
 				<view class="good_reserve">
 					支持预订
 				</view>
-						
+
 			</view>
 
 
@@ -114,28 +104,111 @@
 				</view>
 
 
-				<view class="" style="margin: 20rpx;color: #0293FF;" @click="weeks">
-					一周菜谱
+				<view @click="weeks"
+					style="margin: 20rpx;color: #0293FF;font-size: 28rpx;display: flex;align-items: center;">
+					<image src="../../static/menu.png" mode="widthFix" style="width: 32rpx;margin-right: 10rpx;">
+					</image> 一周菜谱
 				</view>
 			</view>
 
 			<view class="time" v-if="branch == 1">
 				<view class="times">
 					<picker mode="selector" :range="cs" range-key="name" @change="cschange">
-						<view>{{cs[csIndex].name}} <uni-icons type="arrowdown" style="margin-left: 15rpx;"></uni-icons> </view>
+						<view>{{cs[csIndex].name}}
+							<uni-icons type="arrowdown" style="margin-left: 15rpx;"></uni-icons>
+						</view>
 					</picker>
 				</view>
 				<view class="week">
 
-					<view class="day"  :class="week==index?'weekSelect':''" v-for="(item,index) in weekList" :key='index' @click="week=index;">
+					<view class="day" :class="week==index?'weekSelect':''" v-for="(item,index) in weekList" :key='index'
+						@click="week=index;">
 						<view class="">
 							{{item.month}}月{{item.date}}号
 						</view>
 						<view class="">
 							周{{weekStr[item.day]}}
-						</view>						
+						</view>
 					</view>
-				
+
+				</view>
+			</view>
+
+
+			<view class="good_box" style="margin-bottom: 100rpx;" v-if="branch == 1">
+				<view class="good_left">
+
+					<view class="good_title_select">
+						<view :class="index == selectClassifi?'selectMenu':''" style="position: relative;"
+							v-for="(item,index) in classifiList" :key="index" @click="classifiSelect(index)">
+							<text>{{item.menuName}}</text>
+							<view class="cNum"
+								v-if="item.num">
+								{{item.num}}
+							</view>
+						</view>
+						
+						<view class="cImg" v-if="week!=0">
+							<image src="../../static/b.png" mode="heightFix"></image>
+						</view>
+					</view>
+				</view>
+				<view class="good_right">
+					<view class="good_title">
+						{{classifiList[selectClassifi].menuName}}
+					</view>
+					<view class="good_item_box">
+						<view class="good_item" v-for="(item,index) in goodList" :key='index'>
+							<view class="good_img">
+								<image :src="item.img" mode="" style="width: 100%;height: 100%;"></image>
+							</view>
+							<view class="good_content" style="flex: 1;padding-right: 20rpx;">
+								<view class="good_name">
+									{{item.productName}}
+								</view>
+								<view class="good_describe">
+									{{item.describe||'暂无介绍'}}
+								</view>
+								<view class="operation">
+									<view class="price_discount">
+										<view class="discount" v-if="false">
+											9.8
+										</view>
+										<view class="price">
+											<text style="font-size: 34rpx;">￥</text>
+											<text
+												style="font-size: 36rpx;">{{item.specifications[0].content[0].price}}</text>
+											<text
+												style="color: #ccc;text-decoration:line-through;margin-left: 10rpx;">￥{{item.linedPrice}}</text>
+										</view>
+									</view>
+
+									<view class="" v-if="item.num==0">
+										<view class="gauge" @click="gauge(index)" v-if="item.s.length > 1">
+											选规格
+										</view>
+										<view class="an" v-else @click="addShe(index)"
+											style="background: #007AFF;color: #fff;">
+											+
+										</view>
+									</view>
+									<view class="stepper" v-else>
+										<view class="an" @click="reduce(index)">
+											-
+										</view>
+										<view class="" style="margin: 0 20rpx;">
+											{{item.num}}
+										</view>
+										<view class="an" @click="add(index)" style="background: #007AFF;color: #fff;">
+											+
+										</view>
+									</view>
+
+								</view>
+
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
 
@@ -168,98 +241,25 @@
 				</view>
 			</view>
 
-
-			<view class="good_box" style="margin-bottom: 100rpx;" v-if="branch == 1">
-				<view class="good_left">
-
-					<view class="good_title_select">
-						<view :class="index == selectClassifi?'selectMenu':''" style="position: relative;"
-							v-for="(item,index) in classifiList" :key="index"
-							@click="classifiSelect(index)">
-							<text>{{item.menuName}}</text>
-							<view class="" style="position: absolute;right: 0;top: 0;background: red;" v-if="item.num">
-								{{item.num}}
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="good_right">
-					<view class="good_title">
-						{{classifiList[selectClassifi].menuName}}
-					</view>
-					<view class="good_item_box">
-						<view class="good_item" v-for="(item,index) in goodList" :key='index'>
-							<view class="good_img">
-								<image :src="item.img" mode="" style="width: 100%;height: 100%;"></image>
-							</view>
-							<view class="good_content" style="flex: 1;padding-right: 20rpx;">
-								<view class="good_name">
-									{{item.productName}}
-								</view>
-								<view class="good_describe">
-									{{item.describe||'暂无介绍'}}
-								</view>
-								<view class="operation">
-									<view class="price_discount">
-										<view class="discount" v-if="false">
-											9.8
-										</view>
-										<view class="price">
-											<text style="font-size: 34rpx;">￥</text> <text
-												style="font-size: 36rpx;">{{item.specifications[0].content[0].price}}</text>
-										</view>
-									</view>
-
-									<view class="" v-if="item.num==0">
-										<view class="gauge" @click="gauge(index)" v-if="item.s.length > 1">
-											选规格
-										</view>
-										<view class="an" v-else @click="addShe(index)" style="background: #007AFF;color: #fff;">
-											+
-										</view>
-									</view>
-									<view class="stepper" v-else>
-										<view class="an" @click="reduce(index)">
-											-
-										</view>
-										<view class="" style="margin: 0 20rpx;">
-											{{item.num}}
-										</view>
-										<view class="an" @click="add(index)" style="background: #007AFF;color: #fff;">
-											+
-										</view>
-									</view>
-
-								</view>
-
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-
-
-
-
 		</view>
 
 
 		<view class="Submit">
-			<view class="">
-				<view class="">
-
+			<view style="display: flex;align-items: center;flex: 1;padding: 0 20rpx;">
+				<view style="margin-right: 10rpx;">
+					<image src="../../static/bag.png" mode="widthFix" style="width: 100rpx;"></image>
 				</view>
 				<view class="">
 					<view class="" style="color: red;font-size: 32rpx;">
-						<text>￥</text> {{allJia}}
+						<text>￥</text> {{allJia||0}}
 					</view>
 					<view class="" style="color: #898888;font-size: 24rpx;">
-						已优惠￥20
+						已优惠￥0
 					</view>
 				</view>
 			</view>
 			<view class="op" @click="opa()">
-				提交订单
+				{{week!=0?"发起拼团":"提交订单"}} 
 			</view>
 		</view>
 
@@ -270,22 +270,22 @@
 					<view class="food_name">
 						菜品名称
 					</view>
-					
-					
+
+
 					<view style="margin: 20rpx 0;">
-						<view v-for="(item,index) in gaugeData.c" :key='index' >
+						<view v-for="(item,index) in gaugeData.c" :key='index'>
 							<view class="Stitle">
 								{{item.title}}
 							</view>
 							<view :class="items.select == true?	'gaugeSelectItem':'gaugeItem'"
-							 v-for="(items,indexs) in item.content" :key='indexs' @click="Xgauge(index,indexs)">
+								v-for="(items,indexs) in item.content" :key='indexs' @click="Xgauge(index,indexs)">
 								{{items.name}}
 							</view>
 							<!--  -->
-							
+
 						</view>
 					</view>
-					
+
 					<view class="" style="display: flex;justify-content: space-between;">
 						<view class="">
 							总价<text style="color: red;font-size: 48rpx;">￥</text> <text
@@ -368,15 +368,15 @@
 				cat: [],
 				user: '',
 				allJia: 0,
-				weekList:[],
-				weekStr:{
-					0:'日',
-					1:'一',
-					2:'二',
-					3:'三',
-					4:'四',
-					5:'五',
-					6:'六'
+				weekList: [],
+				weekStr: {
+					0: '日',
+					1: '一',
+					2: '二',
+					3: '三',
+					4: '四',
+					5: '五',
+					6: '六'
 				}
 			}
 		},
@@ -387,124 +387,115 @@
 			this.storeId = op.id
 			this.getStroeData()
 			this.user = uni.getStorageSync('user')
-			
+
 			var date = new Date()
-			// this.weekList.push({
-			// 	month:'',
-			// 	date:'',
-			// 	day:'',
-			// })
-			var maxMonth  = this.getDayNumByYearMonth(date.getYear(),date.getMonth())
-			var	currentMonth = date.getMonth()
+			var maxMonth = this.getDayNumByYearMonth(date.getYear(), date.getMonth())
+			var currentMonth = date.getMonth()
 			var currentDate = date.getDate()
 			var currentDay = date.getDay()
-			
+
 			var tempweekList = []
-			for(var i = 0; i<7;i++){
+			for (var i = 0; i < 7; i++) {
 				tempweekList.push({
-					month:currentMonth+1,
-					date:currentDate++,
-					day:currentDay++,
+					month: currentMonth + 1,
+					date: currentDate++,
+					day: currentDay++,
 				})
-				
-				if(currentDate > maxMonth){
-					currentMonth+=1
+
+				if (currentDate > maxMonth) {
+					currentMonth += 1
 					currentDate = 1
 				}
-				
-				if(currentDay == 7){
+
+				if (currentDay == 7) {
 					currentDay = 0
 				}
-				
+
 			}
-			
+
 			this.weekList = tempweekList
-			// this.$forceUpdate()
-			console.log('月份',this.weekList )
-			// console.log('日',date.getDate())
-			// console.log('星期',date.getDay())
-			
-			
+
+
+
 		},
 		created() {
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
-			gitPhone(){
+			gitPhone() {
 				uni.showActionSheet({
-				    itemList: ['1899999990'],
-					itemColor:'#1890FF',
-				    success: function (res) {
-						
-						
+					itemList: ['1899999990'],
+					itemColor: '#1890FF',
+					success: function(res) {
+
+
 						uni.makePhoneCall({
-						    phoneNumber: '1899999990' //仅为示例
+							phoneNumber: '1899999990' //仅为示例
 						});
-						
-				        console.log(res);
-				    },
-				    fail: function (res) {
-				        console.log(res.errMsg);
-				    }
+
+						console.log(res);
+					},
+					fail: function(res) {
+						console.log(res.errMsg);
+					}
 				});
 			},
-			locations(){
+			locations() {
 				var latitude = Number(this.store.latitude)
 				var longitude = Number(this.store.longitude)
 				uni.getLocation({
-					success(res){
+					success(res) {
 						uni.openLocation({
-							latitude:latitude,
-							longitude:longitude,
-							scale:15,
+							latitude: latitude,
+							longitude: longitude,
+							scale: 15,
 						})
 					}
 				})
-				
+
 			},
 			/**
 			 * 判断某年是否闰年
 			 */
-			isRuinian(year){
-			      if((year%4==0 && year%100!=0)||(year%400==0)){
-					  return 29;
-				  }
-				  return 28;
+			isRuinian(year) {
+				if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+					return 29;
+				}
+				return 28;
 			},
-			 
 			/**
 			 * 根据年和月获取该月有几天
 			 */
-			getDayNumByYearMonth(year,month){
-			        switch (month) {
-			               case 1:
-			               case 3:
-			               case 5:
-			               case 7:
-			               case 8:
-			               case 10:
-			               case 12:
-			                      return 31;
-			                      break;
-			               case 4:
-			               case 6:
-			               case 9:
-			               case 11:
-			                      return 30;
-			                      break;
-			               case 2:
-			                     return this.isRuinian(year);
-			       }
+			getDayNumByYearMonth(year, month) {
+				switch (month) {
+					case 1:
+					case 3:
+					case 5:
+					case 7:
+					case 8:
+					case 10:
+					case 12:
+						return 31;
+						break;
+					case 4:
+					case 6:
+					case 9:
+					case 11:
+						return 30;
+						break;
+					case 2:
+						return this.isRuinian(year);
+				}
 			},
-			
-			classifiSelect(index){
+
+			classifiSelect(index) {
 				this.selectClassifi = index
 				// this.classifiList
 				this.getGoodData()
 			},
 			opa() {
 				uni.navigateTo({
-					url: '../timely/timely?sid=' + this.storeId
+					url: '../timely/timely?sid=' + this.storeId +'&type='+this.week
 				})
 			},
 			reduce(index) {
@@ -514,7 +505,7 @@
 
 
 
-				this.cat.map((item) => {
+				this.cat.shoppingCarts.map((item) => {
 
 					if (this.goodList[index].id == item.productId) {
 						item.num--
@@ -523,6 +514,7 @@
 						Api.updateShoppingCar(data).then(res => {
 							// this.classifiList[this.selectClassifi].num --
 							// this.$forceUpdate()
+
 						}).catch(err => {
 							uni.showToast({
 								title: err.msg,
@@ -536,15 +528,17 @@
 
 				if (this.goodList[index].num == 0) {
 
-					this.cat.map((item) => {
+					var tmepArr = this.cat.shoppingCarts.filter((item) => {
 						if (this.goodList[index].id == item.productId) {
 							var data = {
 								id: item.id
 							}
 
 							Api.deleteShoppingCar(data).then(res => {
+
 								this.classifiList[this.selectClassifi].num--
 								this.$forceUpdate()
+
 							}).catch(err => {
 								uni.showToast({
 									title: err.msg,
@@ -552,8 +546,12 @@
 								})
 							});
 
+						} else {
+							return item
 						}
 					})
+					this.cat.shoppingCarts = tmepArr
+					console.log(tmepArr)
 				}
 
 
@@ -562,7 +560,7 @@
 				this.goodList[index].num++
 				this.$forceUpdate()
 				this.allJia = 0
-				this.cat.map((item) => {
+				this.cat.shoppingCarts.map((item) => {
 					if (this.goodList[index].id == item.productId) {
 						item.num++
 						var data = item
@@ -570,7 +568,7 @@
 						Api.updateShoppingCar(data).then(res => {
 							// this.classifiList[this.selectClassifi].num --
 							// this.$forceUpdate()
-							this.allJia += item.total * item.num 
+
 						}).catch(err => {
 							uni.showToast({
 								title: err.msg,
@@ -579,8 +577,8 @@
 						});
 
 					}
+					this.allJia += item.total * item.num
 
-					
 				})
 			},
 			getShoppingCartList() {
@@ -590,18 +588,21 @@
 				}
 				this.allJia = 0
 				Api.getShoppingCart(data).then(res => {
-					console.log(res)
-					this.cat = res.data.data
-					this.cat.map((item, index) => {
+
+					this.cat = res.data.data[0]
+					if (this.cat != undefined) {
+						this.cat.shoppingCarts.map((item, index) => {
 
 
-						this.classifiList.map((items, indexs) => {
-							if (items.id == item.meunId) {
-								items.num++
-							}
+							this.classifiList.map((items, indexs) => {
+								if (items.id == item.meunId) {
+									items.num++
+								}
+							})
+							this.allJia += item.total * item.num
 						})
-						this.allJia += item.total * item.num
-					})
+					}
+
 
 					this.getGoodData()
 					// console.log('this.classifiList', this.classifiList)
@@ -626,16 +627,16 @@
 				this.csIndex = e.detail.value;
 				this.getGoodData()
 			},
-			Xgauge(index,indexs) {
+			Xgauge(index, indexs) {
 				this.jia = this.tempJia
-				this.gaugeData.c[index].content.map((item,i)=>{
-					
-					if(indexs == i){
+				this.gaugeData.c[index].content.map((item, i) => {
+
+					if (indexs == i) {
 						item.select = true
-					}else{
+					} else {
 						item.select = false
 					}
-					
+
 				})
 				// if (this.gaugeData.c[index].content[indexs].select == undefined) {
 				// 	this.gaugeData.c[index].content[indexs].select = true
@@ -644,19 +645,19 @@
 				// }
 
 				this.gaugeData.c.map((item) => {
-					item.content.map((items)=>{
+					item.content.map((items) => {
 						if (items.select == true) {
 							this.jia += parseFloat(items.price)
 						}
 					})
-					
+
 
 				})
 
 
 
 			},
-			
+
 			addCat() {
 
 
@@ -677,17 +678,17 @@
 				var price = ''
 
 				for (var i = 0; i < this.gaugeData.c.length; i++) {
-			
-					for (var j = 0; j<this.gaugeData.c[i].content.length; j++){
+
+					for (var j = 0; j < this.gaugeData.c[i].content.length; j++) {
 
 						if (this.gaugeData.c[i].content[j].select == true) {
 
 							tempGauge.push(this.gaugeData.c[i].content[j])
 						}
 					}
-					
+
 				}
-				
+
 				for (var i = 0; i < this.goodList.length; i++) {
 					if (this.gaugeData.i == this.goodList[i].id) {
 						price = this.goodList[i].linedPrice;
@@ -708,9 +709,9 @@
 					productId: this.gaugeData.i,
 					meunId: this.classifiList[this.selectClassifi].id,
 					status: 0,
-					favourable:'',
+					favourable: '',
 					remark: '',
-					discounted:0
+					discounted: 0
 				}
 				Api.addShoppingCart(data).then(res => {
 					this.classifiList[this.selectClassifi].num++
@@ -720,10 +721,22 @@
 						}
 
 					})
-					this.cat.push(res.data.data)
-					this.allJia = 0
-					this.cat.map((item, index) => {
-						this.allJia = item.total
+
+					console.log('res.data.data', res.data.data)
+
+					if (this.cat == undefined) {
+						this.cat = {
+							shoppingCarts: [],
+							storeId: this.store.id,
+							storeName: this.store.storeName,
+							userId: this.user.id,
+						}
+					}
+					this.cat.shoppingCarts.push(res.data.data)
+					// this.allJia = 0
+					console.log(this.cat)
+					this.cat.shoppingCarts.map((item, index) => {
+						this.allJia += item.total
 					})
 					this.g = false
 
@@ -737,30 +750,29 @@
 
 
 			},
-			addShe(index){
+			addShe(index) {
 				var tempGauge = []
-				
-				
+
+
 				var urlImages = ''
 				var productName = ''
 				var price = ''
-				console.log(this.goodList[index])
 				for (var i = 0; i < this.goodList[index].specifications.length; i++) {
-							
-					for (var j = 0; j<this.goodList[index].specifications[i].content.length; j++){
-							this.goodList[index].specifications[i].content[j].select = true
-							tempGauge.push(this.goodList[index].specifications[i].content[j])
-							
-							this.jia += Number(this.goodList[index].specifications[i].content[j].price) 
+
+					for (var j = 0; j < this.goodList[index].specifications[i].content.length; j++) {
+						this.goodList[index].specifications[i].content[j].select = true
+						tempGauge.push(this.goodList[index].specifications[i].content[j])
+
+						this.jia += Number(this.goodList[index].specifications[i].content[j].price)
 					}
-					
+
 				}
-				
+
 				price = this.goodList[index].linedPrice;
 				urlImages = this.goodList[index].productImg;
 				productName = this.goodList[index].productName
-			
-				
+
+
 				var data = {
 					userId: this.user.id,
 					storeId: this.storeId,
@@ -773,27 +785,38 @@
 					productId: this.goodList[index].id,
 					meunId: this.classifiList[this.selectClassifi].id,
 					status: 0,
-					favourable:'',
+					favourable: '',
 					remark: '',
-					discounted:0
+					discounted: 0
 				}
 				Api.addShoppingCart(data).then(res => {
 					this.classifiList[this.selectClassifi].num++
-				// 	this.goodList.map((item, index) => {
-				// 		if (item.id == this.gaugeData.i) {
-				// 			item.num++
-				// 		}
-				
-				// 	})
-					
+					// 	this.goodList.map((item, index) => {
+					// 		if (item.id == this.gaugeData.i) {
+					// 			item.num++
+					// 		}
+
+					// 	})
+
+
+
+					if (this.cat == undefined) {
+						this.cat = {
+							shoppingCarts: [],
+							storeId: this.store.id,
+							storeName: this.store.storeName,
+							userId: this.user.id,
+						}
+					}
+
 					this.goodList[index].num++
-					this.cat.push(res.data.data)
+					this.cat.shoppingCarts.push(res.data.data)
 					this.allJia = 0
-					this.cat.map((item, index) => {
-						this.allJia = item.total
+					this.cat.shoppingCarts.map((item, index) => {
+						this.allJia += item.total
 					})
 					// this.g = false
-				
+
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -810,45 +833,46 @@
 					this.store = res.data[0]
 					this.store.BusinessTimes = ''
 					var tempBusinessTime = JSON.parse(this.store.businessTime)
-					if(tempBusinessTime.standard == true){
-						this.store.BusinessTimes = tempBusinessTime.bz.stime +'-'+tempBusinessTime.bz.etime
-					}else{
-						
-						tempBusinessTime.timeList.map((item)=>{
-							this.store.BusinessTimes+=item.sTime+'-'+item.dTime+","
+					if (tempBusinessTime.standard == true) {
+						this.store.BusinessTimes = tempBusinessTime.bz.stime + '-' + tempBusinessTime.bz.etime
+					} else {
+
+						tempBusinessTime.timeList.map((item) => {
+							this.store.BusinessTimes += item.sTime + '-' + item.dTime + ","
 						})
 					}
-					
-					this.store.BusinessTimes = this.store.BusinessTimes.substring(0,this.store.BusinessTimes.length-1)
-					
+
+					this.store.BusinessTimes = this.store.BusinessTimes.substring(0, this.store.BusinessTimes
+						.length - 1)
+
 					// this.storeList.map((item)=>{
 					// this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
 					// console.log('this.store',JSON.parse(this.store.servuceConfiguration) )
-					
+
 					this.store.foodSortList = []
 					var foodLabelObj = JSON.parse(this.store.foodLabel)
-					
-					foodLabelObj.system.map((items)=>{
+
+					foodLabelObj.system.map((items) => {
 						this.store.foodSortList.push(items.name)
 					})
-					
-					foodLabelObj.custom.map((items)=>{
+
+					foodLabelObj.custom.map((items) => {
 						this.store.foodSortList.push(items)
 					})
-					
-					
+
+
 					this.store.servuceConfigurationList = []
 					var servuceConfigurationListObj = JSON.parse(this.store.servuceConfiguration)
-					
-					servuceConfigurationListObj.system.map((items)=>{
+
+					servuceConfigurationListObj.system.map((items) => {
 						this.store.servuceConfigurationList.push(items.name)
 					})
-					
-					servuceConfigurationListObj.custom.map((items)=>{
+
+					servuceConfigurationListObj.custom.map((items) => {
 						this.store.servuceConfigurationList.push(items)
 					})
-					
-				
+
+
 
 				}).catch(err => {
 					uni.showToast({
@@ -920,32 +944,36 @@
 				Api.getProductList(data).then(res => {
 					this.goodList = res.data.data
 					this.goodList.map((item) => {
-						
-						var tempSpecification =  JSON.parse(item.specification) 
+
+						var tempSpecification = JSON.parse(item.specification)
 						item.s = []
-						tempSpecification.map(items=>{
-							items.content.map((itemsx)=>{
+						tempSpecification.map(items => {
+							items.content.map((itemsx) => {
 								item.s.push(itemsx)
 							})
 						})
-						
-						
-						item.specifications = JSON.parse(item.specification) 
-						
+
+
+						item.specifications = JSON.parse(item.specification)
+
 						item.num = 0
 						if (item.productImg != undefined) {
 							item.img = item.productImg.split(',')[0]
 						}
 					})
 
-					this.cat.map((item, index) => {
-						this.goodList.map((items, indexs) => {
-							if (item.productId == items.id) {
-								items.num = item.num
-							}
-						})
 
-					})
+					if (this.cat != undefined) {
+						this.cat.shoppingCarts.map((item, index) => {
+							this.goodList.map((items, indexs) => {
+								if (item.productId == items.id) {
+									items.num = item.num
+								}
+							})
+
+						})
+					}
+
 
 					// console.log('this.goodList', this.goodList)
 
@@ -960,7 +988,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.shop_information {
 		position: relative;
 		padding: 20rpx;
@@ -985,8 +1013,8 @@
 		display: flex;
 		padding: 0 20rpx;
 	}
-	
-	.evaluate view{
+
+	.evaluate view {
 		color: #636363;
 		margin-right: 20rpx;
 	}
@@ -994,6 +1022,8 @@
 	.box {
 		background: #fff;
 		border-radius: 30rpx 30rpx 0 0;
+		position: relative;
+		top: -100rpx;
 	}
 
 	.businessTime {
@@ -1031,7 +1061,7 @@
 		align-items: center;
 	}
 
-	
+
 	.good_box {
 		display: flex;
 	}
@@ -1044,37 +1074,49 @@
 	}
 
 	.good_title_select {
+		
 		width: 200rpx;
 		background: #F8F8F8;
 		height: 100vh;
+		view {
+			width: auto;
+			padding: 0 6rpx;
+			text {
+				display: block;
+				text-align: center;
+				padding: 10rpx 0;
+				margin: 10rpx 0;
+				font-size: 28rpx;
+			}
+		}
+		.selectMenu {
+			background: #fff;
+			text {
+				display: block;
+				text-align: center;
+				padding: 10rpx 0;
+				margin: 10rpx 0;
+				border-left: 4rpx solid #007AFF;
+				font-size: 28rpx;
+			}
+		}
+		
+		.cImg{
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			margin: 20rpx;
+			height: 500rpx;
+			border-radius: 40rpx;
+			overflow: hidden;
+			image{
+				height: 100%;
+				text-align: center;
+			}
+		}
+		
 	}
 
-	.good_title_select view {
-		width: auto;
-		padding: 0 6rpx;
-
-	}
-
-	.good_title_select view text {
-		display: block;
-		text-align: center;
-		padding: 10rpx 0;
-		margin: 10rpx 0;
-		font-size: 28rpx;
-	}
-	
-	.good_title_select .selectMenu{
-		background: #fff;
-	}
-
-	.good_title_select .selectMenu text {
-		display: block;
-		text-align: center;
-		padding: 10rpx 0;
-		margin: 10rpx 0;
-		border-left: 4rpx solid #007AFF;
-		font-size: 28rpx;
-	}
 
 	.good_right {
 		margin-left: 30rpx;
@@ -1303,23 +1345,25 @@
 		border: 4rpx solid #007AFF;
 		color: #007AFF;
 	}
-	
-	.address{
+
+	.address {
 		color: #636363;
+		font-size: 28rpx;
 	}
-	.contact{
+
+	.contact {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-	
+
 	.good_taste_label_box {
 		display: flex;
 		font-size: 24rpx;
 		color: #999;
-		margin:10rpx;
+		margin: 10rpx;
 	}
-	
+
 	.good_item_taste_label_box {
 		color: #EEACAA;
 		border: 1rpx solid #FCFCFC;
@@ -1328,23 +1372,32 @@
 		border-radius: 1rpx;
 		white-space: nowrap;
 	}
-	
+
 	.good_reserve {
 		padding: 5rpx 10rpx;
 		border: 1rpx solid #999;
 	}
-	
-	.Stitle{
+
+	.Stitle {
 		margin: 10rpx 0;
 	}
-	
-	
-	.gauge{
-		    background: #1897FF;
-		    font-size: 26rpx;
-		    padding: 10rpx;
-		    border-radius: 10rpx;
-		    color: #fff;
+
+
+	.gauge {
+		background: #1897FF;
+		font-size: 26rpx;
+		padding: 10rpx;
+		border-radius: 10rpx;
+		color: #fff;
 	}
 	
+	.cNum{
+		position: absolute;
+		right: 0;
+		top: 0;
+		background: red;
+		color: #fff;
+		border-radius: 5rpx;
+		font-size: 24rpx;
+	}
 </style>

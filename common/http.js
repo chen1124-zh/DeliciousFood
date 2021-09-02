@@ -129,6 +129,17 @@ function getSite (data) {
 }
 
 
+// 支付接口
+function payOrder (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'order/payOrder', // 请求url
+		data: data // 参数
+	})
+}
+
+
+
 
 export default{
 	getOrderList,
@@ -143,5 +154,6 @@ export default{
 	getAddressList,
 	addAddress,
 	queryList,
-	getSite
+	getSite,
+	payOrder
 }
