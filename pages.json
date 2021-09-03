@@ -183,6 +183,15 @@
 						"navigationBarTitleText": "收货地址"
 					}
                 }
+                ,{
+                    "path" : "seat/seat",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "座位",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
             ]
 	}],
 	"tabBar":{

@@ -35,7 +35,7 @@
 					销量
 				</view>
 			</view>
-			<view class="screen">
+			<view class="screen"  @click="sai =! sai">
 				筛选 <image src="../../static/screen.png" mode="" style="width: 28rpx;height: 28rpx;"></image>
 			</view>
 			
@@ -46,6 +46,75 @@
 					</view>
 					<view class="" v-if="index == storeIndex">
 						<uni-icons type="checkmarkempty" size="20" color='#007AFF'></uni-icons>
+					</view>
+				</view>
+			</view>
+			
+			<view class="drop_down_box temp_deop" v-if="sai">
+				<view class="title">
+					商家服务
+				</view>
+				<view class="tc_box">
+					<view class="tc_item">
+						<view class="tc_img">
+							<image src="../../static/camera.png" mode="widthFix"></image>
+						</view>
+						<view class="tc_str">
+							商家配送
+						</view>
+					</view>
+					<view class="tc_item">
+						<view class="tc_img">
+							<image src="../../static/store.png" mode="widthFix"></image>
+						</view>
+						<view class="tc_str">
+							支持配送
+						</view>
+					</view>
+					<view class="tc_item">
+						<view class="tc_img">
+							<image src="../../static/home.png" mode="widthFix"></image>
+						</view>
+						<view class="tc_str">
+							到店自取
+						</view>
+					</view>
+					<view class="tc_item">
+						<view class="tc_img">
+							<image src="../../static/Be.png" mode="widthFix"></image>
+						</view>
+						<view class="tc_str">
+							贵宾服务
+						</view>	
+					</view>
+				</view>
+			
+				<view class="title">
+					人均价格
+				</view>
+				
+				<view class="slide">
+					
+					
+					<u-slider v-model="value">
+						<!-- 这里外面需要多一层view，否则".badge-button"样式可能不生效 -->
+						<view class="">
+							<view class="badge-button">
+								{{value}}
+							</view>
+						</view>
+					</u-slider>
+					
+					
+					
+				</view>
+				
+				<view class="button">
+					<view class="close" @click="saiClick(1)">
+						清空
+					</view>
+					<view class="ss" @click="ssClick(1)">
+						搜索
 					</view>
 				</view>
 			</view>
@@ -151,6 +220,8 @@
 				],
 				
 				storeIndex: 0,
+				sai:false,
+				value: 30,
 			}
 		},
 		onLoad() {
@@ -162,6 +233,12 @@
 			this.navigation = this.$store.getters.getNavigation
 		},
 		methods: {
+			ssClick(type){
+				this.sai = false
+			},
+			saiClick(type){
+				this.sai = false
+			},
 			Tsearch(){
 				uni.navigateTo({
 					url:"../../pagesA/search/search"
@@ -213,7 +290,11 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	
+	image{
+		width: 100%;
+	}
 	
 	.search{
 		height: 100%;
@@ -370,6 +451,72 @@
 	.choiceselect{
 		color: #007AFF;
 		font-weight: bold;
+	}
+	
+	
+	.temp_deop{
+		.title{
+			margin: 20rpx;
+			font-size: 24rpx;
+			color: #999;
+		}
+		
+		.tc_box{
+			margin: 20rpx;
+			display: flex;
+			flex-wrap: wrap;
+			.tc_item{
+				margin:0 20rpx 20rpx 0;
+				display: flex;
+				padding: 20rpx;
+				background: #F8F8F8;
+				
+				.tc_img{
+					width: 40rpx;
+				}
+				
+				.tc_str{
+					font-size: 30rpx;
+				}
+			}
+		}
+	
+		.slide{
+			width: 90%;
+			margin: 50rpx 20rpx;
+		}
+		
+		.button{
+			display: flex;
+			view{
+				flex: 1;
+				text-align: center;
+				padding: 20rpx;
+			}
+			
+			.close{
+				background: #fff;
+				color: #333;
+			}
+			
+			.ss{
+				background: #2697F4;
+				color: #fff;
+			}
+		}
+	}
+	
+	.wrap {
+		padding: 30rpx;
+	}
+	
+	.badge-button {
+		padding: 4rpx 6rpx;
+		background-color: #007AFF;
+		color: #fff;
+		border-radius: 10rpx;
+		font-size: 22rpx;
+		line-height: 1;
 	}
 	
 </style>

@@ -214,7 +214,7 @@
 
 			<view class="business_box" v-if="branch == 3">
 				<view class="business_describe">
-					本店
+					本店诚信经营，每一份都是现做
 				</view>
 
 				<view class="describe_img_box">
@@ -224,19 +224,19 @@
 				</view>
 
 				<view class="about" @click="food">
-					食品安全
+					食品安全档案
 				</view>
 				<view class="about">
 					配送服务：商家配送
 				</view>
 				<view class="about">
-					配送时间：9:00-22:00
+					配送时间：{{store.BusinessTimes}}
 				</view>
-				<view class="about">
-					共1家分店
+				<view class="about" @click="branchStore">
+					共{{shopDataList.length}}家分店
 				</view>
 
-				<view class="">
+				<view class="" v-if="false">
 					举报商家
 				</view>
 			</view>
@@ -377,7 +377,8 @@
 					4: '四',
 					5: '五',
 					6: '六'
-				}
+				},
+				shopDataList:[]
 			}
 		},
 		components: {
@@ -453,6 +454,22 @@
 					}
 				})
 
+			},
+			
+			getshopList(){
+				var than = this
+				var data = {
+					userId:this.store.userId,
+				} 
+				Api.getStoreList(data).then(res => {
+					console.log('shopList',res)
+					than.shopDataList = res.data
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
 			},
 			/**
 			 * 判断某年是否闰年
@@ -638,11 +655,6 @@
 					}
 
 				})
-				// if (this.gaugeData.c[index].content[indexs].select == undefined) {
-				// 	this.gaugeData.c[index].content[indexs].select = true
-				// } else {
-				// 	this.gaugeData.c[index].content[indexs].select = !this.gaugeData.c[index].content[indexs].select
-				// }
 
 				this.gaugeData.c.map((item) => {
 					item.content.map((items) => {
@@ -657,7 +669,6 @@
 
 
 			},
-
 			addCat() {
 
 
@@ -831,6 +842,11 @@
 				}).then(res => {
 					// console.log('res',res);
 					this.store = res.data[0]
+					
+					
+					
+					
+					this.getshopList()
 					this.store.BusinessTimes = ''
 					var tempBusinessTime = JSON.parse(this.store.businessTime)
 					if (tempBusinessTime.standard == true) {
@@ -846,7 +862,7 @@
 						.length - 1)
 
 					// this.storeList.map((item)=>{
-					// this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
+					this.store.storeIntroductImgList = this.store.storeIntroductImg.split(",")
 					// console.log('this.store',JSON.parse(this.store.servuceConfiguration) )
 
 					this.store.foodSortList = []
@@ -911,17 +927,19 @@
 					this.gaugeData.c = JSON.parse(this.goodList[index].specification)
 				}
 
-				// console.log(this.goodList[index]);
 			},
 			x() {
 				this.g = false
+			},
+			branchStore(){
+				uni.navigateTo({
+					url:'../BranchStore/BranchStore?id='+this.store.userId
+				})
 			},
 			weeks() {
 
 			},
 			getGoodData() {
-				// this.shopData = uni.getStorageSync('shopData');
-
 				var data = {
 					storeId: this.storeId,
 					menuType: this.classifiList[this.selectClassifi].id,
@@ -974,9 +992,6 @@
 						})
 					}
 
-
-					// console.log('this.goodList', this.goodList)
-
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -988,7 +1003,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.shop_information {
 		position: relative;
 		padding: 20rpx;
@@ -1222,7 +1237,7 @@
 
 	.business_describe {
 		font-size: 24rpx;
-		color: #333;
+		color: #ccc;
 		margin: 20rpx 0;
 	}
 

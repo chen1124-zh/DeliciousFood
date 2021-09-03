@@ -43,16 +43,15 @@
 					
 				</view>
 				<view class="han">
-					<view class="title" style="font-weight: bold;">
-						预订电话
+					<view class="title">
+						预留电话
 					</view>
-					<view class="" style="display: flex;">
-						<view class="" style="margin-right: 20rpx;">
-							{{user.nickName}}
-							
+					<view class="" style="display: flex;" @click="userShow = true,tempNickName = nickName,tempMobile = mobile">
+						<view class="user_name">
+							{{nickName}}
 						</view>
-						<view class="" style="color: #007AFF;">
-							{{user.mobile}}
+						<view class="lan font_crude">
+							{{mobile}}
 						</view>
 						<view class="">
 							<uni-icons type="compose"></uni-icons>
@@ -64,24 +63,18 @@
 						预订时间
 					</view>
 					<view class="">
-						 <!-- <picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
-							<view class="uni-input">{{date}}</view>
-						</picker> -->
 						<picker mode="multiSelector" @change="changeTime" @columnchange='confirms' :value="ptimes" :range="ptime">
-							<view class="uni-input">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}</view>
+							<view class="lan font_crude">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}<uni-icons type="arrowright" color='#999'></uni-icons></view>
 						</picker>
 						
 					</view>
-					<!-- <view class="">
-						座位
-					</view> -->
 				</view>
 				<view class="han">
 					<view class="title">
 						订座
 					</view>
-					<view class="">
-						12人 01包厢
+					<view class="people">
+						12人 01包厢<uni-icons type="arrowright"></uni-icons>
 					</view>
 				</view>
 			
@@ -101,7 +94,7 @@
 							地址
 						</view>
 						<view class="" style="display: flex;font-size: 28rpx;color: #999;">
-							<view class="" style="margin-right: 10rpx;">
+							<view class="">
 								{{user.nickName}}
 								
 							</view>
@@ -119,25 +112,19 @@
 						预订时间
 					</view>
 					<view class="">
-						5月5日 周三 12:45
+						<picker mode="multiSelector" @change="changeTime" @columnchange='confirms' :value="ptimes" :range="ptime">
+							<view class="lan font_crude">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}<uni-icons type="arrowright" color='#999'></uni-icons></view>
+						</picker>
+						
 					</view>
 				</view>
 			</view>
 		
 			<view class="" v-if="index == 2">
 				<view class="han" style="display: flex;justify-content: space-between;">
-					<view class="">
-						<view class="position">
-							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
-							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
-							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
-						</view>
-						<view class="">
-							{{siteList[siteIndex].address}}
-						</view>
-						<view class="system">
-							系统自动为您选择就近站点
-						</view>
+					<view style="font-size: 40rpx;font-weight: bold;">
+						{{store.area}}{{store.address}}
+						
 					</view>
 					<view class="distance">
 						<view class="distanceStr">
@@ -150,17 +137,19 @@
 				</view>
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="title" style="font-weight: bold;">
-						预订电话
+						预留电话
 					</view>
 					<view class="" style="display: flex;">
-						<view class="" style="margin-right: 20rpx;">
+						<view class="user_name" >
 							{{user.nickName}}
 							
 						</view>
-						<view class="" style="color: #007AFF;">
+						<view class="lan font_crude" style="color: #007AFF;">
 							{{user.mobile}}
 						</view>
-						
+						<view class="">
+							<uni-icons type="compose"></uni-icons>
+						</view>
 					</view>
 				</view>
 				<view class="han">
@@ -168,25 +157,17 @@
 						取餐时间
 					</view>
 					<view class="">
-						5月5日 周三 12:45
+						<picker mode="multiSelector" @change="changeTime" @columnchange='confirms' :value="ptimes" :range="ptime">
+							<view class="lan font_crude">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}<uni-icons type="arrowright" color='#999'></uni-icons></view>
+						</picker>
 					</view>
 				</view>
 			</view>
 		
 			<view class="" v-if="index == 3">
 				<view class="han" style="display: flex;justify-content: space-between;">
-					<view class="">
-						<view class="position">
-							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
-							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
-							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
-						</view>
-						<view class="">
-							{{siteList[siteIndex].address}}
-						</view>
-						<view class="system">
-							系统自动为您选择就近站点
-						</view>
+					<view style="font-size: 40rpx;font-weight: bold;">
+						{{store.area}}{{store.address}}
 					</view>
 					<view class="distance">
 						<view class="distanceStr">
@@ -199,17 +180,19 @@
 				</view>
 				<view class="han" style="display: flex;justify-content: space-between;">
 					<view class="title" style="font-weight: bold;">
-						预订电话
+						预留电话
 					</view>
 					<view class="" style="display: flex;">
-						<view class="" style="margin-right: 20rpx;">
+						<view class="user_name">
 							{{user.nickName}}
 							
 						</view>
-						<view class="" style="color: #007AFF;">
+						<view class="lan font_crude" >
 							{{user.mobile}}
 						</view>
-						
+						<view class="">
+							<uni-icons type="compose"></uni-icons>
+						</view>
 					</view>
 				</view>
 				<view class="han">
@@ -217,15 +200,17 @@
 						取餐时间
 					</view>
 					<view class="">
-						5月5日 周三 12:45
+						<picker mode="multiSelector" @change="changeTime" @columnchange='confirms' :value="ptimes" :range="ptime">
+							<view class="lan font_crude">{{time.getMonth()+1}}月{{time.getDate()}}日 周{{time.getDay() | Day()}} {{time.getHours()}}:{{time.getMinutes()}}<uni-icons type="arrowright" color='#999'></uni-icons></view>
+						</picker>
 					</view>
 				</view>
 				<view class="han">
 					<view class="title">
 						订座
 					</view>
-					<view class="">
-						12人 01包厢
+					<view class="people">
+						12人 01包厢<uni-icons type="arrowright" color='#999'></uni-icons>
 					</view>
 				</view>
 			</view>
@@ -296,26 +281,14 @@
 							餐盒
 						</view>
 					</view>
-					<view class="">
+					<view style="font-weight: bold;">
 						￥{{itemd.total}}
 					</view>
 				</view>
 				
 			</view>
 			
-			<!-- <view class="money"  v-if="type==0" >
-				<view class="surplus">
-					<view class="packing" >
-						包装费
-					</view>
-					<view class="">
-						餐盒
-					</view>
-				</view>
-				<view class="">
-					￥{{total}}
-				</view>
-			</view> -->
+			
 			
 			<view class="total"  v-if="type!=0">
 				<view class="total_name">
@@ -352,19 +325,32 @@
 					订单备注
 				</view>
 				
+				<view class="" style="color: #999;" @click="show = true,tempOrderRemarks = orderRemarks">
+					{{orderRemarks||"口味、偏好"}}
+				</view>
+				
+			</view>
+			
+			<view class="unified" v-if="index == 1 || index == 2">
+				<view class="title">
+					餐具分量
+				</view>
+				
 				<view class="" style="color: #999;">
-					口味.偏好
+					<picker mode="selector" :range="tableware" @change="changeTableware">
+						<view>{{tablewareIndex == -1?'未选择':tableware[tablewareIndex]}}</view>
+					</picker>
 				</view>
 				
 			</view>
 		</view>
 		
-		<view class="agreement">
+		<view class="agreement" v-if="index == 0">
 			<view 
 			@click="g = !g"
 			style="width: 30rpx;height: 30rpx; border: 1rpx solid #999;margin-right: 10rpx;display: flex;justify-content: center;align-items: center;">
 				<uni-icons type="checkmarkempty" style="font-size: 30rpx;" v-if="g"></uni-icons>
-			</view> 我已阅读并同意 <text style="color: #007AFF;">《站点服务协议》</text>
+			</view> 我已阅读并同意 <text style="color: #007AFF;" @click="Jagreement">《站点服务协议》</text>
 		</view>
 		
 		<view class="submit"  v-if="type!=0">
@@ -376,14 +362,26 @@
 				<view class="" style="font-size: 36rpx;">
 					￥{{total}}
 				</view>
-				<!-- <view class="">
-					20
-				</view> -->
 			</view>
 			<view class=""style="width: 30%;background: #289EFF;color: #fff;padding: 30rpx;text-align: center;">
 				确认支付
 			</view>
 		</view>
+		
+		
+		<u-modal v-model="show" title='订单备注' :show-cancel-button='true' @cancel='orderQX' @confirm='orderQR'>
+			<textarea v-model="tempOrderRemarks" placeholder="可输入口味、偏好等信息" class="orderRemarks"/>
+		</u-modal>
+		
+		<u-modal v-model="userShow" title='预留电话' :show-cancel-button='true' @cancel='userQX' @confirm='userQR'>
+			<view class="moneyBox">
+				称呼：<input type="text" v-model="tempNickName" />
+			</view>
+			<view class="moneyBox">
+				电话：<input type="text" v-model="tempMobile" />
+			</view>
+			
+		</u-modal>
 		
 	</view>
 </template>
@@ -414,82 +412,23 @@
 				format: true
 			})
 			return {
+				nickName:'',
+				mobile:'',
+				tempMobile:'',
+				tempNickName:'',
+				userShow:false,
+				
+				
+				tempOrderRemarks:'',
+				orderRemarks:'',
+				show:false,
 				ptime:[
 					[],
 					[],
 					[],
 					[]
 				],
-				userCatList:[
-					{
-						total:10,
-						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
-						userName:'名字',
-						userCat:{
-							
-							shoppingCarts:[
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								}
-							],
-							storeId: "42",
-							storeName: "测试店铺1",
-							total: 1,
-							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-							message: "成功",
-							
-						}
-					},
-					{
-						total:10,
-						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
-						userName:'名字',
-						userCat:{
-							
-							shoppingCarts:[
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								}
-							],
-							storeId: "42",
-							storeName: "测试店铺1",
-							total: 1,
-							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-							message: "成功",
-							
-						}
-					}
-				],
+				userCatList:[],
 				ptimes:[0,0,0,0],
 				time:new Date(),
 				index:0,
@@ -504,6 +443,12 @@
 				siteList:[],
 				siteIndex:0,
 				type:0,
+				tableware:[
+					'不需要餐具','1份','2份','3份','4份','5份','6份','7份','8份','9份','10份',
+					'11份','12份','13份','14份','15份','16份','17份','18份','19份','20份',
+					'21份','22份','23份','24份','25份','26份','27份','28份','29份','30份'
+				],
+				tablewareIndex:-1
 			}
 		},
 		computed: {
@@ -545,7 +490,7 @@
 			
 			this.storeId = op.sid
 			
-			this.type = op.type
+			// this.type = op.type
 			
 			if(this.type == 0){
 				this.userCatList = [
@@ -699,6 +644,12 @@
 			
 			
 			this.user = uni.getStorageSync('user')
+			
+			this.nickName = this.user.nickName
+			this.mobile = this.user.mobile
+			
+			
+			
 			this.getStor()
 			// this.getShoppingCartList()
 			
@@ -706,7 +657,11 @@
 			
 		},
 		methods: {
-			
+			Jagreement(){
+				uni.navigateTo({
+					url:'../agreement/agreement'
+				})
+			},
 			getSiteList() {
 				var data = {
 					siteName: ''
@@ -795,7 +750,6 @@
 					this.$forceUpdate()
 				}
 			},
-			
 			/**
 			 * 判断某年是否闰年
 			 */
@@ -831,8 +785,9 @@
 			       }
 			},
 			
-			
-			
+			changeTableware(e){
+				this.tablewareIndex =  e.target.value
+			},
 			bindDateChange: function(e) {
 				this.date = e.target.value
 			},
@@ -955,6 +910,29 @@
 					})
 				});
 			},
+		
+			orderQR(){
+				this.orderRemarks = this.tempOrderRemarks
+			},
+			orderQX(){
+				this.tempOrderRemarks = ''
+			},
+			
+			userQR(){
+				if(this.tempNickName==''||this.tempMobile == ''){
+					uni.showToast({
+						title:'请补充完整',
+						icon:'none'
+					})
+					this.userShow = true
+					return
+				}
+				this.nickName = this.tempNickName
+				this.mobile = this.tempMobile
+			},
+			userQX(){
+				tempNickName
+			}
 		}
 	}
 </script>
@@ -969,7 +947,15 @@
 			width: 100%;
 		}
 		
+		.lan{
+			color: #007AFF;
+		}
+		
 		.title{
+			font-weight: bold;
+		}
+		
+		.font_crude{
 			font-weight: bold;
 		}
 		
@@ -1263,8 +1249,38 @@
 			text-align: center;
 			padding: 20rpx;
 		}
+	
+		.user_name{
+			margin-right: 20rpx;
+		}
+		
+		.people{
+			color: #999;
+		}
 	}
 	
+	
+	.orderRemarks{
+		width: 86%;
+		border: 1rpx solid #F0F0F0;
+		margin: 30rpx;
+		border-radius: 10rpx;
+		padding: 10rpx;
+	}
+	
+	.moneyBox{
+		display: flex;
+		align-items: center;
+		margin: 20rpx;
+		font-size: 26rpx;
+		input{
+			flex: 1;
+			border: 1rpx solid #F0F0F0;
+			border-radius: 10rpx;
+			padding: 10rpx;
+			margin: 10rpx;
+		}
+	}
 	
 	
 	
