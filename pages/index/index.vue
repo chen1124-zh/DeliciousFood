@@ -1004,6 +1004,7 @@
 			getStore() {
 				Api.getStoreList({}).then((res) => {
 					this.storeList = res.data
+						this.nearbyStoreList = res.data 
 					this.storeList.map((item) => {
 						item.foodSortList = []
 						var foodLabelObj = JSON.parse(item.foodLabel)
@@ -1028,8 +1029,8 @@
 
 
 					})
-
-					this.nearbyStoreList = res.data
+					
+				
 					this.nearbyStoreList.map((item) => {
 						item.foodSortList = []
 						var foodLabelObj = JSON.parse(item.foodLabel)
@@ -1636,6 +1637,7 @@
 				height: 150rpx;
 			}
 			.goodRight{
+				margin-left: 10rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
@@ -1658,6 +1660,7 @@
 					display: flex;
 					align-items: center;
 					.good_shop_img{
+						overflow: hidden;
 						width: 50rpx;
 						height: 50rpx;
 						border-radius: 50%;
