@@ -33,14 +33,14 @@
 			</view>
 		</view>
 		
-		<view class="delbox">
+		<view class="delbox" v-if="type" @click="delress()">
 			<view class="del">
 				删除
 			</view>
 			
 		</view>
 		
-		<view class="" style="display: flex;justify-content: space-between;" >
+		<view class="" style="display: flex;justify-content: space-between;margin: 20rpx 0;" >
 			<view class="">
 				设为默认地址
 			</view>
@@ -68,7 +68,16 @@
 				region:'',       //地区
 				address:'',      //地址
 				userId:'',       //用户id
+				id:'',
 				select:false,
+				type:0
+			}
+		},
+		onLoad(op) {
+			this.type = op.type
+			this.id = op.id
+			if(this.id != ''){
+				this.QRess()
 			}
 		},
 		onShow() {
@@ -76,6 +85,28 @@
 			this.userId = user.id
 		},
 		methods: {
+			QRess(){
+				
+			},
+			delress(){
+				Api.deleteAddress({id:id}).then(res => {
+					uni.showToast({
+						title:'删除成功',
+						icon:'none'
+					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:-1
+						})
+					},1000)
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			},
 			addRess(){
 				if(this.mobile == '' || this.nickName == '' || this.region == '' || this.address == ''){
 					uni.showToast({
@@ -86,7 +117,6 @@
 				}
 				var z = /^1[3456789]d{9}$/
 				
-				console.log()
 				if(!(RegExp(/^1[34578]\d{9}$/).test(this.mobile))){
 					uni.showToast({
 						title:'请输入正确的手机号码',
@@ -100,7 +130,8 @@
 					nickName:this.nickName,     //昵称
 					address:this.region+this.address,      //地址
 					userId:this.userId,       //用户id
-					status:0
+					status:0,
+					defaultAddress:this.select?1:0
 				}
 				
 				Api.addAddress(data).then(res => {

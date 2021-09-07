@@ -90,7 +90,7 @@
 				<view class="han">
 					<view class="">
 						
-						<view class="" @click="Tdi">
+						<view class="Hress" @click="Tdi">
 							地址
 						</view>
 						<view class="" style="display: flex;font-size: 28rpx;color: #999;">
@@ -1280,6 +1280,10 @@
 			padding: 10rpx;
 			margin: 10rpx;
 		}
+	}
+	
+	.Hress{
+		font-size: 45rpx;
 	}
 	
 	

@@ -138,6 +138,26 @@ function payOrder (data) {
 	})
 }
 
+// 删除收货地址接口
+function deleteAddress (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'address/deleteAddress', // 请求url
+		data: data // 参数
+	})
+}
+
+
+// 获取站点协议
+function getTreaty (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: 'treaty/getTreaty', // 请求url
+		data: data // 参数
+	})
+}
+
+
 
 
 
@@ -155,5 +175,7 @@ export default{
 	addAddress,
 	queryList,
 	getSite,
-	payOrder
+	payOrder,
+	deleteAddress,
+	getTreaty	
 }

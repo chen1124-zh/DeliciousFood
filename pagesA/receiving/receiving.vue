@@ -20,12 +20,12 @@
 							</view>
 						</view>
 						
-						<view class="" style="flex: 1;text-align: right;">
+						<view class="" style="flex: 1;text-align: right;" v-if="item.defaultAddress == 1">
 							默认收货地址
 						</view>
 					</view>
 				</view>
-				<view class="edit">
+				<view class="edit" @click="uRess(item.id)">
 					编辑
 				</view>
 			</view>
@@ -53,6 +53,11 @@
 			await this.getReceiving()
 		},
 		methods: {
+			uRess(id){
+				uni.navigateTo({
+					url:'../address/address?type=1?id='+id
+				})
+			},
 			addressT(){
 				uni.navigateTo({
 					url:'../address/address'
