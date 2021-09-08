@@ -192,6 +192,15 @@
                 }
                 
                 }
+                ,{
+                    "path" : "menu",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
             ]
 	}],
 	"tabBar":{
