@@ -492,151 +492,151 @@
 			
 			// this.type = op.type
 			
-			if(this.type == 0){
-				this.userCatList = [
-					{
-						total:10,
-						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
-						userName:'名字',
-						userCat:{
+			// if(this.type == 0){
+			// 	this.userCatList = [
+			// 		{
+			// 			total:10,
+			// 			userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+			// 			userName:'名字',
+			// 			userCat:{
 							
-							shoppingCarts:[
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								},
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								},
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								}
-							],
-							storeId: "42",
-							storeName: "测试店铺1",
-							total: 1,
-							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-							message: "成功",
+			// 				shoppingCarts:[
+			// 					{
+			// 						createTime: 1630565326000,
+			// 						discounted: "0",
+			// 						id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+			// 						meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+			// 						num: 1,
+			// 						price: 1,
+			// 						productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+			// 						productName: "商品名称1",
+			// 						spec: "[{'name':'名称','price':'1','select':true}]",
+			// 						status: 0,
+			// 						storeId: "42",
+			// 						storeName: "测试店铺1",
+			// 						total: 1,
+			// 						updateTime: 1630565326000,
+			// 						urlImages: "../../static/tempGood2.png",
+			// 						userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 					},
+			// 					{
+			// 						createTime: 1630565326000,
+			// 						discounted: "0",
+			// 						id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+			// 						meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+			// 						num: 1,
+			// 						price: 1,
+			// 						productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+			// 						productName: "商品名称1",
+			// 						spec: "[{'name':'名称','price':'1','select':true}]",
+			// 						status: 0,
+			// 						storeId: "42",
+			// 						storeName: "测试店铺1",
+			// 						total: 1,
+			// 						updateTime: 1630565326000,
+			// 						urlImages: "../../static/tempGood2.png",
+			// 						userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 					},
+			// 					{
+			// 						createTime: 1630565326000,
+			// 						discounted: "0",
+			// 						id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+			// 						meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+			// 						num: 1,
+			// 						price: 1,
+			// 						productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+			// 						productName: "商品名称1",
+			// 						spec: "[{'name':'名称','price':'1','select':true}]",
+			// 						status: 0,
+			// 						storeId: "42",
+			// 						storeName: "测试店铺1",
+			// 						total: 1,
+			// 						updateTime: 1630565326000,
+			// 						urlImages: "../../static/tempGood2.png",
+			// 						userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 					}
+			// 				],
+			// 				storeId: "42",
+			// 				storeName: "测试店铺1",
+			// 				total: 1,
+			// 				userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 				message: "成功",
 							
-						}
-					}
-				]
-			}else{
-				this.userCatList = [
-					{
-						total:10,
-						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
-						userName:'名字',
-						userCat:{
+			// 			}
+			// 		}
+			// 	]
+			// }else{
+			// 	this.userCatList = [
+			// 		{
+			// 			total:10,
+			// 			userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+			// 			userName:'名字',
+			// 			userCat:{
 							
-							shoppingCarts:[
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								}
-							],
-							storeId: "42",
-							storeName: "测试店铺1",
-							total: 1,
-							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-							message: "成功",
+			// 				shoppingCarts:[
+			// 					{
+			// 						createTime: 1630565326000,
+			// 						discounted: "0",
+			// 						id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+			// 						meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+			// 						num: 1,
+			// 						price: 1,
+			// 						productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+			// 						productName: "商品名称1",
+			// 						spec: "[{'name':'名称','price':'1','select':true}]",
+			// 						status: 0,
+			// 						storeId: "42",
+			// 						storeName: "测试店铺1",
+			// 						total: 1,
+			// 						updateTime: 1630565326000,
+			// 						urlImages: "../../static/tempGood2.png",
+			// 						userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 					}
+			// 				],
+			// 				storeId: "42",
+			// 				storeName: "测试店铺1",
+			// 				total: 1,
+			// 				userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 				message: "成功",
 							
-						}
-					},
-					{
-						total:10,
-						userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
-						userName:'名字',
-						userCat:{
+			// 			}
+			// 		},
+			// 		{
+			// 			total:10,
+			// 			userImg:'https://thirdwx.qlogo.cn/mmopen/vi_32/KUgrrhKwibDJ4j9WkE9aOH7nWFh0S3c5d4KMsBicKCwBialAatr2icfQ8RC6Y0iaJmweQl3FiaMxjHe8UGnib746OZSBw/132',
+			// 			userName:'名字',
+			// 			userCat:{
 							
-							shoppingCarts:[
-								{
-									createTime: 1630565326000,
-									discounted: "0",
-									id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
-									meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
-									num: 1,
-									price: 1,
-									productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
-									productName: "商品名称1",
-									spec: "[{'name':'名称','price':'1','select':true}]",
-									status: 0,
-									storeId: "42",
-									storeName: "测试店铺1",
-									total: 1,
-									updateTime: 1630565326000,
-									urlImages: "../../static/tempGood2.png",
-									userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-								}
-							],
-							storeId: "42",
-							storeName: "测试店铺1",
-							total: 1,
-							userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
-							message: "成功",
+			// 				shoppingCarts:[
+			// 					{
+			// 						createTime: 1630565326000,
+			// 						discounted: "0",
+			// 						id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+			// 						meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+			// 						num: 1,
+			// 						price: 1,
+			// 						productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+			// 						productName: "商品名称1",
+			// 						spec: "[{'name':'名称','price':'1','select':true}]",
+			// 						status: 0,
+			// 						storeId: "42",
+			// 						storeName: "测试店铺1",
+			// 						total: 1,
+			// 						updateTime: 1630565326000,
+			// 						urlImages: "../../static/tempGood2.png",
+			// 						userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 					}
+			// 				],
+			// 				storeId: "42",
+			// 				storeName: "测试店铺1",
+			// 				total: 1,
+			// 				userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+			// 				message: "成功",
 							
-						}
-					}
-				]
-			}
+			// 			}
+			// 		}
+			// 	]
+			// }
 			
 			
 			
@@ -651,7 +651,7 @@
 			
 			
 			this.getStor()
-			// this.getShoppingCartList()
+			this.getShoppingCartList()
 			
 			
 			
@@ -833,6 +833,11 @@
 				})
 				
 				shoppingCartId = shoppingCartId.substring(0,shoppingCartId.length-1)
+				
+				
+				
+				
+				// return
 				var data = {
 					addIncome:0,
 					people:1,
@@ -890,19 +895,104 @@
 					userId:this.user.id,
 					storeId:this.storeId
 				}
+				
+				
+				this.userCatList = [
+					{
+						total:10,
+						userImg:this.user.images,
+						userName:this.name,
+						userCat:{
+							
+							shoppingCarts:[
+								
+								// {
+								// 	createTime: 1630565326000,
+								// 	discounted: "0",
+								// 	id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+								// 	meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+								// 	num: 1,
+								// 	price: 1,
+								// 	productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+								// 	productName: "商品名称1",
+								// 	spec: "[{'name':'名称','price':'1','select':true}]",
+								// 	status: 0,
+								// 	storeId: "42",
+								// 	storeName: "测试店铺1",
+								// 	total: 1,
+								// 	updateTime: 1630565326000,
+								// 	urlImages: "../../static/tempGood2.png",
+								// 	userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								// },
+								// {
+								// 	createTime: 1630565326000,
+								// 	discounted: "0",
+								// 	id: "CAFE3928F10A4DCFE0531D02A8C0DF8D",
+								// 	meunId: "CADBD6BC7A8CC165E0531D02A8C0D1C0",
+								// 	num: 1,
+								// 	price: 1,
+								// 	productId: "CADBD6BC7A8DC165E0531D02A8C0D1C0",
+								// 	productName: "商品名称1",
+								// 	spec: "[{'name':'名称','price':'1','select':true}]",
+								// 	status: 0,
+								// 	storeId: "42",
+								// 	storeName: "测试店铺1",
+								// 	total: 1,
+								// 	updateTime: 1630565326000,
+								// 	urlImages: "../../static/tempGood2.png",
+								// 	userId: "CAE67C56C43F4C20E0531D02A8C00D2D",
+								// }
+							],
+							storeId: this.storeId,
+							storeName: "测试店铺1",
+							total: 1,
+							userId: this.user.token,
+							message: "成功",
+							
+						}
+					}
+				]
+				
+				
+				
+				
+				
+				
+				
+				
 				this.allJia = 0
 				Api.getShoppingCart(data).then(res => {
-				
+					
 					this.cat = res.data.data
 					this.cat.map((item,index)=>{
+						this.userCatList[index].userCat.total = item.total
 						item.shoppingCarts.map((items)=>{
-							this.total += items.total
+							
+							
+							this.userCatList[index].userCat.shoppingCarts.push({
+									discounted: items.discounted,
+									id: items.id,
+									meunId: items.meunId,
+									num: items.num,
+									price: items.price,
+									productId: items.productId,
+									productName: items.productName,
+									spec: items.spec,
+									status: 0,
+									storeId: items.storeId,
+									storeName: items.storeName,
+									total: items.total,
+									urlImages: items.urlImages,
+									userId: items.userId,
+								})
+							this.$forceUpdate()
+							// this.total += items.total
 							items.specObj = JSON.parse(items.spec) 
 						})
 						
 					})
-						
-					this.addorder()
+					console.log(this.cat)
+					// this.addorder()
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,

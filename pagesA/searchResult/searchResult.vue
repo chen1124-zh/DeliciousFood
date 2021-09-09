@@ -8,7 +8,7 @@
 							<image src="../../static/search_icon.png" style="width: 100%;height: 100%;" mode=""></image>
 						</view>
 						<view class="">
-							水煮牛肉
+							{{goodName}}
 						</view>
 					</view>
 				</view>
@@ -229,9 +229,11 @@
 				storeIndex: 0,
 				sai:false,
 				value: 30,
+				goodName:''
 			}
 		},
-		onLoad() {
+		onLoad(op) {
+			this.goodName = op.goodName
 			this.getStore()
 		},
 		components: {
@@ -252,7 +254,11 @@
 				})
 			},
 			getStore(){
-				Api.getStoreList({}).then(res => {
+				
+				Api.getStoreByProductNameList({productName:this.goodName}).then(res => {
+					
+					console.log(res)
+					return
 					// console.log('res',res);
 					this.storeList = res.data
 					this.storeList.map((item) => {

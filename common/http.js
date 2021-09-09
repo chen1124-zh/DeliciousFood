@@ -158,6 +158,17 @@ function getTreaty (data) {
 }
 
 
+// 搜索商品
+function getStoreByProductNameList (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: '/store/getStoreByProductNameList', // 请求url
+		data: data // 参数
+	})
+}
+
+
+
 
 
 
@@ -177,5 +188,6 @@ export default{
 	getSite,
 	payOrder,
 	deleteAddress,
-	getTreaty	
+	getTreaty,
+	getStoreByProductNameList
 }

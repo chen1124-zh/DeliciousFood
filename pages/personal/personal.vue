@@ -272,7 +272,7 @@
 									let code = ress.code
 									console.log(code)
 									uni.request({
-										url: 'http://47.113.217.251:8080/user/save', //仅为示例，并非真实接口地址。
+										url: 'https://jk.ytxhh.top/api/user/save', //仅为示例，并非真实接口地址。
 										method:"POST", 
 										data: {           
 											"code":code,

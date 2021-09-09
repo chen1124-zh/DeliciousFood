@@ -22,7 +22,7 @@
 		</view>
 		
 		<view class="select_name">
-			<view class="item" v-for="(item,index) in ssList" :key='index' @click="tj">
+			<view class="item" v-for="(item,index) in ssList" :key='index' @click="tj(item)">
 				{{item}}
 			</view>
 		
@@ -52,9 +52,9 @@
 		},
 		methods: {
 			
-			tj(){
+			tj(item){
 				uni.navigateTo({
-					url:'../searchResult/searchResult'
+					url:'../searchResult/searchResult?goodName='+item
 				})
 			},
 			DssList(){
@@ -64,13 +64,26 @@
 				this.ssList = []
 			},
 			TsrachResult(){
-				if(this.ss != ''){
+				var temp = true
+				for (var i = 0; i < this.ssList.length; i++) {
+					if(this.ssList[i] == this.ss){
+						temp = false
+					}
+				}
+				
+				if(temp){
 					this.ssList.push(this.ss)
+				}
+				
+				
+				
+				if(this.ss != ''){
+					
 					uni.setStorageSync('ssList',this.ssList)
 				}
 				
 				uni.navigateTo({
-					url:'../searchResult/searchResult'
+					url:'../searchResult/searchResult?goodName='+this.ss
 				})
 			}
 		}

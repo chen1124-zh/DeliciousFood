@@ -543,33 +543,29 @@
 					this.allJia += item.total * item.num
 				})
 
-				if (this.goodList[index].num == 0) {
+				// if (this.goodList[index].num == 0) {
 
-					var tmepArr = this.cat.shoppingCarts.filter((item) => {
-						if (this.goodList[index].id == item.productId) {
-							var data = {
-								id: item.id
-							}
-
-							Api.deleteShoppingCar(data).then(res => {
-
-								this.classifiList[this.selectClassifi].num--
-								this.$forceUpdate()
-
-							}).catch(err => {
-								uni.showToast({
-									title: err.msg,
-									icon: 'none'
-								})
-							});
-
-						} else {
-							return item
-						}
-					})
-					this.cat.shoppingCarts = tmepArr
-					console.log(tmepArr)
-				}
+				// 	var tmepArr = this.cat.shoppingCarts.filter((item) => {
+				// 		if (this.goodList[index].id == item.productId) {
+				// 			var data = {
+				// 				id: item.id
+				// 			}
+				// 			Api.deleteShoppingCar(data).then(res => {
+				// 				this.classifiList[this.selectClassifi].num--
+				// 				this.$forceUpdate()
+				// 			}).catch(err => {
+				// 				uni.showToast({
+				// 					title: err.msg,
+				// 					icon: 'none'
+				// 				})
+				// 			});
+				// 		} else {
+				// 			return item
+				// 		}
+				// 	})
+				// 	this.cat.shoppingCarts = tmepArr
+				// 	console.log(tmepArr)
+				// }
 
 
 			},
