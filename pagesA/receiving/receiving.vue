@@ -5,7 +5,7 @@
 		</view>
 		
 		<view class="">
-			<view class="sItem" v-for="(item,index) in receivingList" :key='index'>
+			<view class="sItem" v-for="(item,index) in receivingList" :key='index'  @click="fan(item)">
 				<view class="specific">
 					<view class="">
 						{{item.address}}
@@ -25,7 +25,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="edit" @click="uRess(item.id)">
+				<view class="edit" @click.stop="uRess(item.id)">
 					编辑
 				</view>
 			</view>
@@ -53,6 +53,12 @@
 			await this.getReceiving()
 		},
 		methods: {
+			fan(item){
+				uni.$emit('updateData', item)
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			uRess(id){
 				uni.navigateTo({
 					url:'../address/address?type=1?id='+id

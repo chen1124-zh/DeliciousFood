@@ -165,7 +165,17 @@ function getStoreByProductNameList (data) {
 		url: '/store/getStoreByProductNameList', // 请求url
 		data: data // 参数
 	})
+} 
+
+
+function getSeatList (data) {
+	return request({
+		method: "POST", // 请求方式
+		url: '/seat/getSeatList', // 请求url
+		data: data // 参数
+	})
 }
+
 
 
 
@@ -189,5 +199,6 @@ export default{
 	payOrder,
 	deleteAddress,
 	getTreaty,
-	getStoreByProductNameList
+	getStoreByProductNameList,
+	getSeatList
 }

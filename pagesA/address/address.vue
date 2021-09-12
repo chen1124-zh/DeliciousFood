@@ -131,7 +131,7 @@
 					address:this.region+this.address,      //地址
 					userId:this.userId,       //用户id
 					status:0,
-					defaultAddress:this.select?1:0
+					defaultAddress:this.select?"1":"0"
 				}
 				
 				Api.addAddress(data).then(res => {
@@ -156,7 +156,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	
 	view{
 		font-size: 28rpx;
@@ -200,4 +200,7 @@
 		border-radius: 50%;
 		background: #007AFF;
 	}
+	
+	
+	
 </style>

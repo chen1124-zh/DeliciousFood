@@ -933,9 +933,7 @@
 				})
 			},
 			weeks() {
-				uni.navigateTo({
-					url:"../menu"
-				})
+				
 			},
 			getGoodData() {
 				var data = {

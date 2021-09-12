@@ -24,7 +24,7 @@
 						<view class="position">
 							<image src="../../static/locationIcon.png" mode="widthFix" class="icon" style="width: 60rpx;"></image> 
 							<text class="positionName">{{siteList[siteIndex].siteName || ''}}</text> 
-							<view class="switchs">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
+							<view class="switchs" @click="shows">切换服务点 <uni-icons type="arrowdown" color='#2697F4'></uni-icons> </view>
 						</view>
 						<view class="">
 							{{siteList[siteIndex].address}}
@@ -73,8 +73,11 @@
 					<view class="title">
 						订座
 					</view>
-					<view class="people">
-						12人 01包厢<uni-icons type="arrowright"></uni-icons>
+					<view class="people" v-if="seatData" @click="junPosition">
+						{{seatData.r}}人 {{seatData.seatName}}<uni-icons type="arrowright"></uni-icons>
+					</view>
+					<view class="people"  @click="junPosition" v-else>
+						未订座<uni-icons type="arrowright"></uni-icons>
 					</view>
 				</view>
 			
@@ -88,22 +91,23 @@
 		
 			<view class="" v-if="index == 1">
 				<view class="han">
-					<view class="">
+					<view class="" >
 						
 						<view class="Hress" @click="Tdi">
-							地址
+							{{receivingAddress.address || '没有收获地址'}}
 						</view>
-						<view class="" style="display: flex;font-size: 28rpx;color: #999;">
+						<view class="" v-if="receivingAddress" style="display: flex;font-size: 28rpx;color: #999;" >
 							<view class="">
-								{{user.nickName}}
+								{{receivingAddress.nickName}}
 								
 							</view>
 							
 							<view class="">
-								{{user.mobile}}
+								{{receivingAddress.mobile}}
 							</view>
 						</view>
 					</view>
+					
 					
 				</view>
 				
@@ -117,6 +121,13 @@
 						</picker>
 						
 					</view>
+				</view>
+				
+				<view class="invitation" v-if="type!=0">
+					邀请好友拼团
+				</view>
+				<view class="cancel" v-if="type!=0">
+					取消拼团
 				</view>
 			</view>
 		
@@ -162,6 +173,15 @@
 						</picker>
 					</view>
 				</view>
+				
+				
+				<view class="invitation" v-if="type!=0">
+					邀请好友拼团
+				</view>
+				<view class="cancel" v-if="type!=0">
+					取消拼团
+				</view>
+		
 			</view>
 		
 			<view class="" v-if="index == 3">
@@ -209,10 +229,21 @@
 					<view class="title">
 						订座
 					</view>
-					<view class="people">
-						12人 01包厢<uni-icons type="arrowright" color='#999'></uni-icons>
+					<view class="people" v-if="seatData" @click="junPosition">
+						{{seatData.r}}人 {{seatData.seatName}}<uni-icons type="arrowright"></uni-icons>
+					</view>
+					<view class="people"  @click="junPosition" v-else>
+						未订座<uni-icons type="arrowright"></uni-icons>
 					</view>
 				</view>
+		
+				<view class="invitation" v-if="type!=0">
+					邀请好友拼团
+				</view>
+				<view class="cancel" v-if="type!=0">
+					取消拼团
+				</view>
+		
 			</view>
 		</view>
 		
@@ -360,10 +391,10 @@
 		<view class="payment"  v-if="type==0">
 			<view class="" style="flex: 1;background: #49453A;color: #fff;padding-left: 10rpx;display: flex;align-items: center;">
 				<view class="" style="font-size: 36rpx;">
-					￥{{total}}
+					￥{{allJia}}
 				</view>
 			</view>
-			<view class=""style="width: 30%;background: #289EFF;color: #fff;padding: 30rpx;text-align: center;">
+			<view class=""style="width: 30%;background: #289EFF;color: #fff;padding: 30rpx;text-align: center;" @click="addOrder">
 				确认支付
 			</view>
 		</view>
@@ -383,10 +414,35 @@
 			
 		</u-modal>
 		
+		<popup-layer ref="popupRef" :direction="'top'" v-model="boolShow">
+			<view class="zidingyiBox">
+				<view class="title">
+					选择站点
+				</view>
+				<view class="close" @click="close">
+					关闭
+				</view>
+		
+				<view class="siteBox">
+					<view class="siteItem" v-for="(item,index) in siteList" :key="index"
+						v-if="item.siteName&&item.address" @click="switchSite(index)">
+						<view class="">
+							<text class="siteName">{{item.siteName}}</text><text
+								class="distances">距离{{item.distance||"0m"}}</text>
+						</view>
+						<view class="siteAddress">
+							{{item.address}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</popup-layer>
+		
 	</view>
 </template>
 
 <script>
+	import popupLayer from '@/components/popup-layer/popup-layer.vue';
 	import Api from '@/common/http.js'
 	import uniIcons from "@/components/uni-icons/uni-icons.vue"
 	export default {
@@ -405,13 +461,15 @@
 			}
 		},
 		components:{
-			uniIcons
+			uniIcons,
+			popupLayer
 		},
 		data() {
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
+				allJia:0,
 				nickName:'',
 				mobile:'',
 				tempMobile:'',
@@ -448,7 +506,13 @@
 					'11份','12份','13份','14份','15份','16份','17份','18份','19份','20份',
 					'21份','22份','23份','24份','25份','26份','27份','28份','29份','30份'
 				],
-				tablewareIndex:-1
+				tablewareIndex:-1,
+				receivingAddress:{
+					nickName:'',
+					mobile:'',
+					address:''
+				},
+				seatData:''
 			}
 		},
 		computed: {
@@ -490,7 +554,24 @@
 			
 			this.storeId = op.sid
 			
-			// this.type = op.type
+			var than = this
+			uni.$on('updateData', function(data) {
+				than.receivingAddress = data
+				
+				console.log(data)
+			})
+			
+			
+			this.getReceiving()
+			
+			
+			uni.$on('seatData', function(data) {
+				than.seatData = data
+				
+				console.log(data)
+			})
+			
+			this.type = op.type
 			
 			// if(this.type == 0){
 			// 	this.userCatList = [
@@ -657,6 +738,40 @@
 			
 		},
 		methods: {
+			
+			shows() {
+				this.$refs.popupRef.show(); // 或者 boolShow = rue
+			},
+			close() {
+				this.$refs.popupRef.close() // 或者 boolShow = rue
+			},
+			switchSite(index) {
+				this.siteIndex = index;
+				this.close()
+			},
+			junPosition(){
+				uni.navigateTo({
+					url:'../seat/seat?storeId='+this.store.id
+				})
+			},
+			getReceiving(){
+				Api.getAddressList({userId:this.user.id}).then(res => {
+					res.data.map((item,index)=>{
+						if(item.defaultAddress == 1){
+							this.receivingAddress = item
+						}
+					})
+					
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});	
+			},
+			
+			
+			
 			Jagreement(){
 				uni.navigateTo({
 					url:'../agreement/agreement'
@@ -806,7 +921,9 @@
 				day = day > 9 ? day : '0' + day;
 				return `${year}-${month}-${day}`;
 			},
-			addorder(){
+			addOrder(){
+				
+				
 				var orderItemList = []
 				
 				var realBalance = 0
@@ -815,7 +932,11 @@
 				
 				this.cat.map((item,index)=>{
 					item.shoppingCarts.map((items)=>{
-						realBalance+=items.total
+						// realBalance+=items.total
+						
+						items.specObj.map((itemss)=>{
+							realBalance+=itemss.price*items.num
+						})
 						shoppingCartId +=items.id+','
 						orderItemList.push({
 							productName:items.productName,
@@ -836,7 +957,7 @@
 				
 				
 				
-				
+				var date = `${this.time.getMonth()+1}-${this.time.getDate()} ${this.time.getHours()}:${this.time.getMinutes()}`
 				// return
 				var data = {
 					addIncome:0,
@@ -846,18 +967,19 @@
 					total:realBalance,
 					packing:0,
 					orderNo:'',
-					appointmentTime:'5月5日 周三 12:45',
+					appointmentTime:date,
 					payType:1,
-					mealType:1,
+					mealType:this.index,
 					userId:this.user.id,
-					mobile:this.user.mobile,
-					orderName:this.user.name,
-					remarks:'',
-					orderType:0,
+					mobile:this.mobile,
+					orderName:this.nickName,
+					remarks:this.orderRemarks,
+					orderType:this.index,
+					serialNum:0,
 					deliveryClerk:'',
 					deliveryClerkNum:'',
 					shoppingCartId:shoppingCartId,
-					address:'',
+					address:this.receivingAddress.address,
 					realBalance:realBalance,
 					orderItemList:orderItemList
 				}
@@ -896,12 +1018,12 @@
 					storeId:this.storeId
 				}
 				
-				
 				this.userCatList = [
 					{
 						total:10,
 						userImg:this.user.images,
 						userName:this.name,
+						// total:this.cat[0].total,
 						userCat:{
 							
 							shoppingCarts:[
@@ -954,18 +1076,14 @@
 				]
 				
 				
-				
-				
-				
-				
-				
-				
 				this.allJia = 0
 				Api.getShoppingCart(data).then(res => {
 					
 					this.cat = res.data.data
 					this.cat.map((item,index)=>{
 						this.userCatList[index].userCat.total = item.total
+						this.userCatList[index].total =  item.total
+						this.allJia += item.total
 						item.shoppingCarts.map((items)=>{
 							
 							
@@ -1376,6 +1494,53 @@
 		font-size: 45rpx;
 	}
 	
+	.zidingyiBox {
+		position: relative;
+		padding: 20rpx;
+		border-radius: 20rpx 20rpx 0 0;
+	
+		.title {
+			font-size: 36rpx;
+			font-weight: bold;
+			color: #999;
+			text-align: center;
+	
+		}
+	
+		.close {
+			position: absolute;
+			top: 20rpx;
+			right: 20rpx;
+			color: #ccc;
+		}
+	}
+	
+	.siteBox {
+		height: 900rpx;
+		overflow-y: auto;
+	
+		.siteItem {
+			padding: 30rpx;
+			border-bottom: 1rpx solid #f0f0f0;
+	
+			.siteName {
+				font-size: 34rpx;
+			}
+	
+			.distances {
+				background: #EBF5FF;
+				color: #6CA1F4;
+				padding: 0 10rpx;
+				font-size: 28rpx;
+				border-radius: 10rpx;
+			}
+	
+			.siteAddress {
+				font-size: 28rpx;
+				color: #999;
+			}
+		}
+	}
 	
 	
 </style>

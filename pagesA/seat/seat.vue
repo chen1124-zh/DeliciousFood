@@ -9,7 +9,7 @@
 		</view>
 		
 		
-		<view class="seat_type">
+		<view class="seat_type" style="color: ;">
 			<view :class="seat_type==0?'select_seat_type':''" @click="seat_type = 0">
 				大厅
 			</view>
@@ -21,12 +21,14 @@
 			</view>
 		</view>
 		
-		<view class="">
-			<view class="">
-				
+		<view class="seatList">
+			<view class="seatItem" 
+			:style="{'top': item.left+'%','left':item.left+'%','color':item.color}"
+			 v-for="(item,index) in seatList" :key='index' @click="xz(index)">
+				{{item.seatName}}
 			</view>
 			<view class="">
-				<image src="" mode="widthFix"></image>
+				<image :src="seatList[0].seatImg" mode="widthFix" style="width: 100%;"></image>
 			</view>
 			
 		</view>
@@ -43,10 +45,15 @@
 			</view>
 			
 		</view>
+		
+		<view class="qr" @click="qr">
+			确认
+		</view>
 	</view>
 </template>
 
 <script>
+	import Api from '@/common/http.js'
 	export default {
 		data() {
 			return {
@@ -56,8 +63,59 @@
 					'11人','12人','13人','14人','15人','16人','17人','18人','19人','20人',
 					'21人','22人','23人','24人','25人','26人','27人','28人','29人','30人'
 				],
-				peopleIndex:-1
+				peopleIndex:-1,
+				storeId:'',
+				seatList:[]
 			};
+		},
+		onLoad(op) {
+			this.storeId = op.storeId
+			this.getSeatList()
+		},
+		methods:{
+			qr(){
+				
+				this.seatList.map((item,index)=>{
+					if(item.select == 1){
+						item.r = this.peopleIndex+1
+						uni.$emit('seatData', item)
+						uni.navigateBack({
+							delta:1
+						})
+					}
+				})
+				
+				
+				
+			},
+			xz(i){
+				
+				this.seatList.map((item,index)=>{
+					if(index == i){
+						item.select = 1
+						item.color = '#E06C75'
+						this.$forceUpdate()
+					}else{
+						item.select = 0
+						item.color = "#000"
+					}
+				})
+			},
+			getSeatList(){
+				var data = {
+					id:'',
+					storeId:this.storeId
+				}
+				Api.getSeatList(data).then(res => {
+					console.log(res)
+					this.seatList = res.data.data
+				}).catch(err => {
+					uni.showToast({
+						title: err.msg,
+						icon: 'none'
+					})
+				});
+			}
 		}
 	}
 </script>
@@ -98,4 +156,23 @@
 		font-size: 28rpx;
 		color: #999;
 	}
+	
+	.seatList{
+		position: relative;
+		.seatItem{
+			padding: 10rpx;
+			background: rgba($color: #000000, $alpha: .3);
+			position:absolute;
+		}
+	}
+	
+	.qr{
+		width: 90%;
+		background: #007AFF;
+		color: #fff;
+		padding: 20rpx 0;
+		text-align: center;
+		margin: 0 auto;
+	}
+	
 </style>
