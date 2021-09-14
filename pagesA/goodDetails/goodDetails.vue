@@ -904,7 +904,7 @@
 					})
 					this.getShoppingCartList()
 
-
+					
 				}).catch(err => {
 					uni.showToast({
 						title: err.msg,
@@ -933,7 +933,9 @@
 				})
 			},
 			weeks() {
-				
+				uni.navigateTo({
+					url:"../menu"
+				})
 			},
 			getGoodData() {
 				var data = {

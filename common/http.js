@@ -176,6 +176,18 @@ function getSeatList (data) {
 	})
 }
 
+// 五级地区
+function getCityList (data) {
+	return request({
+		method: "post", // 请求方式
+		url: 'city/getCityList', // 请求url
+		data: data // 参数
+	})
+}
+
+
+
+
 
 
 
@@ -200,5 +212,7 @@ export default{
 	deleteAddress,
 	getTreaty,
 	getStoreByProductNameList,
-	getSeatList
+	getSeatList,
+	getCityList
+	
 }

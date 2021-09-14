@@ -200,6 +200,15 @@
                     "enablePullDownRefresh": false
                 }
                 
+                },
+				{
+                    "path" : "hometown/hometown",
+                    "style" :                                                                                    
+					{
+						"navigationBarTitleText": "选择地址",
+						"enablePullDownRefresh": false
+					}
+                
                 }
             ]
 	}],

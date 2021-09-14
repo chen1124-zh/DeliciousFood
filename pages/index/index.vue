@@ -7,8 +7,8 @@
 						'backgroundColor':'#0D92FF',
 						'color':'#fff'}">
 			<view :style="{'height':navigation.height+'px'}" class="topNavigation">
-				<view class="address" @click="show">
-					{{siteList[siteIndex].siteName || ''}}
+				<view class="address" @click="region">
+					{{pcaList[4].list[pcaList[4].qselectIndex].name || diq}}
 				</view>
 				<view style="text-align: center;">
 					美食天下
@@ -720,6 +720,7 @@
 	import popupLayer from '@/components/popup-layer/popup-layer.vue';
 	import Api from '@/common/http.js'
 	import uniIcons from '@/components/uni-icons/uni-icons.vue'
+	import QQMapWX from '@/components/qqmap-wx-jssdk/qqmap-wx-jssdk.js'
 	export default {
 		data() {
 			return {
@@ -788,7 +789,8 @@
 				latitude: '',
 				longitude: '',
 				goodList:[],
-				
+				diq:'',
+				pcaList: [],
 				
 				sortes: [{
 						name: '综合排序',
@@ -866,13 +868,15 @@
 					url: '../../pagesA/shoppingCart/shoppingCart'
 				})
 			},
-			show() {
-				this.$refs.popupRef.show(); // 或者 boolShow = rue
-			},
-			close() {
-				this.$refs.popupRef.close() // 或者 boolShow = rue
-			},
+			// show() {
+			// 	this.$refs.popupRef.show(); // 或者 boolShow = rue
+			// },
+			// close() {
+			// 	this.$refs.popupRef.close() // 或者 boolShow = rue
+			// },
 			getDistance() {
+				
+				return
 
 				this.siteList.map((item, index) => {
 					uni.request({
@@ -983,6 +987,9 @@
 				})
 			},
 			getLogLat() {
+				const tMap = new QQMapWX({
+					key: '6HXBZ-NCJKU-OA7VM-2YK6B-BYNHJ-LAFLA' //开发者密钥
+				});
 				uni.getLocation({
 					type: 'wgs84',
 					geocode: true, //设置该参数为true可直接获取经纬度及城市信息
@@ -991,7 +998,43 @@
 						this.latitude = res.latitude
 						this.longitude = res.longitude
 
-						this.getSiteList()
+						
+						tMap.reverseGeocoder({
+							location: {
+								latitude: this.latitude,
+								longitude: this.longitude
+							},
+							success:(res) => {
+								
+								
+								this.diq = res.result.address_component.street
+								
+								
+								
+								//保存缓存
+								// uni.setStorage({
+								// 	key:'local',
+								// 	data:res.result.address,
+								// 	success() {
+								// 		console.log("用户地址信息已缓存")
+								// 	}
+								// })
+							},
+							fail: function(res) {
+								uni.showToast({
+									title: '定位失败',
+									duration: 2000,
+									icon: "none"
+								})
+								console.log(res);
+							},
+							complete: function(res) { //无论成功失败都会执行
+								// wx.switchTab({
+								// 	url: '../appointment/appointment'
+								// })
+							}
+						})
+						
 					},
 					fail: function() {
 						uni.showToast({
@@ -1001,11 +1044,16 @@
 					}
 				});
 			},
+			region(){
+				uni.navigateTo({
+					url:'../../pagesA/hometown/hometown?pcaList='+JSON.stringify(this.pcaList)
+				})
+			},
 			getStore() {
 				Api.getStoreList({}).then((res) => {
 					this.storeList = res.data
 						this.nearbyStoreList = res.data 
-					this.storeList.map((item) => {
+						this.storeList.map((item) => {
 						item.foodSortList = []
 						var foodLabelObj = JSON.parse(item.foodLabel)
 
@@ -1151,6 +1199,9 @@
 		position: absolute;
 		left: 25rpx;
 		font-size: 28rpx;
+		width: 112rpx;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	.topNavigation {
